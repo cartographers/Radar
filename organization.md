@@ -14,3 +14,26 @@
 ## 
 
 ## 
+
+
+
+Possible Capstone ideas:
+1. Game
+	A. Card based game (Cards against humanity, utilizing sockets)
+	B. Whiteboard drawing game (ie. Pictionary)
+
+2. Social web app
+	A. Reddit-like
+	B. Snapchat-like app (every picture can include info such as location, activity, etc)
+	C. Twitch (video streaming app, logged in users can see/add effects to screen)
+
+3. Daily Tracker
+	A. MyFitnessPal
+	B. Evernote
+
+4. Cooking app (as you add to your cart, tells you what you can make/create and vice/versa)
+
+5. Data Visualization (utilizing D3 library)
+	A. Clone of waffle.io, trello
+	B. MySQL
+	C. Superset
