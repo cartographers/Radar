@@ -1,9 +1,11 @@
 const crypto = require('crypto')
 const Sequelize = require('sequelize')
-// const userTableAtt = require('/ someApiRoute') ----> {attr1: , attr2}
 const db = require('../db')
 
 const User = db.define('user', {
+  name: {
+    type: Sequelize.STRING
+  },
   email: {
     type: Sequelize.STRING,
     unique: true,
@@ -19,10 +21,6 @@ const User = db.define('user', {
     type: Sequelize.STRING
   }
 })
-
-// const dbName = db.define(dbName.toString(), {
-
-// })
 
 module.exports = User
 

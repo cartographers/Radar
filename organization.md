@@ -10,9 +10,23 @@
 	- line graphs, bar graphs, maps.. 
 	- be able to generate data visualizations based on table relationships. eg. what products are more ordered throughout
 	 the year, or specific days, etc. 
+	- Save displayed charts
+
+	- Visual querying interface, with graphs
+	- Series of intelligent dropdowns of tables
+	- Filter on operators
 
 - Amazon S3
 	-
+
+## Emotion Recognition Therapy (MatchMaker.js file?)
+- Therapist gives 45 minute topic
+- Not limited to therapy. Used in conversing with social interactions, dating?, interviews
+- User discusses topic on video
+- Can analyze emotional data, and displayed in real-time on screen
+- Possible custom screen settings? (ie. Terminator red-text: happiness levels: 0.3, stressed: 0.8, fear: 0.9)
+- Emotional data collected lets user know how well they "connected" to other user
+- Improves self-awareness and social interacting skills
 
 ## Social Media
 - similar to reddit
