@@ -19,6 +19,12 @@ const User = db.define('user', {
   },
   googleId: {
     type: Sequelize.STRING
+  },
+  age: {
+    type: Sequelize.INTEGER
+  },
+  gender: {
+    type: Sequelize.ENUM('M', 'F')
   }
 })
 
