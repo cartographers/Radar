@@ -1,25 +1,34 @@
-## Data visualization 
-- Postico with D3 visuals
-	- dash board with multiple tables and adding data visualizations 
-	- have a 3 page app - dashboard, update existing tables, add new tables 
-	- add collaborators - (similar to graceshopper admins)
-	- how can we add new fields? what if the new field messes the existing database? what if it messes up the routes?
-	    - filter 
-	- do not manipulate the tables from the frontend but can add new rows! 
-	- user can add new information to existing databases
-	- line graphs, bar graphs, maps.. 
-	- be able to generate data visualizations based on table relationships. eg. what products are more ordered throughout
-	 the year, or specific days, etc. 
-	- Save displayed charts
+# Data visualization 
 
-	- Visual querying interface, with graphs
-	- Series of intelligent dropdowns of tables
-	- Filter on operators
+### 1. Postico with D3 visuals
 
-- Amazon S3
-	-
+#### Recent pitch 
+    - to have an app like postico with an additional feature - 
+        - for clients to be able to visualize a query according to their needs - tabular format, charts, bar graphs, maps, and more....  
+    - and to be able to make those queries like it was writing simple english.. helpful for non-programmers. 
+#### Where would we get the client data from and where can clients create their new databases? 
+    - Postgres … ok to use because its a part of the fullstack curriculum.       
+#### How can clients add new fields to their databases? 
+    - using database merging.. 
+#### native d3 or reactd3? 
+    - use reactD3 and redux for the app.. 
+#### Features: 
+    - have a login/signup page as the homepage
+    - once logged in users get directed to a dashboard (list of databases a user is part of)
+    - user chooses the database he would like to work on...that directs client to a new page : 
+        - that shows the data visualizations associated with the tables in the database... 
+        - clients can make queries.. and have a data visualziation  to go with it .. it should be intelligent enough 
+        to know what to build .. 
+        - queries can then have visualizations as well (client has power to see what type of D.V to see)
+        ** clients can add rows to the tables (use database merging to make that happen)..
+                - *** ability to add fields later on.. 
+	    - be able to download the displayed visualizations in a .gif format or .jpg format.. 
+	    - Series of intelligent dropdowns of tables
+	    - Filter on operators 
+	    - continuously streaming sequelize log information and tools for handling logs .. incorporate algorithmic 
+	    approach to handling streaming data .. MACHINE LEARNING..  
 
-## Emotion Recognition Therapy (MatchMaker.js file?)
+### 2. Emotion Recognition Therapy (MatchMaker.js file?)
 - Therapist gives 45 minute topic
 - Not limited to therapy. Used in conversing with social interactions, dating?, interviews
 - User discusses topic on video
@@ -28,50 +37,4 @@
 - Emotional data collected lets user know how well they "connected" to other user
 - Improves self-awareness and social interacting skills
 
-## Social Media
-- similar to reddit
-- users can create discussion posts/content
-- other users can add comments to each post
-- users can converse with one another
 
-
-## Game
-1. Cards Against Humanity
-
-2. Bowl of Nouns (low ambition?)
-	A. Users each input 5 nouns, phrases, abstractions of their choice
-	B. 3 Rounds: 60 seconds per round
-			1. Describe word without using word
-			2. Charades, no sounds at all
-			3. Use one word, that isn't the selected word, to describe the selected word
-
-3. Music Game (using tone.js, web audio)(high risk because nobody else familiar with tools?)
-	A. DDR-like game
-	B. Each key pressed is a melody
-	C. Play your favorite songs
-	D. Scored based on performance
-	E. Select various instruments
-
-
-
-
-Possible Capstone ideas:
-1. Game
-	A. Card based game (Cards against humanity, utilizing sockets, boardgame)
-	B. Whiteboard drawing game (ie. Pictionary)
-
-2. Social web app
-	A. Reddit-like
-	B. Snapchat-like app (every picture can include info such as location, activity, etc)
-	C. Twitch (video streaming app, logged in users can see/add effects to screen)
-
-3. Daily Tracker
-	A. MyFitnessPal
-	B. Evernote
-
-4. Cooking app (as you add to your cart, tells you what you can make/create and vice/versa)
-
-5. Data Visualization (utilizing D3 library)
-	A. Clone of waffle.io, trello
-	B. MySQL
-	C. Superset
