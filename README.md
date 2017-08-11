@@ -1,4 +1,4 @@
-# Boilermaker
+<!-- # Boilermaker
 
 *Good things come in pairs*
 
@@ -105,3 +105,4 @@ Now, you should be deployed! To clean up, remove your deploy branch:
 Why do all of these steps? The big reason is because we don't want our production server to be cluttered up with dev dependencies like webpack, but at the same time we don't want our development git-tracking to be cluttered with production build files like bundle.js! By doing these steps, we make sure our development and production environments both stay nice and clean!
 
 (By the way, if performing these steps seems tedious and error-prone, try writing a shell script that will do them all for you!)
+ -->
