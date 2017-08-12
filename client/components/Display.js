@@ -17,7 +17,6 @@ class Display extends React.Component {
     return (
       <div className="container">
         <div className="chart">Chart of Data Table</div>
-        <PieGraph />
         <div>
           {data && data.map(dataItem => {
             return (
