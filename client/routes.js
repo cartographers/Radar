@@ -26,6 +26,8 @@ class Routes extends Component {
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
             <Route path="/display" component={Display} />
+            <Route path='/bar' component={barChart} />
+            <Route path='/scatter' component={scatterChart}>
             {
               isLoggedIn &&
                 <Switch>
