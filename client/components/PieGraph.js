@@ -1,9 +1,17 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import { PieChart } from 'react-d3-basic'
 import { fetchUsers } from '../store'
-import {PieGraph} from './PieGraph'
 
-class Display extends React.Component {
+class PieGraph extends React.Component {
+
+	constructor() {
+		super()
+		this.state = {
+			width: 700,
+			height: 400
+		}
+	}
 
   componentDidMount() {
     this.props.fetchAllUsers()
@@ -12,19 +20,19 @@ class Display extends React.Component {
   render () {
 
     const {data} = this.props
-    const usersAge = data.map(user => user.gender)
+    const usersGender = (user) => user.usersGender
 
     return (
       <div className="container">
         <div className="chart">Chart of Data Table</div>
-        <PieGraph />
-        <div>
-          {data && data.map(dataItem => {
-            return (
-                <h4 key={ dataItem.id }>{ dataItem.name }</h4>
-              )
-          })}
-        </div>
+        <div>The Width:  {this.width}</div>
+        <PieChart
+	        data= {usersGender}
+		      width= {this.state.width}
+		      height= {this.state.height}
+		      chartSeries= {data}
+		      value = {usersGender}
+	      />
       </div>
     )
   }
@@ -44,16 +52,4 @@ const mapDispatch = dispatch => {
   })
 }
 
-export default connect(mapState, mapDispatch)(Display)
-
-//<select>{chartType}</select>
-
-// {chartType === {chartType} ?
-//   <BarGraph /> :
-//   <PieGraph />
-// }
-
-
-
-
-
+export default connect(mapState, mapDispatch)(PieGraph)
