@@ -13,7 +13,9 @@ class myForm extends React.Component {
         col: 'All'
       }],
       whereThese: [{
-        col: 'none'
+        col: 'none',
+        is: 'equal to',
+        spec: ''
       }],
       orderedBy: 'None',
       conditionals : ['greater than', 'greater than or equal to', 'less than', 'less than or equal to','equal to', 'not', 'between', 'not between'],
@@ -27,9 +29,12 @@ class myForm extends React.Component {
   }
 
   handleSelectChange = (evt) => {
+    console.log(evt.target)
+    const {name, value} = evt.target
     this.setState( (prevState) => ({ selectThese: prevState.selectThese.map( (val, index) => {
-      return (index === evt.target.name) ? { col: evt.target.value } : val
+      return (index == name) ? { col: value } : val
     })}))
+    console.log(this.state)
   }
 
   addSelect = (evt) => {
@@ -37,13 +42,17 @@ class myForm extends React.Component {
   }
 
   handleWhereChange = (evt) => {
+    const [type, i] = evt.target.name.split(' ')
+    let newVal = {}
+    newVal[type] = evt.target.value
     this.setState( (prevState) => ({ whereThese: prevState.whereThese.map( (val, index) => {
-      return (index === evt.target.name) ? { col: evt.target.value } : val
+      return (index == i) ? {...val, ...newVal} : val
     })}))
+    console.log(this.state)
   }
 
   addWhere = (evt) => {
-    this.setState( (prevState) => ({ whereThese: [...prevState.whereThese, {col:'none'}] }))
+    this.setState( (prevState) => ({ whereThese: [...prevState.whereThese, {col:'none', is: 'equal to', spec: '' }] }))
   }
 
   handleOrderChange = (evt) => {
@@ -74,23 +83,23 @@ class myForm extends React.Component {
           <div className="form-group">
             <label>Where</label>
             {
-              this.state.whereThese.map((sel) => {
+              this.state.whereThese.map((sel, index) => {
                 return  <div>
-                          <select>
+                          <select name={`col ${index}`} onChange={this.handleWhereChange}>
                             <option value='All'>None</option>
                             {columns && columns.map(v => <option value={v}>{v}</option>)}
                           </select>
                           <h4>is</h4>
-                            <select>
+                            <select name={`is ${index}`} onChange={this.handleWhereChange}>
                             {conditionals && conditionals.map(v => <option value={v}>{v}</option>)}
                             </select>
-                            <input className="form-control" name="testTextInput2"/>
+                            <input className="form-control" name={`spec ${index}`} onChange={this.handleWhereChange}/>
                         </div>
               })
             }
           </div>
             <div className="form-group">
-              <button type="button" className="btn btn-primary">+</button>
+              <button type="button" className="btn btn-primary" onClick={this.addWhere}>+</button>
             </div>
             <div className="form-group">
             <label>Order by</label>
