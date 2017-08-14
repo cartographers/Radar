@@ -5,7 +5,7 @@
   "engines": {
     "node": ">= 7.0.0"
   },
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "build-client": "webpack",
     "build-client-watch": "webpack -w",
@@ -13,8 +13,10 @@
     "start": "node server",
     "start-dev": "npm run build-client-watch & npm run start-server",
     "start-server": "NODE_ENV='development' nodemon server -e html,js,scss --ignore public",
-    "test": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/capstone1706' mocha ./**/*.spec.js --compilers js:babel-register",
-    "test-client-watch": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/capstone1706' mocha -w ./client/**/*.spec.js --compilers js:babel-register"
+
+    "test": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/boilermaker-test' mocha ./**/*.spec.js --compilers js:babel-register",
+    "test-client-watch": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/boilermaker-test' mocha -w ./client/**/*.spec.js --compilers js:babel-register",
+    "electron": "npm run build-client-watch & electron ."
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +26,7 @@
     "bootstrap": "^3.3.7",
     "connect-session-sequelize": "^4.1.0",
     "d3": "^4.10.0",
+    "electron": "^1.7.5",
     "express": "^4.14.1",
     "express-session": "^1.15.1",
     "history": "^4.6.3",
@@ -36,19 +39,9 @@
     "react": "^15.4.2",
     "react-bootstrap": "^0.31.2",
     "react-d3-basic": "^1.6.11",
-<<<<<<< HEAD
-    "react-d3-brush": "^1.1.0",
-    "react-d3-tooltip": "^1.4.14",
-    "react-d3-zoom": "^1.1.2",
-=======
     "react-d3-core": "^1.3.9",
     "react-d3-tooltip": "^1.4.14",
-<<<<<<< HEAD
->>>>>>> 21c9d2ff2ca18f66f27be094db5d255769017021
-    "react-dom": "^15.4.2",
-=======
     "react-dom": "^15.6.1",
->>>>>>> ed4e0a4bf6a7a6c651fe70a9c37c94f22e6f30be
     "react-redux": "^5.0.2",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
