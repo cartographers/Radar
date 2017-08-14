@@ -9,12 +9,16 @@ class myForm extends React.Component {
   constructor() {
     super()
     this.state = {
-      selectThese: [],
+      selectThese: [{
+        col: 'Choose One'
+      }],
       whereThese: [],
       orderedBy: 'None'
     }
-    addSelect : () => ({
-      this.setState()
+    addSelect = () => ({
+    })
+
+    updateSelect = (index) => ({
     })
   }
 
@@ -26,7 +30,25 @@ class myForm extends React.Component {
   render () {
     const { table, columns } = this.props;
     return (
-      <div></div>
+      <div>
+        <h2>Query Selection Form</h2>
+        <form>
+          <div className="form-group">
+            <label>Select</label>
+            {
+              this.state.selectThese.map((val, index) => ({
+                return  <select className="form-control" name="testSelect">
+                          {columns.map((opt) => <option value={opt}>{opt}</option>)}
+                        </select>
+              }))
+            }
+            </div>
+            <div className="form-group">
+              <button type="button" className="btn btn-primary" onClick={this.addSelect}>+</button>
+            </div>
+          <button type="submit" className="btn btn-success">Submit</button>
+        </form>
+      </div>
     )
   }
 }
