@@ -5,7 +5,7 @@
   "engines": {
     "node": ">= 7.0.0"
   },
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "build-client": "webpack",
     "build-client-watch": "webpack -w",
@@ -14,7 +14,8 @@
     "start-dev": "npm run build-client-watch & npm run start-server",
     "start-server": "NODE_ENV='development' nodemon server -e html,js,scss --ignore public",
     "test": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/boilermaker-test' mocha ./**/*.spec.js --compilers js:babel-register",
-    "test-client-watch": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/boilermaker-test' mocha -w ./client/**/*.spec.js --compilers js:babel-register"
+    "test-client-watch": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/boilermaker-test' mocha -w ./client/**/*.spec.js --compilers js:babel-register",
+    "electron": "npm run build-client-watch & electron ."
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +25,7 @@
     "bootstrap": "^3.3.7",
     "connect-session-sequelize": "^4.1.0",
     "d3": "^4.10.0",
+    "electron": "^1.7.5",
     "express": "^4.14.1",
     "express-session": "^1.15.1",
     "history": "^4.6.3",
