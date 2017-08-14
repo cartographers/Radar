@@ -3,10 +3,12 @@ import createLogger from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 import user from './user'
 import users from './users'
+import database from './database'
 
 const reducer = combineReducers({
 	user,
-	users
+	users,
+	database
 })
 
 const middleware = applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
@@ -15,3 +17,4 @@ const store = createStore(reducer, middleware)
 export default store
 export * from './user'
 export * from './users'
+export * from './database'

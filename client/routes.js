@@ -21,24 +21,26 @@ class Routes extends Component {
     return (
       <Router history={history}>
         <Main>
-          <Switch>
-            {/* Routes placed here are available to all visitors */}
-            <Route path="/login" component={Login} />
-            <Route path="/signup" component={Signup} />
-            <Route path="/display" component={Display} />
-            <Route exact path="/pie" component={PieGraph} />
-            <Route path="/form" component={myForm}/>
-            <Route path="/scatter" component={Scatter} />
-            {
-              isLoggedIn &&
-                <Switch>
-                  {/* Routes placed here are only available after logging in */}
-                  <Route path="/home" component={UserHome} />
-                </Switch>
-            }
-            {/* Displays our Login component as a fallback */}
-            <Route component={Login} />
-          </Switch>
+          <div className="container">
+            <Switch>
+              {/* Routes placed here are available to all visitors */}
+              <Route path="/login" component={Login} />
+              <Route path="/signup" component={Signup} />
+              <Route path="/display" component={Display} />
+              <Route exact path="/pie" component={PieGraph} />
+              <Route path="/form" component={myForm}/>
+              <Route exact path="/scatter" component={Scatter} />
+              <Route exact path="/home" component={Home} />
+              {
+                isLoggedIn &&
+                  <Switch>
+                    {/* Routes placed here are only available after logging in */}
+                    <Route path="/home" component={UserHome} />
+                  </Switch>
+              }
+              <Route component={Home} />
+            </Switch>
+          </div>
         </Main>
       </Router>
     )
