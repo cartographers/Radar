@@ -25,6 +25,9 @@ const User = db.define('user', {
   },
   gender: {
     type: Sequelize.ENUM('M', 'F')
+  },
+  sales: {
+    type: Sequelize.INTEGER
   }
 })
 
