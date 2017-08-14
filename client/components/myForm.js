@@ -27,18 +27,28 @@ class myForm extends React.Component {
   }
 
   handleSelectChange = (evt) => {
-    console.log(evt.target.name, evt.target.value)
-    this.setState( (prevState) => ({ selectThese: prevState.map( (val, index) => {
+    this.setState( (prevState) => ({ selectThese: prevState.selectThese.map( (val, index) => {
       return (index === evt.target.name) ? { col: evt.target.value } : val
     })}))
   }
 
   addSelect = (evt) => {
-    console.log('Updating state')
     this.setState( (prevState) => ({ selectThese: [...prevState.selectThese, {col:'All'}] }))
-    console.log(this.state)
   }
 
+  handleWhereChange = (evt) => {
+    this.setState( (prevState) => ({ whereThese: prevState.whereThese.map( (val, index) => {
+      return (index === evt.target.name) ? { col: evt.target.value } : val
+    })}))
+  }
+
+  addWhere = (evt) => {
+    this.setState( (prevState) => ({ whereThese: [...prevState.whereThese, {col:'none'}] }))
+  }
+
+  handleOrderChange = (evt) => {
+    this.setState({ orderedBy: evt.target.value })
+  }
   render () {
     const { table, columns } = this.props
     const { conditionals, orderType } = this.state
@@ -85,7 +95,7 @@ class myForm extends React.Component {
             <div className="form-group">
             <label>Order by</label>
             {
-              <select>
+              <select onChange={this.handleOrderChange}>
                { orderType.map(v => <option value={v}>{v}</option>) }
               </select>
             }
