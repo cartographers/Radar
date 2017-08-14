@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import { PieTooltip } from 'react-d3-tooltip'
+// import { PieTooltip } from 'react-d3-tooltip'
 import { fetchUsers } from '../store'
 import { makePie } from '../D3'
 

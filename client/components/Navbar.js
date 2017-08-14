@@ -15,6 +15,7 @@ class Navbar extends React.Component {
         <div className="container">
           <div className="navbar-left">
             <Link to="/home"><h4>HOME</h4></Link>
+            <Link to="/form"><h2>form sample</h2></Link>
           </div>
           {
             isLoggedIn ?

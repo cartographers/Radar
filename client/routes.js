@@ -4,7 +4,7 @@ import {Router} from 'react-router'
 import {Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
-import {Main, Login, Signup, UserHome, Display, PieGraph, Scatter, Home} from './components'
+import {Main, Login, Signup, UserHome, Display, PieGraph, myForm, Scatter, Home} from './components'
 import {me} from './store'
 
 /**
@@ -28,6 +28,7 @@ class Routes extends Component {
               <Route path="/signup" component={Signup} />
               <Route path="/display" component={Display} />
               <Route exact path="/pie" component={PieGraph} />
+              <Route path="/form" component={myForm}/>
               <Route exact path="/scatter" component={Scatter} />
               <Route exact path="/home" component={Home} />
               {
