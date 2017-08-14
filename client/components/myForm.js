@@ -29,7 +29,6 @@ class myForm extends React.Component {
   }
 
   handleSelectChange = (evt) => {
-    console.log(evt.target)
     const {name, value} = evt.target
     this.setState( (prevState) => ({ selectThese: prevState.selectThese.map( (val, index) => {
       return (index == name) ? { col: value } : val
@@ -48,7 +47,6 @@ class myForm extends React.Component {
     this.setState( (prevState) => ({ whereThese: prevState.whereThese.map( (val, index) => {
       return (index == i) ? {...val, ...newVal} : val
     })}))
-    console.log(this.state)
   }
 
   addWhere = (evt) => {
