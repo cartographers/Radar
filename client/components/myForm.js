@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { fetchUsers } from '../store'
+import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 
 //this form is assuming that the table we're currently rendering is the Users table
 
@@ -14,7 +15,13 @@ class myForm extends React.Component {
       orderedBy: 'None',
       conditionals : ['greater than', 'greater than or equal to', 'less than', 'less than or equal to','equal to', 'not', 'between', 'not between'],
       orderType : ['None','Ascending', 'Descending'],
-      chartTypes: ['Pie', 'Scatter', 'Donut', 'Bar', 'Line']
+      chartTypes: ['Pie', 'Scatter', 'Donut', 'Bar', 'Line'],
+      choosenChart: '',
+      Title: '',
+      xLabel: '',
+      yLabel: '',
+      height: '',
+      width: ''
     }
 
   }
@@ -28,7 +35,6 @@ class myForm extends React.Component {
     this.setState( (prevState) => ({ selectThese: prevState.selectThese.map( (val, index) => {
       return (index == name) ? { col: value } : val
     })}))
-    console.log(this.state)
   }
 
   addSelect = (evt) => {
@@ -56,10 +62,25 @@ class myForm extends React.Component {
       [fromWhere]: [...prevState[fromWhere].slice(0, index), ...prevState[fromWhere].slice(index + 1)]
     }))
   }
+
+  handleChange = (fromWhere, evt) => {
+    this.setState({
+      [fromWhere]: evt.target.value
+    })    
+  }
+
+  makeGraph = (evt) => {
+    evt.preventDefault();
+    const data = !(this.state.whereThese.length) 
+      ?  this.props.table
+      :  this.props.table.filter( (val) => {
+          return val[this.state.whereThese[0].col] === this.state.whereThese[0].spec
+      })
+    console.log(data)
+  }
   render () {
     const { table, columns } = this.props
     const { conditionals, orderType } = this.state
-
     return (
       <div>
         <h2>User Query Selection Form</h2>
@@ -117,32 +138,34 @@ class myForm extends React.Component {
           </div>
           <button type="submit" className="btn btn-success">Submit</button>
           </form>
+
+
         <h2>Chart choice</h2>
         <form>
           <div className="form-group">
             <label>Chart Type</label>
-              <select name='name' onChange={this.handleWhereChange} >
+              <select name='choosenChart' onChange={this.handleChange.bind(this, 'choosenChart')} >
                {this.state.chartTypes.map((val,i) => <option value={val} key={i}>{val}</option>)}
               </select>
           </div>
           <div className="form-group">
             <label>Chart Title</label>
-            <input className="form-control"/>
+            <input className="form-control" onChange={this.handleChange.bind(this, 'Title')}/>
           </div>
           <div className="form-group">
             <label>Height</label>
-            <input className="form-control"/>
+            <input className="form-control" onChange={this.handleChange.bind(this, 'height')}/>
           </div>
           <div className="form-group">
             <label>Width</label>
-            <input className="form-control"/>
+            <input className="form-control" onChange={this.handleChange.bind(this, 'width')}/>
           </div>
           <div className="form-group">
             <label>X axis</label>
             {
-              <select>
+              <select onChange={this.handleChange.bind(this, 'xLabel')}>
                { this.state.selectThese.length && this.state.selectThese.map( val => <option value={val.col}>{val.col}</option>) }
-               { !(this.state.selectThese.length) && columns && columns.map(v => <option value={v}>{v}</option>) }
+               { !(this.state.selectThese.length) && columns && columns.map(val => <option value={val}>{val}</option>) }
               </select>
             }
             <input className="form-control"/>
@@ -150,14 +173,14 @@ class myForm extends React.Component {
           <div className="form-group">
             <label>Y axis</label>
             {
-              <select>
+              <select onChange={this.handleChange.bind(this, 'yLabel')}>
                { this.state.selectThese.length && this.state.selectThese.map( val => <option value={val.col}>{val.col}</option>) }
-               { !(this.state.selectThese.length) && columns && columns.map(v => <option value={v}>{v}</option>) }
+               { !(this.state.selectThese.length) && columns && columns.map( val => <option value={val}>{val}</option>) }
               </select>
             }
             <input className="form-control"/>
           </div>
-          <button type="submit" className="btn btn-success">Make my graph</button>
+          <button type="submit" className="btn btn-success" onClick={this.makeGraph}>Make my graph</button>
         </form>
       </div>
     )
