@@ -5,6 +5,9 @@ import {Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
 import {Main, Login, Signup, UserHome, Display, PieGraph, myForm} from './components'
+
+import {Main, Login, Signup, UserHome, Display, PieGraph, myForm, Scatter, Home } from './components'
+
 import {me} from './store'
 
 /**
@@ -21,25 +24,24 @@ class Routes extends Component {
     return (
       <Router history={history}>
         <Main>
-          <div className="container">
-            <Switch>
-              {/* Routes placed here are available to all visitors */}
-              <Route path="/login" component={Login} />
-              <Route path="/signup" component={Signup} />
-              <Route path="/display" component={Display} />
-              <Route exact path="/pie" component={PieGraph} />
-              <Route path="/form" component={myForm}/>
-              {
-                isLoggedIn &&
-                  <Switch>
-                    {/* Routes placed here are only available after logging in */}
-                    <Route path="/home" component={UserHome} />
-                  </Switch>
-              }
-              {/* Displays our Login component as a fallback */}
-              <Route component={Login} />
-            </Switch>
-          </div>
+          <Switch>
+            {/* Routes placed here are available to all visitors */}
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/display" component={Display} />
+            <Route exact path="/pie" component={PieGraph} />
+            <Route path="/form" component={myForm}/>
+            <Route path="/scatter" component={Scatter} />
+            {
+              isLoggedIn &&
+                <Switch>
+                  {/* Routes placed here are only available after logging in */}
+                  <Route path="/home" component={UserHome} />
+                </Switch>
+            }
+            {/* Displays our Login component as a fallback */}
+            <Route component={Login} />
+          </Switch>
         </Main>
       </Router>
     )
