@@ -9,17 +9,12 @@ class myForm extends React.Component {
   constructor() {
     super()
     this.state = {
-      selectThese: [{
-        col: 'All'
-      }],
-      whereThese: [{
-        col: 'none',
-        is: 'equal to',
-        spec: ''
-      }],
+      selectThese: [],
+      whereThese: [],
       orderedBy: 'None',
       conditionals : ['greater than', 'greater than or equal to', 'less than', 'less than or equal to','equal to', 'not', 'between', 'not between'],
-      orderType : ['None','Ascending', 'Descending']
+      orderType : ['None','Ascending', 'Descending'],
+      chartTypes: ['Pie', 'Scatter', 'Donut', 'Bar', 'Line']
     }
 
   }
@@ -56,6 +51,11 @@ class myForm extends React.Component {
   handleOrderChange = (evt) => {
     this.setState({ orderedBy: evt.target.value })
   }
+  handleRemove = (index, fromWhere, evt) => {
+    this.setState( (prevState) => ({
+      [fromWhere]: [...prevState[fromWhere].slice(0, index), ...prevState[fromWhere].slice(index + 1)]
+    }))
+  }
   render () {
     const { table, columns } = this.props
     const { conditionals, orderType } = this.state
@@ -68,10 +68,12 @@ class myForm extends React.Component {
             <label>Select</label>
             {
               this.state.selectThese.map((sel, index) => {
-                return  <div><select name={index} key={index} onChange={this.handleSelectChange}>
-                          <option value='All'>All</option>
-                          {columns && columns.map((val,i) => <option value={val} key={i}>{val}</option>)}
-                        </select></div>
+                return  <div>
+                            <select name={index} key={index} onChange={this.handleSelectChange}>
+                                {columns && columns.map((val,i) => <option value={val} key={i}>{val}</option>)}
+                            </select>
+                            <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'selectThese')}> - </button>
+                        </div>
               })
             }
           </div>
@@ -84,7 +86,6 @@ class myForm extends React.Component {
               this.state.whereThese.map((sel, index) => {
                 return  <div>
                           <select name={`col ${index}`} onChange={this.handleWhereChange}>
-                            <option value='All'>None</option>
                             {columns && columns.map(v => <option value={v}>{v}</option>)}
                           </select>
                           <h4>is</h4>
@@ -92,6 +93,7 @@ class myForm extends React.Component {
                             {conditionals && conditionals.map(v => <option value={v}>{v}</option>)}
                             </select>
                             <input className="form-control" name={`spec ${index}`} onChange={this.handleWhereChange}/>
+                            <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'whereThese')}> - </button>
                         </div>
               })
             }
@@ -106,8 +108,56 @@ class myForm extends React.Component {
                { orderType.map(v => <option value={v}>{v}</option>) }
               </select>
             }
+            {
+              <select>
+               { this.state.selectThese.length && this.state.selectThese.map( val => <option value={val.col}>{val.col}</option>) }
+               { !(this.state.selectThese.length) && columns && columns.map(v => <option value={v}>{v}</option>) }
+              </select>
+            }
           </div>
           <button type="submit" className="btn btn-success">Submit</button>
+          </form>
+        <h2>Chart choice</h2>
+        <form>
+          <div className="form-group">
+            <label>Chart Type</label>
+              <select name='name' onChange={this.handleWhereChange} >
+               {this.state.chartTypes.map((val,i) => <option value={val} key={i}>{val}</option>)}
+              </select>
+          </div>
+          <div className="form-group">
+            <label>Chart Title</label>
+            <input className="form-control"/>
+          </div>
+          <div className="form-group">
+            <label>Height</label>
+            <input className="form-control"/>
+          </div>
+          <div className="form-group">
+            <label>Width</label>
+            <input className="form-control"/>
+          </div>
+          <div className="form-group">
+            <label>X axis</label>
+            {
+              <select>
+               { this.state.selectThese.length && this.state.selectThese.map( val => <option value={val.col}>{val.col}</option>) }
+               { !(this.state.selectThese.length) && columns && columns.map(v => <option value={v}>{v}</option>) }
+              </select>
+            }
+            <input className="form-control"/>
+          </div>
+          <div className="form-group">
+            <label>Y axis</label>
+            {
+              <select>
+               { this.state.selectThese.length && this.state.selectThese.map( val => <option value={val.col}>{val.col}</option>) }
+               { !(this.state.selectThese.length) && columns && columns.map(v => <option value={v}>{v}</option>) }
+              </select>
+            }
+            <input className="form-control"/>
+          </div>
+          <button type="submit" className="btn btn-success">Make my graph</button>
         </form>
       </div>
     )
