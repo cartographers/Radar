@@ -3,22 +3,22 @@ import axios from 'axios'
 /**
  * ACTION TYPES
  */
-export const QUERY_DATABASE = 'QUERY_DATABASE'
+export const GET_DATABASES = 'GET_DATABASES'
 
 
 /**
  * ACTION CREATORS
  */
-const queryDatabase = database => ({type: QUERY_DATABASE, database})
+const getDatabases = databases => ({type: GET_DATABASES, databases})
 
 /**
  * THUNK CREATORS
  */
-export const searchDatabase = (data) =>
+export const fetchDatabases = () =>
   dispatch =>
-    axios.put('/api/database/query', data)
+    axios.get('/api/database')
       .then(res =>
-        dispatch(queryDatabase(res.data)))
+        dispatch(getDatabases(res.data)))
       .catch(err => console.log(err))
 
 /**
@@ -27,8 +27,8 @@ export const searchDatabase = (data) =>
  
 export default function (state = [], action) {
   switch (action.type) {
-    case QUERY_DATABASE:
-      return action.database
+    case GET_DATABASES:
+      return action.databases
     default:
       return state
   }
