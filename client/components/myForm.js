@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { fetchUsers } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
+import { fetchDatabase, searchDatabase, fetchFields, fetchDatabases } from '../store'
 
 //this form is assuming that the table we're currently rendering is the Users table
 
@@ -76,16 +77,6 @@ class myForm extends React.Component {
 
   makeGraph = (evt) => {
     evt.preventDefault();
-    let data = !(this.state.whereThese.length) 
-      ?  this.props.table
-      :  this.props.table.filter( (val) => {
-          return val[this.state.whereThese[0].col] === this.state.whereThese[0].spec
-      })
-    const { width, height, xLabel, yLabel, Title } = this.state
-    data = data.map((user, index) => {
-      return {x: index + 1, y: user.age}
-    })
-    console.log(this.state.whereThese[0].spec)
     const newGraph = null;
     this.setState((prevState) =>  ({
       myGraphs: [...prevState.myGraphs, newGraph]
@@ -146,6 +137,8 @@ class myForm extends React.Component {
             }
           </div>
   }
+
+
   render () {
     return (
       <div>
