@@ -7,11 +7,10 @@ export {default as Main} from './main'
 export {default as UserHome} from './user-home'
 export {Login, Signup} from './auth-form'
 export {default as Display} from './Display'
-<<<<<<< HEAD
 export {default as LineD3} from './LineD3'
-=======
 export {default as PieGraph} from './PieGraph'
 export {default as myForm} from './myForm'
 export {default as Scatter} from './Scatter'
 export {default as Home} from './Home'
->>>>>>> master
+export {default as BarGraph} from './BarGraph'
+export {default as TableDB} from './TableDB'

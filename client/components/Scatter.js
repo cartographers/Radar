@@ -16,6 +16,10 @@ class ScatterGraph extends Component {
       return {x: index + 1, y: user.age}
     })
 
+    const data = [{x: 100, y: 200}, {x: 120, y: 100},
+                  {x: 170, y: 300}, {x: 140, y: 250},
+                  {x: 150, y: 400}, {x: 110, y: 280}]
+
     return (
       <div>
 
@@ -34,8 +38,7 @@ class ScatterGraph extends Component {
             <CartesianGrid strokeDasharray="3 3"/>
             <Tooltip cursor={{strokeDasharray: '3 3'}}/>
             <Legend/>
-            <Scatter name="users vs age" data={graphData} fill="#8884d8"/>
-
+            <Scatter name="users vs age" data={data} fill="#8884d8"/>
           </ScatterChart>
         </div>
 
