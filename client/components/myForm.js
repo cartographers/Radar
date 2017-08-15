@@ -81,6 +81,7 @@ class myForm extends React.Component {
     data = data.map((user, index) => {
       return {x: index + 1, y: user.age}
     })
+    console.log(this.state.whereThese[0].spec)
     const newGraph = (<ScatterChart
             width={+width}
             height={+height}
