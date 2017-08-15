@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { fetchUsers,fetchDatabase, searchDatabase, fetchFields, fetchDatabases } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
-import { fetchDatabase, searchDatabase, fetchFields, fetchDatabases } from '../store'
 
 //this form is assuming that the table we're currently rendering is the Users table
 
@@ -32,7 +31,8 @@ class myForm extends React.Component {
 
   componentDidMount() {
     let db = this.props.match.params.dbName
-    this.props.fetchAllUsers();
+    this.props.fetchAllUsers()
+    this.props.fetchDatabase({ name: db })
     console.log(db)
 
   }
@@ -195,7 +195,7 @@ class myForm extends React.Component {
 
 const mapState = state => {
   return ({
-    table: state.users,
+    table: state.database,
     columns: (state.users[0] ? Object.keys(state.users[0]) : undefined)
   })
 }
@@ -204,9 +204,6 @@ const mapDispatch = dispatch => {
   return ({
     fetchAllUsers () {
       dispatch(fetchUsers())
-    },
-    fetchDatabase (name) {
-      dispatch()
     }
   })
 }
