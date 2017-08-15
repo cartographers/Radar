@@ -4,7 +4,7 @@ import {Router} from 'react-router'
 import {Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
-import {Main, Login, Signup, UserHome, Display, PieGraph, myForm, Scatter, Home, BarGraph, TableDB} from './components'
+import {Main, Login, Signup, UserHome, Display, PieGraph, myForm, Scatter, Home, LineD3, BarGraph, TableDB} from './components'
 import {me} from './store'
 
 /**
@@ -33,6 +33,7 @@ class Routes extends Component {
               <Route exact path="/home" component={Home} />
               <Route exact path="/bar" component={BarGraph} />
               <Route exact path="/table" component={TableDB} />
+              <Route path="/line" component={LineD3} />
               {
                 isLoggedIn &&
                   <Switch>
