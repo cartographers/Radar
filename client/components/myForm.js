@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchUsers,fetchDatabase, searchDatabase, fetchFields, fetchDatabases } from '../store'
+import { fetchUsers,fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
 
@@ -30,10 +30,9 @@ class myForm extends React.Component {
   }
 
   componentDidMount() {
-    let db = this.props.match.params.dbName
+    let db = { database: this.props.match.params.dbName}
     this.props.fetchAllUsers()
-    this.props.fetchDatabase({ name: db })
-    console.log(db)
+    this.props.fetchDat(db)
 
   }
 
@@ -51,7 +50,7 @@ class myForm extends React.Component {
   handleWhereChange = (evt) => {
     const [type, i] = evt.target.name.split(' ')
     let newVal = {}
-    newVal[type] = (type === 'is') ? this.conditionalOperator[evt.target.value] : evt.target.value
+    newVal[type] = (type === 'is') ? this.state.conditionalOperator[evt.target.value] : evt.target.value
     this.setState( (prevState) => ({ whereThese: prevState.whereThese.map( (val, index) => {
       return (index == i) ? {...val, ...newVal} : val
     })}))
@@ -84,6 +83,20 @@ class myForm extends React.Component {
     this.setState((prevState) =>  ({
       myGraphs: [...prevState.myGraphs, newGraph]
     }))
+  }
+
+  tableChange = (evt) => {
+    this.props.grabTableData(this.props.match.params.dbName, evt.target.value)
+  }
+
+  renderTables = () => {
+      return <div>
+                <label>From</label>
+                  <select name="From" onChange={this.tableChange}>
+                    {this.props.tables && this.props.tables.map((table,i) => <option value={table} key={i}>{table}</option>)}
+                  </select>
+                  <button type="button" className="btn btn-danger" onClick={this.tableChange}> Grab Table </button>
+              </div>
   }
 
   renderSelects = () => {
@@ -143,10 +156,12 @@ class myForm extends React.Component {
 
 
   render () {
+    const DBName = this.props.match.params.dbName
     return (
       <div>
-        <h2>User Query Selection Form</h2>
+        <h2>User {DBName} Query Selection Form</h2>
         <form>
+            { this.renderTables() }
             { this.renderSelects() }
             { this.renderWheres() }
             { this.renderOrderBy() }
@@ -195,8 +210,9 @@ class myForm extends React.Component {
 
 const mapState = state => {
   return ({
+    tables: state.tables,
     table: state.database,
-    columns: (state.users[0] ? Object.keys(state.users[0]) : undefined)
+    columns: state.fields || ((state.users[0] ? Object.keys(state.users[0]) : undefined))
   })
 }
 
@@ -204,6 +220,12 @@ const mapDispatch = dispatch => {
   return ({
     fetchAllUsers () {
       dispatch(fetchUsers())
+    },
+    fetchDat (DBname) {
+      dispatch( fetchTables(DBname) )
+    },
+    grabTableData(database, table) {
+      dispatch( fetchFields({ database, table}))
     }
   })
 }
