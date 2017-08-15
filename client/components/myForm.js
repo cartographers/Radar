@@ -21,7 +21,8 @@ class myForm extends React.Component {
       xLabel: '',
       yLabel: '',
       height: '',
-      width: ''
+      width: '',
+      myGraphs: []
     }
 
   }
@@ -71,13 +72,44 @@ class myForm extends React.Component {
 
   makeGraph = (evt) => {
     evt.preventDefault();
-    const data = !(this.state.whereThese.length) 
+    let data = !(this.state.whereThese.length) 
       ?  this.props.table
       :  this.props.table.filter( (val) => {
           return val[this.state.whereThese[0].col] === this.state.whereThese[0].spec
       })
-    console.log(data)
+    const { width, height, xLabel, yLabel, Title } = this.state
+    data = data.map((user, index) => {
+      return {x: index + 1, y: user.age}
+    })
+    const newGraph = (<ScatterChart
+            width={+width}
+            height={+height}
+            margin={{top: 20, right: 20, bottom: 10, left: 10}}>
+
+            <XAxis dataKey="x" name={xLabel}/>
+            <YAxis dataKey="y" name={yLabel} unit=" years"/>
+            <CartesianGrid strokeDasharray="3 3"/>
+            <Tooltip cursor={{strokeDasharray: '3 3'}}/>
+            <Legend/>
+            <Scatter name={Title} data={data} fill="#8884d8"/>
+
+          </ScatterChart>)
+    this.setState((prevState) =>  ({
+      myGraphs: [...prevState.myGraphs, newGraph]
+    }))
   }
+
+  renderSelects = () => {
+      return this.state.selectThese.map((sel, index) => {
+                return  <div>
+                            <select name={index} key={index} onChange={this.handleSelectChange}>
+                                {this.props.columns && this.props.columns.map((val,i) => <option value={val} key={i}>{val}</option>)}
+                            </select>
+                            <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'selectThese')}> - </button>
+                        </div>
+              })
+  }
+
   render () {
     const { table, columns } = this.props
     const { conditionals, orderType } = this.state
@@ -87,16 +119,7 @@ class myForm extends React.Component {
         <form>
           <div className="form-group">
             <label>Select</label>
-            {
-              this.state.selectThese.map((sel, index) => {
-                return  <div>
-                            <select name={index} key={index} onChange={this.handleSelectChange}>
-                                {columns && columns.map((val,i) => <option value={val} key={i}>{val}</option>)}
-                            </select>
-                            <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'selectThese')}> - </button>
-                        </div>
-              })
-            }
+            { this.renderSelects() }
           </div>
             <div className="form-group">
               <button type="button" className="btn btn-primary" onClick={this.addSelect}>+</button>
@@ -182,6 +205,9 @@ class myForm extends React.Component {
           </div>
           <button type="submit" className="btn btn-success" onClick={this.makeGraph}>Make my graph</button>
         </form>
+        {
+          this.state.myGraphs.map(val => val)
+        }
       </div>
     )
   }
