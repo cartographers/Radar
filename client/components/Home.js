@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Accordion, Panel} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
-import { fetchDatabase, searchDatabase, fetchFields } from '../store'
+import {fetchDatabase, searchDatabase, fetchFields} from '../store'
 
 class Home extends Component {
   render() {
@@ -65,11 +65,11 @@ class Home extends Component {
         </div>
         <div>
           <ul>
-          {data && data.map(dataItem => {
-            return (
-                <li key={dataItem.id}>{ dataItem.name }</li>
+            {data && data.map(dataItem => {
+              return (
+                <li key={dataItem.id}>{dataItem.name}</li>
               )
-          })}
+            })}
           </ul>
         </div>
 
