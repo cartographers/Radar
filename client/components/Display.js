@@ -1,9 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { fetchUsers } from '../store'
-import {barGraph} from '../D3'
-
-var testData = [30, 86, 168, 281, 303, 365]
+import {PieGraph} from './PieGraph'
 
 class Display extends React.Component {
 
@@ -14,8 +12,7 @@ class Display extends React.Component {
   render () {
 
     const {data} = this.props
-    const usersAge = data.map(user => user.age)
-    barGraph(usersAge)
+    const usersAge = data.map(user => user.gender)
 
     return (
       <div className="container">
