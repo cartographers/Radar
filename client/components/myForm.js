@@ -66,12 +66,12 @@ class myForm extends React.Component {
   handleChange = (fromWhere, evt) => {
     this.setState({
       [fromWhere]: evt.target.value
-    })    
+    })
   }
 
   makeGraph = (evt) => {
     evt.preventDefault();
-    const data = !(this.state.whereThese.length) 
+    const data = !(this.state.whereThese.length)
       ?  this.props.table
       :  this.props.table.filter( (val) => {
           return val[this.state.whereThese[0].col] === this.state.whereThese[0].spec
