@@ -15,7 +15,11 @@ class Navbar extends React.Component {
         <div className="container">
           <div className="navbar-left">
             <Link to="/home"><h4>HOME</h4></Link>
-            <Link to="/form"><h2>form sample</h2></Link>
+            <Link to="/form"><h4>form sample</h4></Link>
+            <Link to="/scatter"><h4>scatter</h4></Link>
+            <Link to="/bar"><h4>bar</h4></Link>
+            <Link to="/table"><h4>table</h4></Link>
+            <Link to="/pie"><h4>pie</h4></Link>
           </div>
           {
             isLoggedIn ?
@@ -29,7 +33,7 @@ class Navbar extends React.Component {
                 <Link to="/signup"><h4>Sign Up</h4></Link>
               </div>
           }
-          </div>
+        </div>
       </nav>
     )
   }

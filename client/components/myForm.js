@@ -75,11 +75,11 @@ class myForm extends React.Component {
   handleChange = (fromWhere, evt) => {
     this.setState({
       [fromWhere]: evt.target.value
-    })    
+    })
   }
 
   makeGraph = (evt) => {
-    evt.preventDefault();
+    evt.preventDefault()
     const newGraph = null;
     this.setState((prevState) =>  ({
       myGraphs: [...prevState.myGraphs, newGraph]
