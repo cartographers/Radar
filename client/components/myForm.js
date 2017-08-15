@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchUsers } from '../store'
+import { fetchUsers,fetchDatabase, searchDatabase, fetchFields, fetchDatabases } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
 import { fetchDatabase, searchDatabase, fetchFields, fetchDatabases } from '../store'
@@ -31,7 +31,10 @@ class myForm extends React.Component {
   }
 
   componentDidMount() {
+    let db = this.props.match.params.dbName
     this.props.fetchAllUsers();
+    console.log(db)
+
   }
 
   handleSelectChange = (evt) => {
@@ -201,6 +204,9 @@ const mapDispatch = dispatch => {
   return ({
     fetchAllUsers () {
       dispatch(fetchUsers())
+    },
+    fetchDatabase (name) {
+      dispatch()
     }
   })
 }
