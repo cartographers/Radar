@@ -2,13 +2,14 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Accordion, Panel} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
-import { fetchDatabase, searchDatabase } from '../store'
+import { fetchDatabase, searchDatabase, fetchFields } from '../store'
 
 class Home extends Component {
   render() {
 
     const tables = ['table1', 'table2', 'table3', 'table4', 'table5']
     const databases = ['Database 1', 'Database 2', 'Database 3', 'Database 4', 'Database 5']
+    const {data, fields} = this.props
 
     return (
       <div>
@@ -64,7 +65,7 @@ class Home extends Component {
         </div>
         <div>
           <ul>
-          {this.props.data && this.props.data.map(dataItem => {
+          {data && data.map(dataItem => {
             return (
                 <li key={dataItem.id}>{ dataItem.name }</li>
               )
@@ -100,7 +101,8 @@ class Home extends Component {
 
 const mapState = (state) => {
   return {
-    data: state.database
+    data: state.database,
+    fields: state.fields
   }
 }
 
@@ -117,6 +119,7 @@ const mapDispatch = dispatch => {
         table: event.target.table.value
       }
       dispatch(searchDatabase(settings))
+      dispatch(fetchFields(settings))
     }
   }
 }
