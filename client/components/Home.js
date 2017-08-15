@@ -4,6 +4,7 @@ import {Accordion, Panel} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import { fetchDatabase, searchDatabase, fetchFields, fetchDatabases } from '../store'
 
+
 class Home extends Component {
 
   componentDidMount() {
@@ -23,6 +24,59 @@ class Home extends Component {
         <div>
           <h5>Your databases:::</h5>
         </div>
+        <div>
+          <form className="dbForm" onSubmit={this.props.onSubmit}>
+            User:
+            <input
+              name="user"
+              type="text"
+              placeholder="Enter User"
+            />
+            Host:
+            <input
+              name="host"
+              defaultValue="localhost"
+              type="text"
+              placeholder="Enter Host"
+            />
+            Port:
+            <input
+              name="port"
+              defaultValue="5432"
+              type="integer"
+              placeholder="Enter Port"
+            />
+            Password:
+            <input
+              name="password"
+              type="password"
+              placeholder="Enter Password"
+            />
+            Database:
+            <input
+              name="database"
+              type="text"
+              placeholder="Enter Database"
+            />
+            Table:
+            <input
+              name="table"
+              type="text"
+              placeholder="Enter Table"
+            />
+            <button id="connectButton">Connect Database</button>
+          </form>
+        </div>
+        <div>
+          <ul>
+            {data && data.map(dataItem => {
+              return (
+                <li key={dataItem.id}>{dataItem.name}</li>
+              )
+            })}
+          </ul>
+        </div>
+
 
         <div>
           <Accordion>
