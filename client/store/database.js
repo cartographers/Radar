@@ -24,7 +24,7 @@ export const searchDatabase = (data) =>
 /**
  * REDUCER
  */
- 
+
 export default function (state = [], action) {
   switch (action.type) {
     case QUERY_DATABASE:
