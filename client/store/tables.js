@@ -1,4 +1,4 @@
-import axios from 'axios'
+import {loadTables} from '../../utils/connectDB'
 
 /**
  * ACTION TYPES
@@ -14,17 +14,18 @@ const getTables = tables => ({type: GET_TABLES, tables})
 /**
  * THUNK CREATORS
  */
-export const fetchTables = (database) =>
-  dispatch =>
-    axios.put('/api/database/tables', database)
-      .then(res =>
-        dispatch(getTables(res.data)))
-      .catch(err => console.log(err))
+export const fetchTables = (settings) =>
+  dispatch => {
+    const result = loadTables(settings)
+    result
+    .then(response => dispatch(getTables(response)))
+    .catch(err => console.log(err))
+}
 
 /**
  * REDUCER
  */
- 
+
 export default function (state = [], action) {
   switch (action.type) {
     case GET_TABLES:
