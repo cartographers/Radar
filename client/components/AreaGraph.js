@@ -40,7 +40,7 @@ class AreaGraph extends Component {
   }
 }
 
-const mapState = ({users}, state, ownProps) => {
+const mapState = (state, ownProps) => {
   return ({
       width: 700,
       height: 300,
@@ -54,7 +54,7 @@ const mapState = ({users}, state, ownProps) => {
       dataKey: 'age',
       xdataKey: 'id',
       ydataKey: 'age',
-      data: users
+      data: state.users
     })
 }
 
