@@ -14,7 +14,7 @@ function createWindow () {
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'public', 'index.html'),
     protocol: 'file:',
-    slashes: true
+    slashes: false
   }))
 
   // Open the DevTools.
