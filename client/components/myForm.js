@@ -104,8 +104,8 @@ class myForm extends React.Component {
       return <div>
                 <label>Select</label>
                 { this.state.selectThese.map((sel, index) => {
-                    return  <div key={index}>
-                                <select name={index} onChange={this.handleSelectChange}>
+                    return  <div>
+                                <select name={index} key={index} onChange={this.handleSelectChange}>
                                     {this.props.columns && this.props.columns.map((val,i) => <option value={val} key={i}>{val}</option>)}
                                 </select>
                                 <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'selectThese')}> - </button>
@@ -121,9 +121,9 @@ class myForm extends React.Component {
               <label>Where</label>
               {
                 this.state.whereThese.map((sel, index) => {
-                  return  <div key={index}>
+                  return  <div>
                             <select name={`col ${index}`} onChange={this.handleWhereChange}>
-                              {this.props.columns && this.props.columns.map(v => <option value={v} key={v}>{v}</option>)}
+                              {this.props.columns && this.props.columns.map(v => <option value={v}>{v}</option>)}
                             </select>
                             <h4>is</h4>
                               <select name={`is ${index}`} onChange={this.handleWhereChange}>
