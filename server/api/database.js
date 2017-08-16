@@ -23,15 +23,16 @@ router.get('/', (req, res, next) => {
 // Send field back to front-end
 
 router.put('/query', (req, res, next) => {
-
-	const postgresUrl = 'postgres://localhost:' + req.body.port + '/' + req.body.database
+	console.log('REQ.BODYY : ', req.body)
+	// const postgresUrl = 'postgres://localhost:' + req.body.port + '/' + req.body.database
+	const postgresUrl = 'postgres://localhost:5432/' + req.body.database
 	const client = new pg.Client(postgresUrl)
 
-	let selectThese = req.body.selectThese.join(', ') || '*'
-	let whereThese = req.body.whereThese
-	let conditionals = req.body.conditionals
+	let selectThese = /*req.body.selectThese.join(', ') ||*/ '*'
+	// let whereThese = req.body.whereThese
+	// let conditionals = req.body.conditionals
 
-	let querySearch = ['SELECT ', selectThese, ' FROM', req.body.table]
+	let querySearch = ['SELECT', selectThese, 'FROM', req.body.table] // table name
 	// if (req.body.join) querySearch.push('JOIN ' + req.body.field)
 	// if (req.body.whereThese) querySearch.push('ON ' + req.body.whereThese)
 
@@ -49,7 +50,7 @@ router.put('/query', (req, res, next) => {
 
 router.put('/tables', (req, res, next) => {
 
-	const postgresUrl = 'postgres://localhost:5432/' + req.body.database
+	const postgresUrl = 'postgres://localhost:5432/' +  req.body.database
 	const client = new pg.Client(postgresUrl)
 
 	let querySearch = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema = 'public'"

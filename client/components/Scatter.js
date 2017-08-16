@@ -1,24 +1,27 @@
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchUsers} from '../store'
+import {fetchQueryTable} from '../store'
 
 class ScatterGraph extends Component {
 
-  componentDidMount() {
-    this.props.fetchAllUsers()
+  componentDidMount () {
+    const queryInfo = {
+      database: this.props.database, 
+      selectThese: this.props.selectThese, 
+      whereThese: this.props.whereThese, 
+      table: this.props.table
+    }
+    this.props.fetchQueriedData(queryInfo)
   }
 
   render() {
 
-    const {width, height, users} = this.props
-    const graphData = users.map((user, index) => {
-      return {x: index + 1, y: user.age}
-    })
-
-    const data = [{x: 100, y: 200}, {x: 120, y: 100},
-      {x: 170, y: 300}, {x: 140, y: 250},
-      {x: 150, y: 400}, {x: 110, y: 280}]
+    const {queriedTable, width, height, title, xAxis, yAxis, x, y, orderBy, whereThese} = this.props
+    console.log(queriedTable)
+    // const graphData = queriedTable.map((table, index) => {
+    //   return {x: {table.xAxis}, y: /* ****** */}
+    // })
 
     return (
       <div>
@@ -27,20 +30,21 @@ class ScatterGraph extends Component {
           <h4>Scatter Plot</h4>
         </div>
 
-        <div className='center'>
-          <ScatterChart
-            width={width}
-            height={height}
-            margin={{top: 20, right: 20, bottom: 10, left: 10}}>
+        {/*<div className='center'>
+        //   <ScatterChart
+        //     width={width}
+        //     height={height}
+        //     margin={{top: 20, right: 20, bottom: 10, left: 10}}>
 
-            <XAxis dataKey="x" name="user"/>
-            <YAxis dataKey="y" name="age" unit=" years"/>
-            <CartesianGrid strokeDasharray="3 3"/>
-            <Tooltip cursor={{strokeDasharray: '3 3'}}/>
-            <Legend/>
-            <Scatter name="users vs age" data={data} fill="#8884d8"/>
-          </ScatterChart>
-        </div>
+        //     <XAxis dataKey="x" name={x.toString()}/>
+        //     <YAxis dataKey="y" name={y.toString()}/>
+        //     <CartesianGrid strokeDasharray="3 3"/>
+        //     <Tooltip cursor={{strokeDasharray: '3 3'}}/>
+        //     <Legend/>
+        //     <Scatter name={title} data={graphData} fill="#8884d8"/>
+        //   </ScatterChart>
+        // </div>
+        */}
 
       </div>
     )
@@ -49,16 +53,23 @@ class ScatterGraph extends Component {
 
 const mapState = (state, ownProps) => {
   return ({
+    title: ownProps.Title || 'Add Title Here',
     width: ownProps.width || 730,
     height: ownProps.height || 400,
-    users: ownProps.data || state.users
+    x: ownProps.xAxis || 'Axis X',
+    y: ownProps.yAxis || 'Axis Y', 
+    orderBy: ownProps.orderedBy, 
+    whereThese: ownProps.whereThese, 
+    table: ownProps.table,
+    database: ownProps.database,
+    queriedTable: state.queriedTable
   })
 }
 
-const mapDispatch = dispatch => {
-  return ({
-    fetchAllUsers() {
-      dispatch(fetchUsers())
+const mapDispatch = (dispatch) => {
+  return({
+    fetchQueriedData(queryInfo) {
+      dispatch(fetchQueryTable(queryInfo))
     }
   })
 }
