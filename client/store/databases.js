@@ -1,6 +1,4 @@
-import axios from 'axios'
 import {initDatabases} from '../../utils/connectDB'
-// const initDatabases = require('../../utils/connectDB')
 
 /**
  * ACTION TYPES
@@ -17,12 +15,12 @@ const getDatabases = databases => ({type: GET_DATABASES, databases})
  * THUNK CREATORS
  */
 export const fetchDatabases = () =>
-  dispatch =>
-  {
+  dispatch => {
     const result = initDatabases()
     result
-    .then((response) => dispatch(getDatabases(response)))
-  }
+    .then(response => dispatch(getDatabases(response)))
+    .catch(err => console.log(err))
+}
 
 /**
  * REDUCER

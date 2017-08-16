@@ -12,7 +12,6 @@ import {me} from './store'
  */
 class Routes extends Component {
   componentDidMount () {
-    this.props.loadInitialData()
   }
 
   render () {
@@ -64,18 +63,7 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    loadInitialData () {
-      dispatch(me())
-    }
   }
 }
 
 export default connect(mapState, mapDispatch)(Routes)
-
-/**
- * PROP TYPES
- */
-Routes.propTypes = {
-  loadInitialData: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired
-}

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import {loadFields} from '../../utils/connectDB'
 
 /**
  * ACTION TYPES
@@ -15,11 +15,12 @@ const getFields = fields => ({type: GET_FIELDS, fields})
  * THUNK CREATORS
  */
 export const fetchFields = (data) =>
-  dispatch =>
-    axios.put('/api/database/fields', data)
-      .then(res =>
-        dispatch(getFields(res.data)))
-      .catch(err => console.log(err))
+  dispatch => {
+    const result = loadFields(data)
+    result
+    .then(response => dispatch(getFields(response)))
+    .catch(err => console.log(err))
+}
 
 /**
  * REDUCER
