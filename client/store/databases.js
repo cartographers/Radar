@@ -1,4 +1,6 @@
 import axios from 'axios'
+import {initDatabases} from '../../utils/connectDB'
+// const initDatabases = require('../../utils/connectDB')
 
 /**
  * ACTION TYPES
@@ -16,15 +18,16 @@ const getDatabases = databases => ({type: GET_DATABASES, databases})
  */
 export const fetchDatabases = () =>
   dispatch =>
-    axios.get('/api/database')
-      .then(res =>
-        dispatch(getDatabases(res.data)))
-      .catch(err => console.log(err))
+  {
+    const result = initDatabases()
+    result
+    .then((response) => dispatch(getDatabases(response)))
+  }
 
 /**
  * REDUCER
  */
- 
+
 export default function (state = [], action) {
   switch (action.type) {
     case GET_DATABASES:
