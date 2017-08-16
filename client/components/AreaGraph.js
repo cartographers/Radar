@@ -1,55 +1,39 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchUsers} from '../store'
-import {LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend} from 'recharts'
+import {AreaChart, Area, CartesianGrid, XAxis, YAxis, Tooltip, Legend} from 'recharts'
 
-class LineD3 extends Component {
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      width: 0,
-      height: 0,
-      margins: {
-        left: 0, right: 0, top: 0, bottom: 0
-      },
-      stroke: '',
-      lineType: '',
-      dataKey: '',
-      xdataKey: '',
-      ydataKey: '',
-      data: []
-    }
-  }
+class AreaGraph extends Component {
 
   componentDidMount() {
     this.props.fetchAllUsers()
   }
 
   render() {
-  const {margins, width, height, lineType, dataKey, stroke, data, xdataKey, ydataKey} = this.props
+  const {margins, width, height, lineType, dataKey, stroke, data, xdataKey, ydataKey, fill} = this.props
 
   return (
     <div className="container">
       <div className="lineChart">
-      <LineChart
+      <AreaChart
         margins={margins}
         width={width}
         height={height}
         data={data}
       >
-      <Line
+      <Area
         type={lineType}
         dataKey={dataKey}
         stroke={stroke}
         activeDot={{ stroke: 'blue', strokeWidth: 2, r: 5 }}
+        fill={fill}
       />
       <CartesianGrid strokeDasharray="10 10" />
       <XAxis dataKey={xdataKey} />
       <YAxis dataKey={ydataKey} />
       <Tooltip />
       <Legend />
-      </LineChart>
+      </AreaChart>
       </div>
       </div>
   )
@@ -64,7 +48,8 @@ const mapState = ({users}, state, ownProps) => {
         left: 100, right: 100, top: 50, bottom: 50
       },
       title: 'User sample',
-      stroke: '#ff7f0e',
+      stroke: '#ffc658',
+      fill: '#ffc658',
       lineType: 'monotone',
       dataKey: 'age',
       xdataKey: 'id',
@@ -81,4 +66,4 @@ const mapDispatch = dispatch => {
   }
 }
 
-export default connect(mapState, mapDispatch)(LineD3)
+export default connect(mapState, mapDispatch)(AreaGraph)

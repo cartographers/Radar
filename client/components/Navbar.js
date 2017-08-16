@@ -20,6 +20,8 @@ class Navbar extends React.Component {
             <Link to="/bar"><h4>bar</h4></Link>
             <Link to="/table"><h4>table</h4></Link>
             <Link to="/pie"><h4>pie</h4></Link>
+            <Link to="/line"><h4>line</h4></Link>
+            <Link to="/area"><h4>area</h4></Link>
           </div>
           {
             isLoggedIn ?
