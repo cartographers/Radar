@@ -188,6 +188,7 @@ class myForm extends React.Component {
 }
 
 const mapState = state => {
+  console.log(state)
   return ({
     table: state.users,
     columns: (state.users[0] ? Object.keys(state.users[0]) : undefined)
