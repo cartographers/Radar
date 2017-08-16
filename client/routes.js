@@ -28,7 +28,7 @@ class Routes extends Component {
               <Route path="/signup" component={Signup} />
               <Route path="/display" component={Display} />
               <Route exact path="/pie" component={PieGraph} />
-              <Route path="/form" component={myForm}/>
+              <Route path="/form/:dbName" component={myForm}/>
               <Route exact path="/scatter" component={Scatter} />
               <Route exact path="/home" component={Home} />
               <Route exact path="/bar" component={BarGraph} />
