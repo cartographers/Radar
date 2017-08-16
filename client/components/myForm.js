@@ -95,7 +95,6 @@ class myForm extends React.Component {
                   <select name="From" onChange={this.tableChange}>
                     {this.props.tables && this.props.tables.map((table,i) => <option value={table} key={i}>{table}</option>)}
                   </select>
-                  <button type="button" className="btn btn-danger" onClick={this.tableChange}> Grab Table </button>
               </div>
   }
 
