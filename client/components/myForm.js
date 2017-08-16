@@ -31,20 +31,14 @@ class myForm extends React.Component {
 
   componentDidMount() {
     let db = { database: this.props.match.params.dbName}
-    this.props.fetchAllUsers()
     this.props.fetchDat(db)
-
   }
 
   handleSelectChange = (evt) => {
     const {name, value} = evt.target
     this.setState( (prevState) => ({ selectThese: prevState.selectThese.map( (val, index) => {
-      return (index == name) ? { col: value } : val
+      return (index == name) ? value : val
     })}))
-  }
-
-  addSelect = (evt) => {
-    this.setState( (prevState) => ({ selectThese: [...prevState.selectThese, {col:'All'}] }))
   }
 
   handleWhereChange = (evt) => {
@@ -56,19 +50,10 @@ class myForm extends React.Component {
     })}))
   }
 
-  addWhere = (evt) => {
-    this.setState( (prevState) => ({ whereThese: [...prevState.whereThese, {col:'none', is: 'equal to', spec: '' }] }))
-  }
-
   handleOrderChange = (index, evt) => {
     this.setState( (prevState) => ( { orderedBy: prevState.orderedBy.map( (val, i) => {
-      return (index === i) ? event.target.value : val
+      return (index === i) ? evt.target.value : val
     })}))
-  }
-  handleRemove = (index, fromWhere, evt) => {
-    this.setState( (prevState) => ({
-      [fromWhere]: [...prevState[fromWhere].slice(0, index), ...prevState[fromWhere].slice(index + 1)]
-    }))
   }
 
   handleChange = (fromWhere, evt) => {
@@ -76,6 +61,19 @@ class myForm extends React.Component {
       [fromWhere]: evt.target.value
     })
   }
+
+  handleAdd = (addTo, evt) => {
+    let newAdd = (addTo === 'selectThese') ? this.props.columns[0] : {col:'none', is: 'equal to', spec: '' }
+    this.setState( (prevState) => ({ [addTo]: [...prevState[addTo], newAdd] }))
+  }
+
+  handleRemove = (index, fromWhere, evt) => {
+    this.setState( (prevState) => ({
+      [fromWhere]: [...prevState[fromWhere].slice(0, index), ...prevState[fromWhere].slice(index + 1)]
+    }))
+  }
+
+
 
   makeGraph = (evt) => {
     evt.preventDefault()
@@ -111,7 +109,7 @@ class myForm extends React.Component {
                             </div>
                     })
                 }
-                <button type="button" className="btn btn-primary" onClick={this.addSelect}>+</button>
+                <button type="button" className="btn btn-primary" onClick={this.handleAdd.bind(this,'selectThese')}>+</button>
             </div>
   }
 
@@ -133,7 +131,7 @@ class myForm extends React.Component {
                           </div>
                 })
               }
-                <button type="button" className="btn btn-primary" onClick={this.addWhere}>+</button>
+                <button type="button" className="btn btn-primary" onClick={this.handleAdd.bind(this, 'whereThese')}>+</button>
             </div>
   }
 
@@ -147,7 +145,7 @@ class myForm extends React.Component {
             }
             {
               <select onChange={this.handleOrderChange.bind(this, 1)}>
-               { this.state.selectThese.length && this.state.selectThese.map( val => <option value={val.col}>{val.col}</option>) }
+               { this.state.selectThese.length && this.state.selectThese.map( val => <option value={val}>{val}</option>) }
                { !(this.state.selectThese.length) && this.props.columns && this.props.columns.map(v => <option value={v}>{v}</option>) }
               </select>
             }
@@ -185,16 +183,18 @@ class myForm extends React.Component {
             <label>X axis</label>
             {
               <select onChange={this.handleChange.bind(this, 'xLabel')}>
-               { this.state.selectThese.length && this.state.selectThese.map( val => <option value={val.col}>{val.col}</option>) }
-               { !(this.state.selectThese.length) && this.props.columns && this.props.columns.map(val => <option value={val}>{val}</option>) }
+               { this.state.selectThese.length 
+                  ? this.state.selectThese.map( val => <option value={val}>{val}</option>) 
+                  :  (this.props.columns && this.props.columns.map(val => <option value={val}>{val}</option>) )}
               </select>
             }
             <input className="form-control"/>
             <label>Y axis</label>
             {
               <select onChange={this.handleChange.bind(this, 'yLabel')}>
-               { this.state.selectThese.length && this.state.selectThese.map( val => <option value={val.col}>{val.col}</option>) }
-               { !(this.state.selectThese.length) && this.props.columns && this.props.columns.map( val => <option value={val}>{val}</option>) }
+               { this.state.selectThese.length 
+                  ? this.state.selectThese.map( val => <option value={val}>{val}</option>) 
+                  : (this.props.columns && this.props.columns.map( val => <option value={val}>{val}</option>)) }
               </select>
             }
             <input className="form-control"/>
@@ -212,7 +212,7 @@ const mapState = state => {
   return ({
     tables: state.tables,
     table: state.database,
-    columns: state.fields || ((state.users[0] ? Object.keys(state.users[0]) : undefined))
+    columns: state.fields
   })
 }
 
