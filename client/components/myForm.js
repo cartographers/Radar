@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchUsers } from '../store'
+import { fetchUsers,fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
+import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
 
 //this form is assuming that the table we're currently rendering is the Users table
 
@@ -12,8 +13,9 @@ class myForm extends React.Component {
     this.state = {
       selectThese: [],
       whereThese: [],
-      orderedBy: 'None',
+      orderedBy: [],
       conditionals : ['greater than', 'greater than or equal to', 'less than', 'less than or equal to','equal to', 'not', 'between', 'not between'],
+      conditionalOperator: ['>', '> =', '<', '<=', '===', '!==', '[]', '![]'],
       orderType : ['None','Ascending', 'Descending'],
       chartTypes: ['Pie', 'Scatter', 'Donut', 'Bar', 'Line'],
       choosenChart: '',
@@ -21,13 +23,17 @@ class myForm extends React.Component {
       xLabel: '',
       yLabel: '',
       height: '',
-      width: ''
+      width: '',
+      myGraphs: []
     }
 
   }
 
   componentDidMount() {
-    this.props.fetchAllUsers();
+    let db = { database: this.props.match.params.dbName}
+    this.props.fetchAllUsers()
+    this.props.fetchDat(db)
+
   }
 
   handleSelectChange = (evt) => {
@@ -44,7 +50,7 @@ class myForm extends React.Component {
   handleWhereChange = (evt) => {
     const [type, i] = evt.target.name.split(' ')
     let newVal = {}
-    newVal[type] = evt.target.value
+    newVal[type] = (type === 'is') ? this.state.conditionalOperator[evt.target.value] : evt.target.value
     this.setState( (prevState) => ({ whereThese: prevState.whereThese.map( (val, index) => {
       return (index == i) ? {...val, ...newVal} : val
     })}))
@@ -54,8 +60,10 @@ class myForm extends React.Component {
     this.setState( (prevState) => ({ whereThese: [...prevState.whereThese, {col:'none', is: 'equal to', spec: '' }] }))
   }
 
-  handleOrderChange = (evt) => {
-    this.setState({ orderedBy: evt.target.value })
+  handleOrderChange = (index, evt) => {
+    this.setState( (prevState) => ( { orderedBy: prevState.orderedBy.map( (val, i) => {
+      return (index === i) ? event.target.value : val
+    })}))
   }
   handleRemove = (index, fromWhere, evt) => {
     this.setState( (prevState) => ({
@@ -70,118 +78,131 @@ class myForm extends React.Component {
   }
 
   makeGraph = (evt) => {
-    evt.preventDefault();
-    const data = !(this.state.whereThese.length)
-      ?  this.props.table
-      :  this.props.table.filter( (val) => {
-          return val[this.state.whereThese[0].col] === this.state.whereThese[0].spec
-      })
-    console.log(data)
+    evt.preventDefault()
+    const newGraph = null;
+    this.setState((prevState) =>  ({
+      myGraphs: [...prevState.myGraphs, newGraph]
+    }))
   }
-  render () {
-    const { table, columns } = this.props
-    const { conditionals, orderType } = this.state
-    return (
-      <div>
-        <h2>User Query Selection Form</h2>
-        <form>
-          <div className="form-group">
-            <label>Select</label>
-            {
-              this.state.selectThese.map((sel, index) => {
-                return  <div>
-                            <select name={index} key={index} onChange={this.handleSelectChange}>
-                                {columns && columns.map((val,i) => <option value={val} key={i}>{val}</option>)}
-                            </select>
-                            <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'selectThese')}> - </button>
-                        </div>
-              })
-            }
-          </div>
-            <div className="form-group">
-              <button type="button" className="btn btn-primary" onClick={this.addSelect}>+</button>
-          </div>
-          <div className="form-group">
-            <label>Where</label>
-            {
-              this.state.whereThese.map((sel, index) => {
-                return  <div>
-                          <select name={`col ${index}`} onChange={this.handleWhereChange}>
-                            {columns && columns.map(v => <option value={v}>{v}</option>)}
-                          </select>
-                          <h4>is</h4>
-                            <select name={`is ${index}`} onChange={this.handleWhereChange}>
-                            {conditionals && conditionals.map(v => <option value={v}>{v}</option>)}
-                            </select>
-                            <input className="form-control" name={`spec ${index}`} onChange={this.handleWhereChange}/>
-                            <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'whereThese')}> - </button>
-                        </div>
-              })
-            }
-          </div>
-            <div className="form-group">
-              <button type="button" className="btn btn-primary" onClick={this.addWhere}>+</button>
+
+  tableChange = (evt) => {
+    this.props.grabTableData(this.props.match.params.dbName, evt.target.value)
+  }
+
+  renderTables = () => {
+      return <div>
+                <label>From</label>
+                  <select name="From" onChange={this.tableChange}>
+                    {this.props.tables && this.props.tables.map((table,i) => <option value={table} key={i}>{table}</option>)}
+                  </select>
+                  <button type="button" className="btn btn-danger" onClick={this.tableChange}> Grab Table </button>
+              </div>
+  }
+
+  renderSelects = () => {
+      return <div>
+                <label>Select</label>
+                { this.state.selectThese.map((sel, index) => {
+                    return  <div>
+                                <select name={index} key={index} onChange={this.handleSelectChange}>
+                                    {this.props.columns && this.props.columns.map((val,i) => <option value={val} key={i}>{val}</option>)}
+                                </select>
+                                <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'selectThese')}> - </button>
+                            </div>
+                    })
+                }
+                <button type="button" className="btn btn-primary" onClick={this.addSelect}>+</button>
             </div>
-            <div className="form-group">
+  }
+
+  renderWheres = () => {
+    return  <div>
+              <label>Where</label>
+              {
+                this.state.whereThese.map((sel, index) => {
+                  return  <div>
+                            <select name={`col ${index}`} onChange={this.handleWhereChange}>
+                              {this.props.columns && this.props.columns.map(v => <option value={v}>{v}</option>)}
+                            </select>
+                            <h4>is</h4>
+                              <select name={`is ${index}`} onChange={this.handleWhereChange}>
+                              {this.state.conditionals && this.state.conditionals.map((val, ind) => <option value={ind}>{val}</option>)}
+                              </select>
+                              <input className="form-control" name={`spec ${index}`} onChange={this.handleWhereChange}/>
+                              <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'whereThese')}> - </button>
+                          </div>
+                })
+              }
+                <button type="button" className="btn btn-primary" onClick={this.addWhere}>+</button>
+            </div>
+  }
+
+  renderOrderBy = () =>  {
+    return <div className="form-group">
             <label>Order by</label>
             {
-              <select onChange={this.handleOrderChange}>
-               { orderType.map(v => <option value={v}>{v}</option>) }
+              <select onChange={this.handleOrderChange.bind(this,0)}>
+               { this.state.orderType.map(v => <option value={v}>{v}</option>) }
               </select>
             }
             {
-              <select>
+              <select onChange={this.handleOrderChange.bind(this, 1)}>
                { this.state.selectThese.length && this.state.selectThese.map( val => <option value={val.col}>{val.col}</option>) }
-               { !(this.state.selectThese.length) && columns && columns.map(v => <option value={v}>{v}</option>) }
+               { !(this.state.selectThese.length) && this.props.columns && this.props.columns.map(v => <option value={v}>{v}</option>) }
               </select>
             }
           </div>
+  }
+
+
+  render () {
+    const DBName = this.props.match.params.dbName
+    return (
+      <div>
+        <h2>User {DBName} Query Selection Form</h2>
+        <form>
+            { this.renderTables() }
+            { this.renderSelects() }
+            { this.renderWheres() }
+            { this.renderOrderBy() }
           <button type="submit" className="btn btn-success">Submit</button>
-          </form>
-
-
+        </form>
         <h2>Chart choice</h2>
         <form>
-          <div className="form-group">
             <label>Chart Type</label>
               <select name='choosenChart' onChange={this.handleChange.bind(this, 'choosenChart')} >
                {this.state.chartTypes.map((val,i) => <option value={val} key={i}>{val}</option>)}
               </select>
-          </div>
-          <div className="form-group">
             <label>Chart Title</label>
             <input className="form-control" onChange={this.handleChange.bind(this, 'Title')}/>
-          </div>
-          <div className="form-group">
+         
             <label>Height</label>
             <input className="form-control" onChange={this.handleChange.bind(this, 'height')}/>
-          </div>
-          <div className="form-group">
+       
             <label>Width</label>
             <input className="form-control" onChange={this.handleChange.bind(this, 'width')}/>
-          </div>
-          <div className="form-group">
+   
             <label>X axis</label>
             {
               <select onChange={this.handleChange.bind(this, 'xLabel')}>
                { this.state.selectThese.length && this.state.selectThese.map( val => <option value={val.col}>{val.col}</option>) }
-               { !(this.state.selectThese.length) && columns && columns.map(val => <option value={val}>{val}</option>) }
+               { !(this.state.selectThese.length) && this.props.columns && this.props.columns.map(val => <option value={val}>{val}</option>) }
               </select>
             }
             <input className="form-control"/>
-          </div>
-          <div className="form-group">
             <label>Y axis</label>
             {
               <select onChange={this.handleChange.bind(this, 'yLabel')}>
                { this.state.selectThese.length && this.state.selectThese.map( val => <option value={val.col}>{val.col}</option>) }
-               { !(this.state.selectThese.length) && columns && columns.map( val => <option value={val}>{val}</option>) }
+               { !(this.state.selectThese.length) && this.props.columns && this.props.columns.map( val => <option value={val}>{val}</option>) }
               </select>
             }
             <input className="form-control"/>
-          </div>
           <button type="submit" className="btn btn-success" onClick={this.makeGraph}>Make my graph</button>
         </form>
+        {
+          this.state.myGraphs.map(val => val)
+        }
       </div>
     )
   }
@@ -190,8 +211,9 @@ class myForm extends React.Component {
 const mapState = state => {
   console.log(state)
   return ({
-    table: state.users,
-    columns: (state.users[0] ? Object.keys(state.users[0]) : undefined)
+    tables: state.tables,
+    table: state.database,
+    columns: state.fields || ((state.users[0] ? Object.keys(state.users[0]) : undefined))
   })
 }
 
@@ -199,6 +221,12 @@ const mapDispatch = dispatch => {
   return ({
     fetchAllUsers () {
       dispatch(fetchUsers())
+    },
+    fetchDat (DBname) {
+      dispatch( fetchTables(DBname) )
+    },
+    grabTableData(database, table) {
+      dispatch( fetchFields({ database, table}))
     }
   })
 }
