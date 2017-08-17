@@ -1,6 +1,8 @@
+
 /**
  * ACTION TYPES
  */
+
 export const GET_GRAPHS = 'GET_GRAPHS'
 export const ADD_GRAPH = 'ADD_GRAPH'
 
@@ -22,6 +24,7 @@ export const saveGraph = (settings) =>
   dispatch => {
     dispatch(addGraph(settings))
 }
+
 /**
  * REDUCER
  */

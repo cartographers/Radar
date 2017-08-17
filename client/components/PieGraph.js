@@ -1,24 +1,37 @@
 import {PieChart, Pie, Legend} from 'recharts'
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
+import {fetchQueryTable} from '../store'
 
-export default class PieGraph extends Component {
+class PieGraph extends Component {
+
+  componentDidMount () {
+    const queryInfo = {
+      database: this.props.database || 'capstone1706', 
+      selectThese: this.props.selectThese || ['name', 'age'], 
+      whereThese: this.props.whereThese || [], 
+      table: this.props.table || 'users' 
+    }
+    this.props.fetchQueriedData(queryInfo)
+  }
+
   render() {
-    const data01 = [
-      {name: 'Group A', value: 400}, {name: 'Group B', value: 300},
-      {name: 'Group C', value: 300}, {name: 'Group D', value: 200}]
 
-    const data02 = [
-      {name: 'A1', value: 100},
-      {name: 'A2', value: 300},
-      {name: 'B1', value: 100},
-      {name: 'B2', value: 80},
-      {name: 'B3', value: 40},
-      {name: 'B4', value: 30},
-      {name: 'B5', value: 50},
-      {name: 'C1', value: 100},
-      {name: 'C2', value: 200},
-      {name: 'D1', value: 150},
-      {name: 'D2', value: 50}]
+    const {
+      queriedTable, 
+      width, 
+      height, 
+      title, 
+      x, 
+      y, 
+      orderBy, 
+      whereThese
+    } = this.props
+
+    const graphData = queriedTable.map((row, index) => {
+      return {name: row[x].slice(0, 4), value: row[y]}
+    })
+
     return (
       <div>
         <div>
@@ -30,11 +43,35 @@ export default class PieGraph extends Component {
             width={800}
             height={400}>
 
-            <Pie data={data01} cx={200} cy={200} outerRadius={60} fill="#8884d8"/>
-            <Pie data={data02} cx={200} cy={200} innerRadius={70} outerRadius={90} fill="#82ca9d" label/>
+            <Pie data={graphData} cx={200} cy={200} innerRadius={70} outerRadius={90} fill="#82ca9d" label/>
           </PieChart>
         </div>
       </div>
     )
   }
 }
+
+const mapState = (state, ownProps) => {
+  return ({
+    title: ownProps.Title || 'Name vs age ',
+    width: ownProps.width || 900,
+    height: ownProps.height || 500,
+    x: ownProps.xAxis|| 'name',
+    y: ownProps.yAxis || 'age', 
+    orderBy: ownProps.orderedBy, 
+    whereThese: ownProps.whereThese, 
+    table: ownProps.table,
+    database: ownProps.database,
+    queriedTable: state.queriedTable
+  })
+}
+
+const mapDispatch = (dispatch) => {
+  return({
+    fetchQueriedData(queryInfo) {
+      dispatch(fetchQueryTable(queryInfo))
+    }
+  })
+}
+
+export default connect(mapState, mapDispatch)(PieGraph)

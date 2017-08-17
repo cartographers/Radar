@@ -26,9 +26,8 @@ class myForm extends React.Component {
       yAxis: '',
       height: '',
       width: '',
-      myGraphs: []
+      myGraphs: [] // graphs that persist.. 
     }
-
   }
 
   componentDidMount() {
@@ -206,6 +205,7 @@ class myForm extends React.Component {
 }
 
 const mapState = state => {
+  console.log(state)
   return ({
     tables: state.tables,
     columns: state.fields,

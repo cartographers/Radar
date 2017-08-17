@@ -9,23 +9,29 @@ const initDatabases = () => {
 }
 
 const queryData = (settings) => {
-	const postgresUrl = 'postgres://localhost:' + settings.port + '/' + settings.database
+	// const postgresUrl = 'postgres://localhost:' + settings.port + '/' + settings.database
+	const postgresUrl = 'postgres://localhost:5432/' + settings.database
 	const client = new pg.Client(postgresUrl)
 
 	let selectThese = settings.selectThese.join(', ') || '*'
 	let whereThese = settings.whereThese
 	let conditionals = settings.conditionals
 
-	let querySearch = ['SELECT ', selectThese, ' FROM', settings.table]
+	let querySearch = ['SELECT', selectThese, 'FROM', settings.table]
 	// if (settings.join) querySearch.push('JOIN ' + settings.field)
 	// if (settings.whereThese) querySearch.push('ON ' + settings.whereThese)
 
 	querySearch = querySearch.join(' ').trim()
+	console.log('QUERY SEARCH (connectDB):', querySearch)
 
 	client.connect()
 
 	return client.query(querySearch)
-	.then(result => result.rows)
+	.then(result => {
+		console.log('RESULT (connectDB)::', result)
+		return result.rows
+
+	})
 	.catch(err => console.log(err))
 }
 
@@ -39,6 +45,7 @@ const loadTables = (settings) => {
 
 	return client.query(querySearch)
 	.then(result => {
+		console.log('result:',result)
 		const tables = result.rows.map(table => table.table_name)
 		return tables
 	})
