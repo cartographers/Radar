@@ -39,7 +39,6 @@ class myForm extends React.Component {
 
   handleChange = (index, fromWhere, evt ) => {
     let newVal = (fromWhere === 'whereThese') ? {} : evt.target.value
-    console.log(fromWhere, index, newVal)
     if(fromWhere === 'whereThese'){
       const type = evt.target.name
       newVal[type] = (type === 'is') ? this.state.conditionalOperator[evt.target.value] : evt.target.value  
@@ -80,7 +79,7 @@ class myForm extends React.Component {
 
   handleTableChange = (evt) => {
     const currentTable = evt.target.value
-    this.setState({ currentTable })
+    this.setState({ currentTable: currentTable })
     this.props.grabTableData(this.state.currentDatabase, currentTable)
     this.props.loadCreatedGraphs()
   }
@@ -116,11 +115,11 @@ class myForm extends React.Component {
                 this.state.whereThese.map((sel, index) => {
                   return  <div key={index}>
                             <select name="col" onChange={this.handleChange.bind(this, index, 'whereThese')}>
-                              {this.props.columns && this.props.columns.map(v => <option value={v}>{v}</option>)}
+                              {this.props.columns && this.props.columns.map((val, i)  => <option value={val} key={i}>{val}</option>)}
                             </select>
                             <h4>is</h4>
                               <select name="is" onChange={this.handleChange.bind(this, index, 'whereThese')}>
-                              {this.state.conditionals && this.state.conditionals.map((val, ind) => <option value={ind} key={ind}>{val}</option>)}
+                              {this.state.conditionals && this.state.conditionals.map((val, i) => <option value={i} key={i}>{val}</option>)}
                               </select>
                               <input  name="spec" onChange={this.handleChange.bind(this, index, 'whereThese')}/>
                               <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'whereThese')}> - </button>
@@ -136,7 +135,7 @@ class myForm extends React.Component {
             <label>Order by</label>
             {
               <select onChange={this.handleChange.bind(this, 0, 'orderedBy')}>
-               { this.state.orderType.map(v => <option value={v} key={v}>{v}</option>) }
+               { this.state.orderType.map((val,i) => <option value={val} key={i}>{val}</option>) }
               </select>
             }
             {
@@ -205,7 +204,6 @@ class myForm extends React.Component {
 }
 
 const mapState = state => {
-  console.log(state)
   return ({
     tables: state.tables,
     columns: state.fields,
