@@ -68,6 +68,7 @@ const mapState = (state, ownProps) => {
     x: ownProps.xAxis|| 'name',
     y: ownProps.yAxis || 'age', 
     orderBy: ownProps.orderedBy, 
+    selectThese: ownProps.selectThese,
     whereThese: ownProps.whereThese, 
     table: ownProps.table,
     database: ownProps.database,
