@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchUsers,fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables } from '../store'
+import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
 
@@ -31,7 +31,10 @@ class myForm extends React.Component {
 
   componentDidMount() {
     let db = { database: this.props.match.params.dbName}
+
     this.props.fetchDat(db)
+    this.props.setWorkingDatabase(this.props.match.params.dbName)
+    this.props.loadCreatedGraphs(this.props.match.params.dbName)
   }
 
   handleSelectChange = (evt) => {
@@ -77,7 +80,8 @@ class myForm extends React.Component {
 
   makeGraph = (evt) => {
     evt.preventDefault()
-    const newGraph = null;
+    const newGraph = <div>New Graph for {this.props.workingDatabase}</div>  // null
+    this.props.savingGraph(this.props.workingDatabase, null)  // second argument should be settings of graph
     this.setState((prevState) =>  ({
       myGraphs: [...prevState.myGraphs, newGraph]
     }))
@@ -123,7 +127,7 @@ class myForm extends React.Component {
                             </select>
                             <h4>is</h4>
                               <select name={`is ${index}`} onChange={this.handleWhereChange}>
-                              {this.state.conditionals && this.state.conditionals.map((val, ind) => <option value={ind}>{val}</option>)}
+                              {this.state.conditionals && this.state.conditionals.map((val, ind) => <option value={ind} key={ind}>{val}</option>)}
                               </select>
                               <input className="form-control" name={`spec ${index}`} onChange={this.handleWhereChange}/>
                               <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'whereThese')}> - </button>
@@ -139,13 +143,14 @@ class myForm extends React.Component {
             <label>Order by</label>
             {
               <select onChange={this.handleOrderChange.bind(this,0)}>
-               { this.state.orderType.map(v => <option value={v}>{v}</option>) }
+               { this.state.orderType.map(v => <option value={v} key={v}>{v}</option>) }
               </select>
             }
             {
               <select onChange={this.handleOrderChange.bind(this, 1)}>
                { this.state.selectThese.length && this.state.selectThese.map( val => <option value={val}>{val}</option>) }
                { !(this.state.selectThese.length) && this.props.columns && this.props.columns.map(v => <option value={v}>{v}</option>) }
+
               </select>
             }
           </div>
@@ -182,9 +187,9 @@ class myForm extends React.Component {
             <label>X axis</label>
             {
               <select onChange={this.handleChange.bind(this, 'xLabel')}>
-               { this.state.selectThese.length 
-                  ? this.state.selectThese.map( val => <option value={val}>{val}</option>) 
-                  :  (this.props.columns && this.props.columns.map(val => <option value={val}>{val}</option>) )}
+
+               { this.state.selectThese.length && this.state.selectThese.map( val => <option value={val.col}>{val.col}</option>) }
+               { !(this.state.selectThese.length) && this.props.columns && this.props.columns.map(val => <option value={val} key={val}>{val}</option>) }
               </select>
             }
             <input className="form-control"/>
@@ -194,14 +199,18 @@ class myForm extends React.Component {
                { this.state.selectThese.length 
                   ? this.state.selectThese.map( val => <option value={val}>{val}</option>) 
                   : (this.props.columns && this.props.columns.map( val => <option value={val}>{val}</option>)) }
+
               </select>
             }
             <input className="form-control"/>
           <button type="submit" className="btn btn-success" onClick={this.makeGraph}>Make my graph</button>
         </form>
         {
-          this.state.myGraphs.map(val => val)
+          this.props.createdGraphs && this.props.createdGraphs.filter(graph => graph.workingDatabase === DBName).map(graph => <div>New Graph for {graph.workingDatabase}</div>)
         }
+        {/*
+          this.state.myGraphs.map(val => val)
+        */}
       </div>
     )
   }
@@ -211,7 +220,9 @@ const mapState = state => {
   return ({
     tables: state.tables,
     table: state.database,
-    columns: state.fields
+    columns: state.fields 
+    workingDatabase: state.currentDatabase,
+    createdGraphs: state.createdGraphs
   })
 }
 
@@ -225,6 +236,18 @@ const mapDispatch = dispatch => {
     },
     grabTableData(database, table) {
       dispatch( fetchFields({ database, table}))
+    },
+    setWorkingDatabase(database){
+      dispatch(currentDatabase(database))
+    },
+    loadCreatedGraphs(database){
+      dispatch(fetchGraphs(database))
+    },
+    savingGraph(currentDatabase, settings){  // settings of graph applied to newSettings
+      let newSettings = {
+        workingDatabase: currentDatabase
+      }
+      dispatch(saveGraph(newSettings))
     }
   })
 }
