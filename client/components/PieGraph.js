@@ -1,7 +1,12 @@
 import {PieChart, Pie, Legend} from 'recharts'
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
+import {fetchTables} from '../store'
 
-export default class PieGraph extends Component {
+class PieGraph extends Component {
+  componentDidMount() {
+    this.props.fetchAllTables()
+  }
   render() {
     const data01 = [
       {name: 'Group A', value: 400}, {name: 'Group B', value: 300},
@@ -19,6 +24,10 @@ export default class PieGraph extends Component {
       {name: 'C2', value: 200},
       {name: 'D1', value: 150},
       {name: 'D2', value: 50}]
+
+    const {tables} = this.props 
+    console.log(tables)
+
     return (
       <div>
         <div>
@@ -38,3 +47,19 @@ export default class PieGraph extends Component {
     )
   }
 }
+
+const mapState = (state) => {
+  return ({
+    tables: state.tables,
+  })
+}
+
+const mapDispatch = (dispatch) => {
+  return ({
+    fetchAllTables () {
+      dispatch(fetchTables({database: 'tripplanner'}))
+    }
+  })
+}
+
+export default connect(mapState, mapDispatch)(PieGraph)

@@ -1,7 +1,13 @@
 import React, {Component} from 'react'
 import {Table, thead, tr, th, tbody, td} from 'react-bootstrap'
+import {connect} from 'react-redux'
 
-export default class TableDB extends Component {
+class TableDB extends Component {
+
+  componentDidMount () {
+    this.props.fetchAllTables()
+  }
+  
   render() {
     return (
       <div>
@@ -45,3 +51,11 @@ export default class TableDB extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return ({
+    tables: state.tables
+  })
+}
+
+export default connect(mapStateToProps) (TableDB)

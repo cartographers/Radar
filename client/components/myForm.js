@@ -13,25 +13,23 @@ class myForm extends React.Component {
     this.state = {
       selectThese: [],
       whereThese: [],
-      orderedBy: [],
+      orderedBy: [], // 0 - order type, 1 - order by selections
       conditionals : ['greater than', 'greater than or equal to', 'less than', 'less than or equal to','equal to', 'not', 'between', 'not between'],
       conditionalOperator: ['>', '> =', '<', '<=', '===', '!==', '[]', '![]'],
       orderType : ['None','Ascending', 'Descending'],
       chartTypes: ['Pie', 'Scatter', 'Donut', 'Bar', 'Line'],
-      choosenChart: '',
-      Title: '',
-      xLabel: '',
-      yLabel: '',
+      choosenChart: '', // chart name 
+      Title: '', 
+      xLabel: '', // make this xAxis 
+      yLabel: '', // make this yAxis 
       height: '',
       width: '',
-      myGraphs: []
+      myGraphs: [] // graphs that persist.. 
     }
-
   }
 
   componentDidMount() {
     let db = { database: this.props.match.params.dbName}
-
     this.props.fetchDat(db)
     this.props.setWorkingDatabase(this.props.match.params.dbName)
     this.props.loadCreatedGraphs(this.props.match.params.dbName)
@@ -217,6 +215,7 @@ class myForm extends React.Component {
 }
 
 const mapState = state => {
+  console.log(state)
   return ({
     tables: state.tables,
     table: state.database,
