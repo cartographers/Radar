@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { fetchDatabase, fetchQueryTable, fetchFields, fetchDatabases, fetchTables, currentDatabase, fetchGraphs, saveGraph } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
+import {saveFile} from '../../utils/saveFile'
 
 class myForm extends React.Component {
 
@@ -38,7 +39,7 @@ class myForm extends React.Component {
     let newVal = (fromWhere === 'whereThese') ? {} : evt.target.value
     if(fromWhere === 'whereThese'){
       const type = evt.target.name
-      newVal[type] = (type === 'is') ? this.state.conditionalOperator[evt.target.value] : evt.target.value  
+      newVal[type] = (type === 'is') ? this.state.conditionalOperator[evt.target.value] : evt.target.value
     }
 
     this.setState( (prevState) => ( { [fromWhere]: prevState[fromWhere].map( (val, i) => {
@@ -71,7 +72,7 @@ class myForm extends React.Component {
   makeGraph = (evt) => {
     evt.preventDefault()
     this.props.queryDatabase(this.state)
-    const newGraph = <div>New Graph for Database: {this.state.currentDatabase} Table: {this.state.currentTable}</div>  // null
+    const newGraph = <div id="newGraph">New Graph for Database: {this.state.currentDatabase} Table: {this.state.currentTable}</div>  // null
     this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, newGraph)  // second argument should be settings of graph
   }
 
@@ -145,8 +146,8 @@ class myForm extends React.Component {
   }
 
   options = () => {
-    return  this.state.selectThese.length 
-            ? this.state.selectThese.map( (val, index) => <option value={val} key={index}>{val}</option>) 
+    return  this.state.selectThese.length
+            ? this.state.selectThese.map( (val, index) => <option value={val} key={index}>{val}</option>)
             : (this.props.columns && this.props.columns.map( (val, index) => <option value={val} key={index}>{val}</option>) )
   }
 
@@ -169,13 +170,13 @@ class myForm extends React.Component {
               </select>
             <label>Chart Title</label>
             <input className="form-control" onChange={this.handleChartChange.bind(this, 'Title')}/>
-         
+
             <label>Height</label>
             <input className="form-control" onChange={this.handleChartChange.bind(this, 'height')}/>
-       
+
             <label>Width</label>
             <input className="form-control" onChange={this.handleChartChange.bind(this, 'width')}/>
-   
+
             <label>X axis</label>
             <select onChange={this.handleChartChange.bind(this, 'xAxis')}>
                { this.options() }
@@ -187,11 +188,11 @@ class myForm extends React.Component {
           <button type="submit" className="btn btn-success" onClick={this.makeGraph}>Make my graph</button>
         </form>
         {
-          this.props.createdGraphs && 
+          this.props.createdGraphs &&
           this.props.createdGraphs
           .filter(graphInfo => {
-            return !(this.state.currentTable) 
-                    ? graphInfo.database === DBName  
+            return !(this.state.currentTable)
+                    ? graphInfo.database === DBName
                     : (graphInfo.database === DBName && graphInfo.table === this.state.currentTable)
           })
           .map(graphInfo => graphInfo.graph)
@@ -200,6 +201,9 @@ class myForm extends React.Component {
         {
           this.props.database && this.props.database.map(data => <li key={data.id}>{JSON.stringify(data)}</li>)
         }
+        <div>
+    <button id="saveFile" onClick={saveFile}>Save Graph</button>
+    </div>
       </div>
     )
   }
