@@ -26,12 +26,10 @@ class myForm extends React.Component {
       width: '',
       myGraphs: [] // graphs that persist.. 
     }
-
   }
 
   componentDidMount() {
     let db = { database: this.props.match.params.dbName}
-    // this.props.fetchAllUsers()
     this.props.fetchDat(db)
     this.props.setWorkingDatabase(this.props.match.params.dbName)
     this.props.loadCreatedGraphs(this.props.match.params.dbName)

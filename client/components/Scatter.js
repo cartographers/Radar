@@ -17,11 +17,20 @@ class ScatterGraph extends Component {
 
   render() {
 
-    const {queriedTable, width, height, title, x, y, orderBy, whereThese} = this.props
+    const {
+      queriedTable, 
+      width, 
+      height, 
+      title, 
+      x, 
+      y, 
+      orderBy, 
+      whereThese
+    } = this.props
+
     const graphData = queriedTable.map((row, index) => {
       return {x: row[x].slice(0, 4), y: row[y]}
     })
-    console.log("GRAPH DATA: ", graphData)
 
     return (
       <div>

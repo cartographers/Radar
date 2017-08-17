@@ -19,7 +19,7 @@ const reducer = combineReducers({
 	databases,
 	fields,
 	tables,
-	queriedTable
+	queriedTable,
 	currentDatabase,
 	createdGraphs
 })
