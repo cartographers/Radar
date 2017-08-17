@@ -1,18 +1,36 @@
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {fetchQueryTable} from '../store'
 
 class BarGraph extends Component {
+
+  componentDidMount () {
+    const queryInfo = {
+      database: this.props.database || 'capstone1706', 
+      selectThese: this.props.selectThese || ['name', 'age'], 
+      whereThese: this.props.whereThese || [], 
+      table: this.props.table || 'users' 
+    }
+    this.props.fetchQueriedData(queryInfo)
+  }
+
   render () {
-    const data = [
-      {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
-      {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
-      {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
-      {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
-      {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
-      {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
-      {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
-    ]
+
+    const {
+      queriedTable, 
+      width, 
+      height, 
+      title, 
+      x, 
+      y, 
+      orderBy, 
+      whereThese
+    } = this.props
+
+    const graphData = queriedTable.map((row, index) => {
+      return {x: row[x].slice(0, 4), y: row[y]}
+    })
     
     return (
       <div>
@@ -22,14 +40,13 @@ class BarGraph extends Component {
         </div>
 
         <div className="center">
-          <BarChart width={730} height={250} data={data}>
-            <XAxis dataKey="name" />
+          <BarChart width={width} height={height} data={graphData}>
+            <XAxis dataKey="x" />
             <YAxis />
             <CartesianGrid strokeDasharray="3 3" />
             <Tooltip />
             <Legend />
-            <Bar dataKey="pv" fill="#8884d8" />
-            <Bar dataKey="uv" fill="#82ca9d" />
+            <Bar dataKey="y" fill="#82ca9d" />
           </BarChart>
         </div>
 
@@ -39,10 +56,25 @@ class BarGraph extends Component {
 }
 
 const mapState = (state, ownProps) => {
-  return ({})
+  return ({
+    title: ownProps.Title || 'Name vs age ',
+    width: ownProps.width || 900,
+    height: ownProps.height || 500,
+    x: ownProps.xAxis|| 'name',
+    y: ownProps.yAxis || 'age', 
+    orderBy: ownProps.orderedBy, 
+    whereThese: ownProps.whereThese, 
+    table: ownProps.table,
+    database: ownProps.database,
+    queriedTable: state.queriedTable
+  })
 }
-const mapStateToProps = () => {
-  return ({})
+const mapDispatch = (dispatch) => {
+  return({
+    fetchQueriedData(queryInfo) {
+      dispatch(fetchQueryTable(queryInfo))
+    }
+  })
 }
-export default connect(mapState)(BarGraph)
+export default connect(mapState, mapDispatch)(BarGraph)
 
