@@ -18,6 +18,8 @@ class myForm extends React.Component {
       conditionalOperator: ['>', '>=', '<', '<=', '===', '!==', '[]', '![]'],
       orderType : ['None','Ascending', 'Descending'],
       chartTypes: ['Pie', 'Scatter', 'Donut', 'Bar', 'Line'],
+      currentTable : '',
+      currentDatabase : '',
       choosenChart: '',
       Title: '',
       xAxis: '',
@@ -30,10 +32,10 @@ class myForm extends React.Component {
   }
 
   componentDidMount() {
-    let db = { database: this.props.match.params.dbName}
-    this.props.fetchDat(db)
-    this.props.setWorkingDatabase(this.props.match.params.dbName)
-    this.props.loadCreatedGraphs(this.props.match.params.dbName)
+    let db = this.props.match.params.dbName
+    this.setState({currentDatabase: db})
+    this.props.fetchDat({ database: db})
+    this.props.loadCreatedGraphs()
   }
 
   handleChange = (index, fromWhere, evt ) => {
@@ -73,19 +75,16 @@ class myForm extends React.Component {
 
   makeGraph = (evt) => {
     evt.preventDefault()
-    console.log(this.state)
-    // const newGraph = <div>New Graph for {this.props.workingDatabase}</div>  // null
-    // this.props.savingGraph(this.props.workingDatabase, null)  // second argument should be settings of graph
-    // this.setState((prevState) =>  ({
-    //   myGraphs: [...prevState.myGraphs, newGraph]
-    // }))
+    const newGraph = <div>New Graph for Database: {this.state.currentDatabase} Table: {this.state.currentTable}</div>  // null
+    this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, newGraph)  // second argument should be settings of graph
   }
 
   handleTableChange = (evt) => {
-    this.props.grabTableData(this.props.match.params.dbName, evt.target.value)
-    this.props.loadCreatedGraphs(this.props.match.params.dbName, evt.target.value)
+    const currentTable = evt.target.value
+    this.setState({ currentTable })
+    this.props.grabTableData(this.state.currentDatabase, currentTable)
+    this.props.loadCreatedGraphs()
   }
-
   renderTables = () => {
       return <div>
                 <label>From</label>
@@ -99,7 +98,7 @@ class myForm extends React.Component {
       return <div>
                 <label>Select</label>
                 { this.state.selectThese.map((sel, index) => {
-                    return  <div>
+                    return  <div key={index}>
                                 <select key={index} onChange={this.handleChange.bind(this, index, 'selectThese')}>
                                     {this.props.columns && this.props.columns.map((val,i) => <option value={val} key={i}>{val}</option>)}
                                 </select>
@@ -116,7 +115,7 @@ class myForm extends React.Component {
               <label>Where</label>
               {
                 this.state.whereThese.map((sel, index) => {
-                  return  <div>
+                  return  <div key={index}>
                             <select name="col" onChange={this.handleChange.bind(this, index, 'whereThese')}>
                               {this.props.columns && this.props.columns.map(v => <option value={v}>{v}</option>)}
                             </select>
@@ -143,13 +142,17 @@ class myForm extends React.Component {
             }
             {
               <select onChange={this.handleChange.bind(this, 1, 'orderedBy')}>
-               { this.state.selectThese.length && this.state.selectThese.map( val => <option value={val}>{val}</option>) }
-               { !(this.state.selectThese.length) && this.props.columns && this.props.columns.map(val => <option value={val}>{val}</option>) }
+                { this.options() }
               </select>
             }
           </div>
   }
 
+  options = () => {
+    return  this.state.selectThese.length 
+            ? this.state.selectThese.map( (val, index) => <option value={val} key={index}>{val}</option>) 
+            : (this.props.columns && this.props.columns.map( (val, index) => <option value={val} key={index}>{val}</option>) )
+  }
 
   render () {
     const DBName = this.props.match.params.dbName
@@ -161,7 +164,6 @@ class myForm extends React.Component {
             { this.renderSelects() }
             { this.renderWheres() }
             { this.renderOrderBy() }
-          <button type="submit" className="btn btn-success">Submit</button>
         </form>
         <h2>Chart choice</h2>
         <form>
@@ -179,31 +181,25 @@ class myForm extends React.Component {
             <input className="form-control" onChange={this.handleChartChange.bind(this, 'width')}/>
    
             <label>X axis</label>
-            {
-              <select onChange={this.handleChartChange.bind(this, 'xAxis')}>
-               { this.state.selectThese.length 
-                  ? this.state.selectThese.map( val => <option value={val}>{val}</option>) 
-                  : (this.props.columns && this.props.columns.map( val => <option value={val}>{val}</option>)) }
-
-              </select>
-            }
+            <select onChange={this.handleChartChange.bind(this, 'xAxis')}>
+               { this.options() }
+            </select>
             <label>Y axis</label>
-            {
-              <select onChange={this.handleChartChange.bind(this, 'yAxis')}>
-               { this.state.selectThese.length 
-                  ? this.state.selectThese.map( val => <option value={val}>{val}</option>) 
-                  : (this.props.columns && this.props.columns.map( val => <option value={val}>{val}</option>)) }
-
-              </select>
-            }
+            <select onChange={this.handleChartChange.bind(this, 'yAxis')}>
+               { this.options() }
+            </select>
           <button type="submit" className="btn btn-success" onClick={this.makeGraph}>Make my graph</button>
         </form>
         {
-          this.props.createdGraphs && this.props.createdGraphs.filter(graph => graph.workingDatabase === DBName).map(graph => <div>New Graph for {graph.workingDatabase}</div>)
+          this.props.createdGraphs && 
+          this.props.createdGraphs
+          .filter(graphInfo => {
+            return !(this.state.currentTable) 
+                    ? graphInfo.database === DBName  
+                    : (graphInfo.database === DBName && graphInfo.table === this.state.currentTable)
+          })
+          .map(graphInfo => graphInfo.graph)
         }
-        {/*
-          this.state.myGraphs.map(val => val)
-        */}
       </div>
     )
   }
@@ -212,36 +208,29 @@ class myForm extends React.Component {
 const mapState = state => {
   return ({
     tables: state.tables,
-    table: state.database,
     columns: state.fields,
-    workingDatabase: state.currentDatabase,
     createdGraphs: state.createdGraphs
   })
 }
 
 const mapDispatch = dispatch => {
   return ({
-    fetchAllUsers () {
-      dispatch(fetchUsers())
-    },
     fetchDat (DBname) {
       dispatch( fetchTables(DBname) )
     },
     grabTableData(database, table) {
       dispatch( fetchFields({ database, table}))
     },
-    setWorkingDatabase(database){
-      dispatch(currentDatabase(database))
+    loadCreatedGraphs(){
+      dispatch(fetchGraphs())
     },
-    loadCreatedGraphs(database){
-      dispatch(fetchGraphs(database))
-    },
-    savingGraph(currentDatabase, settings){  // settings of graph applied to newSettings
-      let newSettings = {
-        workingDatabase: currentDatabase
-
+    savingGraph(currentDatabase, currentTable, graph){  // settings of graph applied to newSettings
+      let newGraphInfo = {
+        database: currentDatabase,
+        table: currentTable,
+        graph: graph
       }
-      dispatch(saveGraph(newSettings))
+      dispatch(saveGraph(newGraphInfo))
     }
   })
 }

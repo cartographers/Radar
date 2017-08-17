@@ -1,5 +1,5 @@
 import {loadTables} from '../../utils/connectDB'
-
+import {fetchFields} from './fields'
 /**
  * ACTION TYPES
  */
@@ -18,7 +18,10 @@ export const fetchTables = (settings) =>
   dispatch => {
     const result = loadTables(settings)
     result
-    .then(response => dispatch(getTables(response)))
+    .then(response => {
+      if(response.length) dispatch( fetchFields({ database: settings.database, table: response[0]}))
+      return dispatch(getTables(response))
+    })
     .catch(err => console.log(err))
 }
 
