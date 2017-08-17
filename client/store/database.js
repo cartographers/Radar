@@ -1,4 +1,4 @@
-import axios from 'axios'
+import {queryData} from '../../utils/connectDB'
 
 /**
  * ACTION TYPES
@@ -14,17 +14,17 @@ const queryDatabase = database => ({type: QUERY_DATABASE, database})
 /**
  * THUNK CREATORS
  */
-export const searchDatabase = (data) =>
-  dispatch =>
-    axios.put('/api/database/query', data)
-      .then(res =>
-        dispatch(queryDatabase(res.data)))
-      .catch(err => console.log(err))
-
+export const searchDatabase = (settings) =>
+  dispatch => {
+    const result = queryData(settings)
+    result
+    .then(response => dispatch(queryDatabase(response)))
+    .catch(err => console.log(err))
+}
 /**
  * REDUCER
  */
- 
+
 export default function (state = [], action) {
   switch (action.type) {
     case QUERY_DATABASE:

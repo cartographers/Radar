@@ -69,7 +69,6 @@ router.put('/tables', (req, res, next) => {
 })
 
 router.put('/fields', (req, res, next) => {
-	console.log('HEELLLLOOOOOO DDEEEEENNNNNNIIIIIIISSSSSS', req.body)
 	const postgresUrl = 'postgres://localhost:5432/' + req.body.database
 	const client = new pg.Client(postgresUrl)
 	let querySearch = ['SELECT * FROM', req.body.table]

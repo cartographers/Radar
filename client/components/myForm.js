@@ -13,18 +13,18 @@ class myForm extends React.Component {
     this.state = {
       selectThese: [],
       whereThese: [],
-      orderedBy: [],
+      orderedBy: [], // 0 - order type, 1 - order by selections
       conditionals : ['greater than', 'greater than or equal to', 'less than', 'less than or equal to','equal to', 'not', 'between', 'not between'],
       conditionalOperator: ['>', '> =', '<', '<=', '===', '!==', '[]', '![]'],
       orderType : ['None','Ascending', 'Descending'],
       chartTypes: ['Pie', 'Scatter', 'Donut', 'Bar', 'Line'],
-      choosenChart: '',
-      Title: '',
-      xLabel: '',
-      yLabel: '',
+      choosenChart: '', // chart name 
+      Title: '', 
+      xLabel: '', // make this xAxis 
+      yLabel: '', // make this yAxis 
       height: '',
       width: '',
-      myGraphs: []
+      myGraphs: [] // graphs that persist.. 
     }
 
   }
@@ -95,7 +95,6 @@ class myForm extends React.Component {
                   <select name="From" onChange={this.tableChange}>
                     {this.props.tables && this.props.tables.map((table,i) => <option value={table} key={i}>{table}</option>)}
                   </select>
-                  <button type="button" className="btn btn-danger" onClick={this.tableChange}> Grab Table </button>
               </div>
   }
 

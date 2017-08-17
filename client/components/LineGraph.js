@@ -17,26 +17,7 @@ import {
   Legend
 } from 'recharts'
 
-class LineD3 extends Component {
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      width: 0,
-      height: 0,
-      margins: {
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0
-      },
-      stroke: '',
-      lineType: '',
-      dataKey: '',
-      xdataKey: '',
-      data: []
-    }
-  }
+class LineGraph extends Component {
 
   componentDidMount() {
     this.props.fetchAllUsers()
@@ -99,26 +80,21 @@ class LineD3 extends Component {
   }
 }
 
-const mapState = ({
-  users
-}, state, ownProps) => {
+const mapState = (state, ownProps) => {
   return ({
-    width: 700,
-    height: 300,
-    margins: {
-      left: 100,
-      right: 100,
-      top: 50,
-      bottom: 50
-    },
-    title: 'User sample',
-    stroke: '#ff7f0e',
-    lineType: 'monotone',
-    dataKey: 'age',
-    xdataKey: 'id',
-    ydataKey: 'age',
-    data: users
-  })
+      width: 700,
+      height: 300,
+      margins: {
+        left: 100, right: 100, top: 50, bottom: 50
+      },
+      title: 'User sample',
+      stroke: '#ff7f0e',
+      lineType: 'monotone',
+      dataKey: 'age',
+      xdataKey: 'id',
+      ydataKey: 'age',
+      data: state.users
+    })
 }
 
 const mapDispatch = dispatch => {
@@ -129,4 +105,4 @@ const mapDispatch = dispatch => {
   }
 }
 
-export default connect(mapState, mapDispatch)(LineD3)
+export default connect(mapState, mapDispatch)(LineGraph)

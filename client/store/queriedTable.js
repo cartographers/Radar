@@ -1,4 +1,4 @@
-import axios from 'axios'
+import {queryData} from '../../utils/connectDB'
 
 /**
  * ACTION TYPES
@@ -15,12 +15,14 @@ const queriedTable = table => ({type: QUERIED_TABLE, table})
 /**
  * THUNK CREATORS
  */
-export const appleSauce = (queryInfo) => 
-  dispatch => 
-    axios.put('/api/database/query', queryInfo)
-      .then(res =>
-        dispatch(queriedTable(res.data)))
-      .catch(err => console.log(err))
+export const fetchQueryTable = (queryInfo) => 
+  dispatch => {
+    console.log('QUERY INFO (queriedtable)::', queryInfo)
+    const result = queryData(queryInfo)
+    result
+    .then(response => dispatch(queriedTable(response)))
+    .catch(err => console.log(err))
+}
 
 /**
  * REDUCER
