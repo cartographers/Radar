@@ -1,7 +1,21 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {fetchUsers} from '../store'
-import {LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend} from 'recharts'
+import React, {
+  Component
+} from 'react'
+import {
+  connect
+} from 'react-redux'
+import {
+  fetchUsers
+} from '../store'
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend
+} from 'recharts'
 
 class LineGraph extends Component {
 
@@ -10,32 +24,59 @@ class LineGraph extends Component {
   }
 
   render() {
-  const {margins, width, height, lineType, dataKey, stroke, data, xdataKey, ydataKey} = this.props
+    const {
+      margins,
+      width,
+      height,
+      lineType,
+      dataKey,
+      stroke,
+      data,
+      xdataKey,
+      ydataKey
+    } = this.props
 
-  return (
-    <div className="container">
-      <div className="lineChart">
-      <LineChart
-        margins={margins}
-        width={width}
-        height={height}
-        data={data}
-      >
-      <Line
-        type={lineType}
-        dataKey={dataKey}
-        stroke={stroke}
-        activeDot={{ stroke: 'blue', strokeWidth: 2, r: 5 }}
-      />
-      <CartesianGrid strokeDasharray="10 10" />
-      <XAxis dataKey={xdataKey} />
-      <YAxis dataKey={ydataKey} />
-      <Tooltip />
-      <Legend />
-      </LineChart>
-      </div>
-      </div>
-  )
+    return ( < div className = "container" >
+      < div className = "lineChart" >
+      < LineChart margins = {
+        margins
+      }
+      width = {
+        width
+      }
+      height = {
+        height
+      }
+      data = {
+        data
+      } >
+      < Line type = {
+        lineType
+      }
+      dataKey = {
+        dataKey
+      }
+      stroke = {
+        stroke
+      }
+      activeDot = {
+        {
+          stroke: 'blue',
+          strokeWidth: 2,
+          r: 5
+        }
+      }
+      /> < CartesianGrid strokeDasharray = "10 10" / >
+      < XAxis dataKey = {
+        xdataKey
+      }
+      /> < YAxis dataKey = {
+        ydataKey
+      }
+      /> < Tooltip / >
+      < Legend / >
+      < /LineChart> < /div> < /div>
+    )
   }
 }
 

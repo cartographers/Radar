@@ -1,7 +1,8 @@
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 
-export default class BarGraph extends Component {
+class BarGraph extends Component {
   render () {
     const data = [
       {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
@@ -12,6 +13,7 @@ export default class BarGraph extends Component {
       {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
       {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
     ]
+    
     return (
       <div>
 
@@ -35,3 +37,12 @@ export default class BarGraph extends Component {
     )
   }
 }
+
+const mapState = (state, ownProps) => {
+  return ({})
+}
+const mapStateToProps = () => {
+  return ({})
+}
+export default connect(mapState)(BarGraph)
+
