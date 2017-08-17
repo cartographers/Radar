@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import { fetchDatabases } from '../store'
+import {Badge} from 'react-bootstrap'
 
 
 class Home extends Component {
@@ -13,25 +14,39 @@ class Home extends Component {
   render() {
 
     const {databases} = this.props
+    const wellStyles = {maxWidth: 400, margin: '0 auto 10px'}
 
     return (
-      <div>
-        <div>
-          <h4>Welcome!</h4>
-        </div>
-        <div>
-          <h5>Your databases:::</h5>
-        </div>
-        <div>
-            {
-              databases && databases.map((database) => {
-                return (
-                  <Link key={database.datname} to={`/form/${database.datname}`}>
-                    <div>{ database.datname }</div>
-                  </Link>
-                )
-              })
-            }
+      <div className="container">
+        <div className="row">
+          <div className="row">
+            <div className="row">
+
+              <div className="col-lg-12">
+                <h4>
+                  Postgres Databases 
+                  <Badge> {databases.length} </Badge>
+                </h4>
+              </div>
+              
+              <div className="col-lg-12">
+                  {
+                    databases && databases.map((database, index) => {
+                      return (
+                        <div className="dbList" key={index}>
+                          <Link key={database.datname} to={`/form/${database.datname}`}>
+                            <div className="col-md-4" style={{textAlign: 'left'}}>
+                              { database.datname }
+                            </div>
+                          </Link> 
+                        </div>
+                      )
+                    })
+                  }
+              </div>
+
+            </div>
+          </div>
         </div>
       </div>
     )
