@@ -6,13 +6,14 @@ import {fetchQueryTable} from '../store'
 class LineGraph extends Component {
   componentDidMount () {
     const queryInfo = {
-      currentDatabase: this.props.database || 'capstone1706',
-      selectThese: this.props.selectThese || ['name', 'age'],
-      whereThese: this.props.whereThese || [],
-      currentTable: this.props.table || 'users',
-      orderedBy: this.props.orderBy
+      currentDatabase: this.props.database,
+      selectThese: this.props.selectThese,
+      whereThese: this.props.whereThese,
+      currentTable: this.props.table,
+      orderedBy: this.props.orderBy,
+      fields: this.props.fields
     }
-    this.props.fetchQueriedData(queryInfo)
+    // this.props.fetchQueriedData(queryInfo)
   }
 
   render () {
@@ -36,15 +37,17 @@ class LineGraph extends Component {
 
 const mapState = (state, ownProps) => {
   return ({
-    title: ownProps.Title || 'Name vs age ',
-    width: ownProps.width || 900,
-    height: ownProps.height || 500,
-    x: ownProps.xAxis || 'name',
-    y: ownProps.yAxis || 'age',
+    title: ownProps.Title,
+    width: ownProps.width,
+    height: ownProps.height,
+    x: ownProps.xAxis,
+    y: ownProps.yAxis,
     orderBy: ownProps.orderedBy,
     whereThese: ownProps.whereThese,
     table: ownProps.currentTable,
-    queriedTable: state.queriedTable
+    queriedTable: state.queriedTable,
+    database: ownProps.currentDatabase,
+    fields: state.fields
   })
 }
 

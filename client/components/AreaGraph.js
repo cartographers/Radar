@@ -64,11 +64,11 @@ class AreaGraph extends Component {
 
 const mapState = (state, ownProps) => {
   return ({
-    title: ownProps.Title || 'Name vs age ',
-    width: ownProps.width || 900,
-    height: ownProps.height || 500,
-    x: ownProps.xAxis || 'name',
-    y: ownProps.yAxis || 'age',
+    title: ownProps.Title,
+    width: ownProps.width,
+    height: ownProps.height,
+    x: ownProps.xAxis,
+    y: ownProps.yAxis,
     orderBy: ownProps.orderedBy,
     whereThese: ownProps.whereThese,
     table: ownProps.currentTable,

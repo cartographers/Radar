@@ -11,7 +11,8 @@ class BarGraph extends Component {
       selectThese: this.props.selectThese,
       whereThese: this.props.whereThese,
       currentTable: this.props.table,
-      orderedBy: this.props.orderBy
+      orderedBy: this.props.orderBy,
+      fields: this.props.fields
     }
     //this.props.fetchQueriedData(queryInfo)
   }
@@ -67,7 +68,8 @@ const mapState = (state, ownProps) => {
     whereThese: ownProps.whereThese,
     table: ownProps.currentTable,
     queriedTable: state.queriedTable,
-    database: ownProps.currentDatabase
+    database: ownProps.currentDatabase,
+    fields: state.fields
   })
 }
 const mapDispatch = (dispatch) => {

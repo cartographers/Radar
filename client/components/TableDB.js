@@ -10,6 +10,7 @@ class TableDB extends Component {
       currentDatabase: this.props.database,
       selectThese: this.props.selectThese,
       whereThese: this.props.whereThese,
+      orderedBy: this.props.orderBy,
       currentTable: this.props.table,
       fields: this.props.fields
     }
