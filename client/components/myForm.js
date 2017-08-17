@@ -81,7 +81,7 @@ class myForm extends React.Component {
 
   makeGraph = (evt) => {
     evt.preventDefault()
-    this.props.queryDatabase(this.state)
+    this.props.queryDatabase(this.state, this.props.fields)
     const newGraph = <div>New Graph for Database: {this.state.currentDatabase} Table: {this.state.currentTable}</div>  // null
     this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, newGraph)  // second argument should be settings of graph
   }
@@ -96,7 +96,7 @@ class myForm extends React.Component {
       return <div>
                 <label>From</label>
                   <select name="From" onChange={this.handleTableChange}>
-                    <option selected >Choose a Table</option>
+                    <option defaultValue='' >Choose a Table</option>
                     {this.props.tables && this.props.tables.map((table,i) => <option value={table} key={i}>{table}</option>)}
                   </select>
               </div>
@@ -223,14 +223,9 @@ const mapState = state => {
   return ({
     tables: state.tables,
     columns: state.fields.map(val => val.name),
-    columnsType: state.fields.map(val => {
-      if(val.dataTypeID === 1043) return 'text'
-      if(val.dataTypeID === 23) return 'integer'
-      if(val.dataTypeID === 1184) return 'date'
-      return 'text'
-    }),
     createdGraphs: state.createdGraphs,
-    database: state.queriedTable
+    database: state.queriedTable,
+    fields: state.fields
   })
 }
 
@@ -253,8 +248,12 @@ const mapDispatch = dispatch => {
       }
       dispatch(saveGraph(newGraphInfo))
     },
-    queryDatabase(settings){
-      dispatch(fetchQueryTable(settings))
+    queryDatabase(settings, fields){
+      const newSettings = {
+        ...settings,
+        fields
+      }
+      dispatch(fetchQueryTable(newSettings))
     }
   })
 }
