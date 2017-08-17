@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph } from '../store'
+import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph, fetchQueryTable } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
 import {saveFile} from '../../utils/saveFile'
@@ -14,7 +14,7 @@ class myForm extends React.Component {
       whereThese: [],
       orderedBy: ['Descending', 0 ],
       conditionals : ['greater than', 'greater than or equal to', 'less than', 'less than or equal to','equal to', 'not', 'between', 'not between'],
-      conditionalOperator: ['>', '>=', '<', '<=', '===', '!==', '[]', '![]'],
+      conditionalOperator: ['>', '>=', '<', '<=', '=', '!=', '[]', '![]'],
       orderType : ['None','Ascending', 'Descending'],
       chartTypes: ['Pie', 'Scatter', 'Donut', 'Bar', 'Line'],
       currentTable : '',
@@ -33,18 +33,28 @@ class myForm extends React.Component {
     this.setState({currentDatabase: db})
     this.props.fetchDat({ database: db})
     this.props.loadCreatedGraphs()
+    if(this.props.tables) this.setState({currentTable: this.props.tables[0]})
   }
 
+
   handleChange = (index, fromWhere, evt ) => {
-    let newVal = (fromWhere === 'whereThese') ? {} : evt.target.value
+    const type = evt.target.name
+    const value = evt.target.value
+    let newVal = (fromWhere === 'whereThese') ? {} : value
     if(fromWhere === 'whereThese'){
-      const type = evt.target.name
-      newVal[type] = (type === 'is') ? this.state.conditionalOperator[evt.target.value] : evt.target.value
+      newVal[type] = (type === 'is') ? this.state.conditionalOperator[value] : value
     }
 
     this.setState( (prevState) => ( { [fromWhere]: prevState[fromWhere].map( (val, i) => {
         if (index != i ) return val
-        if (fromWhere === 'whereThese') return {...val, ...newVal}
+        if (fromWhere === 'whereThese'){
+          if(type === 'spec'){
+            const specType = this.props.columnsType[this.props.columns.indexOf(val.col)]
+            if (specType === 'string') newVal[type]  = "'"+ value + "'" 
+            if (specType === 'integer') newVal[type] = +value
+          }
+          return {...val, ...newVal}
+        }
         return newVal;
     })}))
   }
@@ -57,7 +67,7 @@ class myForm extends React.Component {
   }
 
   handleAdd = (addTo, evt) => {
-    let newAdd = (addTo === 'selectThese') ? this.props.columns[0] : {col:'none', is: 'equal to', spec: '' }
+    let newAdd = (addTo === 'selectThese') ? this.props.columns[0] : {col:this.props.columns[0], is: '>', spec: '' }
     this.setState( (prevState) => ({ [addTo]: [...prevState[addTo], newAdd] }))
   }
 
@@ -71,7 +81,8 @@ class myForm extends React.Component {
 
   makeGraph = (evt) => {
     evt.preventDefault()
-    const newGraph = <div id="newGraph">New Graph for Database: {this.state.currentDatabase} Table: {this.state.currentTable}</div>  // null
+    this.props.queryDatabase(this.state)
+    const newGraph = <div>New Graph for Database: {this.state.currentDatabase} Table: {this.state.currentTable}</div>  // null
     this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, newGraph)  // second argument should be settings of graph
   }
 
@@ -85,6 +96,7 @@ class myForm extends React.Component {
       return <div>
                 <label>From</label>
                   <select name="From" onChange={this.handleTableChange}>
+                    <option selected >Choose a Table</option>
                     {this.props.tables && this.props.tables.map((table,i) => <option value={table} key={i}>{table}</option>)}
                   </select>
               </div>
@@ -119,7 +131,7 @@ class myForm extends React.Component {
                               <select name="is" onChange={this.handleChange.bind(this, index, 'whereThese')}>
                               {this.state.conditionals && this.state.conditionals.map((val, i) => <option value={i} key={i}>{val}</option>)}
                               </select>
-                              <input  name="spec" onChange={this.handleChange.bind(this, index, 'whereThese')}/>
+                              <input  name="spec" type={this.props.columnsType[this.props.columns.indexOf(this.state.whereThese[index].col)]} onChange={this.handleChange.bind(this, index, 'whereThese')}/>
                               <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'whereThese')}> - </button>
                           </div>
                 })
@@ -157,9 +169,9 @@ class myForm extends React.Component {
         <h2>User {DBName} Query Selection Form</h2>
         <form>
             { this.renderTables() }
-            { this.renderSelects() }
-            { this.renderWheres() }
-            { this.renderOrderBy() }
+            { this.state.currentTable && this.renderSelects()} 
+            { this.state.currentTable && this.renderWheres() }
+            { this.state.currentTable && this.renderOrderBy() }
         </form>
         <h2>Chart choice</h2>
         <form>
@@ -181,7 +193,7 @@ class myForm extends React.Component {
                { this.options() }
             </select>
             <label>Y axis</label>
-            <select onChange={this.handleChartChange.bind(this, 'yAxis')}>
+            <select onChange={this.handleChartChange.bind(this, 'yAxis')} >
                { this.options() }
             </select>
           <button type="submit" className="btn btn-success" onClick={this.makeGraph}>Make my graph</button>
@@ -196,6 +208,9 @@ class myForm extends React.Component {
           })
           .map(graphInfo => graphInfo.graph)
         }
+        {
+          this.props.database && this.props.database.map(data => <li key={data.id}>{JSON.stringify(data)}</li>)
+        }    
         <div>
     <button id="saveFile" onClick={saveFile}>Save Graph</button>
     </div>
@@ -207,8 +222,15 @@ class myForm extends React.Component {
 const mapState = state => {
   return ({
     tables: state.tables,
-    columns: state.fields,
-    createdGraphs: state.createdGraphs
+    columns: state.fields.map(val => val.name),
+    columnsType: state.fields.map(val => {
+      if(val.dataTypeID === 1043) return 'text'
+      if(val.dataTypeID === 23) return 'integer'
+      if(val.dataTypeID === 1184) return 'date'
+      return 'text'
+    }),
+    createdGraphs: state.createdGraphs,
+    database: state.queriedTable
   })
 }
 
@@ -230,6 +252,9 @@ const mapDispatch = dispatch => {
         graph: graph
       }
       dispatch(saveGraph(newGraphInfo))
+    },
+    queryDatabase(settings){
+      dispatch(fetchQueryTable(settings))
     }
   })
 }
