@@ -7,24 +7,21 @@ class TableDB extends Component {
 
   componentDidMount () {
     const queryInfo = {
-      database: this.props.database || 'capstone1706', 
-      selectThese: this.props.selectThese || ['name', 'age'], 
-      whereThese: this.props.whereThese || [], 
-      table: this.props.table || 'users',
-      fields: this.props.fields  
+      currentDatabase: this.props.database,
+      selectThese: this.props.selectThese,
+      whereThese: this.props.whereThese,
+      currentTable: this.props.table,
+      fields: this.props.fields
     }
     this.props.fetchQueriedData(queryInfo)
   }
 
-  
   render() {
 
-    const fieldsDummy = ['name', 'age']
-
     const {
-      queriedTable,  
-      title, 
-      orderBy, 
+      queriedTable,
+      title,
+      orderBy,
       whereThese,
       fields
     } = this.props
@@ -44,7 +41,7 @@ class TableDB extends Component {
             <thead>
             <tr>
               {
-                fieldsDummy.map((field, index) => {
+                fields.map((field, index) => {
                   return (
                     <th key={index}>
                       {field}
@@ -86,18 +83,18 @@ const mapState = (state, ownProps) => {
   console.log(state)
   return ({
     title: ownProps.Title || 'Name vs age ',
-    orderBy: ownProps.orderedBy, 
-    whereThese: ownProps.whereThese, 
-    table: ownProps.table,
+    orderBy: ownProps.orderedBy,
+    whereThese: ownProps.whereThese,
+    table: ownProps.currentTable,
     selectThese: ownProps.selectThese,
-    database: ownProps.database,
     queriedTable: state.queriedTable,
-    fields: state.fields 
+    fields: state.fields,
+    database: ownProps.currentDatabase
   })
 }
 
 const mapDispatch = (dispatch) => {
-  return({
+  return ({
     fetchQueriedData(queryInfo) {
       dispatch(fetchQueryTable(queryInfo))
     }

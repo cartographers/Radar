@@ -23,18 +23,6 @@ class Navbar extends React.Component {
             <Link to="/line"><h4>line</h4></Link>
             <Link to="/area"><h4>area</h4></Link>
           </div>
-          {
-            isLoggedIn ?
-              <div className="navbar-right">
-                {/* The navbar will show these links after you log in */}
-                <a href="#" onClick={handleClick}><h4>Logout</h4></a>
-              </div> :
-              <div className="navbar-right">
-                {/* The navbar will show these links before you log in */}
-                <Link to="/login"><h4>Login</h4></Link>
-                <Link to="/signup"><h4>Sign Up</h4></Link>
-              </div>
-          }
         </div>
       </nav>
     )
