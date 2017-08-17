@@ -5,7 +5,6 @@ import {AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip} from 'recharts'
 import {fetchQueryTable} from '../store'
 
 class AreaGraph extends Component {
-
   componentDidMount() {
     const queryInfo = {
       database: this.props.database || 'capstone1706',
@@ -16,74 +15,47 @@ class AreaGraph extends Component {
     this.props.fetchQueriedData(queryInfo)
   }
 
-  render() {
-  const {
-    queriedTable,
-    title,
-    x,
-    y,
-    orderBy,
-    whereThese,
-    width, 
-    height, 
-    lineType, 
-    dataKey, 
-    stroke,  
-    xdataKey, 
-    ydataKey, 
-    fill
-  } = this.props
+  render () {
+    const {queriedTable, width, height, title, x, y, orderBy, whereThese} = this.props
+    const graphData = queriedTable.map((row, index) => {
+      return {name: row[x].slice(0, 4), y: row[y], sales: row['sales']}
+    })
 
-  const graphData = queriedTable.map((row, index) => {
-    return {x: row[x].slice(0,4), y: row[y]}
-  })
-
-  return (
-    <div className="container">
-
-      <div><h4>Area Chart</h4></div>
-
-      <AreaChart width={600} height={400} data={graphData}
+    return (
+      <AreaChart width={width} height={height} data={graphData}
             margin={{top: 10, right: 30, left: 0, bottom: 0}}>
         <XAxis dataKey="name"/>
         <YAxis/>
         <CartesianGrid strokeDasharray="3 3"/>
         <Tooltip/>
-        <Area type='monotone' dataKey='uv' stroke='#8884d8' fill='#8884d8' />
-      </AreaChart>
 
-    </div>
-  )
+        <Area type='monotone' dataKey='y' stroke='#8884d8' fill='#8884d8' />
+      </AreaChart>
+    )
   }
 }
 
 const mapState = (state, ownProps) => {
   return ({
-      title: ownProps.Title || "Dummy Title",
-      width: ownProps.width || 900,
-      height: ownProps.height || 300,
-      x: ownProps.xAxis || 'name',
-      y: ownProps.yAxis || 'age',
-      orderBy: ownProps.orderBy,
-      whereThese: ownProps.whereThese,
-      table: ownProps.table,
-      database: ownProps.database,
-      queriedTable: state.queriedTable,
-      stroke: '#ffc658',
-      fill: '#ffc658',
-      lineType: 'monotone',
-      dataKey: 'age',
-      xdataKey: 'id',
-      ydataKey: 'age',
-    })
+    title: ownProps.Title || 'Name vs age ',
+    width: ownProps.width || 900,
+    height: ownProps.height || 500,
+    x: ownProps.xAxis|| 'name',
+    y: ownProps.yAxis || 'age', 
+    orderBy: ownProps.orderedBy, 
+    whereThese: ownProps.whereThese, 
+    table: ownProps.table,
+    database: ownProps.database,
+    queriedTable: state.queriedTable
+  })
 }
 
-const mapDispatch = dispatch => {
-  return {
+const mapDispatch = (dispatch) => {
+  return({
     fetchQueriedData(queryInfo) {
       dispatch(fetchQueryTable(queryInfo))
     }
-  }
+  })
 }
 
 export default connect(mapState, mapDispatch)(AreaGraph)
