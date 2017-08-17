@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import {Link} from 'react-router-dom'
 import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph, fetchQueryTable } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
-import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
+import {FormControl, ControlLabel, FormGroup, Button, Modal} from 'react-bootstrap'
 import {saveFile} from '../../utils/saveFile'
 
 class myForm extends React.Component {
@@ -80,7 +81,7 @@ class myForm extends React.Component {
 
   makeGraph = (evt) => {
     evt.preventDefault()
-    this.props.queryDatabase(this.state)
+    this.props.queryDatabase(this.state, this.props.fields)
     const newGraph = <div>New Graph for Database: {this.state.currentDatabase} Table: {this.state.currentTable}</div>  // null
     this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, newGraph)  // second argument should be settings of graph
   }
@@ -175,6 +176,11 @@ class myForm extends React.Component {
     return (
       <div>
         <h2>User {DBName} Query Selection Form</h2>
+        <div>
+          <Button>
+            <Link to="/table">preview table</Link>
+          </Button>
+        </div>
         <form>
             { this.renderTables() }
             { this.state.currentTable && this.renderSelects()} 
@@ -232,7 +238,8 @@ const mapState = state => {
     tables: state.tables,
     columns: state.fields.map(val => val.name),
     createdGraphs: state.createdGraphs,
-    database: state.queriedTable
+    database: state.queriedTable,
+    fields: state.fields
   })
 }
 
@@ -255,8 +262,12 @@ const mapDispatch = dispatch => {
       }
       dispatch(saveGraph(newGraphInfo))
     },
-    queryDatabase(settings){
-      dispatch(fetchQueryTable(settings))
+    queryDatabase(settings, fields){
+      const newSettings = {
+        ...settings,
+        fields
+      }
+      dispatch(fetchQueryTable(newSettings))
     }
   })
 }
