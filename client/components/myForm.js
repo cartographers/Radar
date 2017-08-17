@@ -4,8 +4,6 @@ import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
 
-//this form is assuming that the table we're currently rendering is the Users table
-
 class myForm extends React.Component {
 
   constructor() {
@@ -26,7 +24,6 @@ class myForm extends React.Component {
       yAxis: '',
       height: '',
       width: '',
-      myGraphs: [] // graphs that persist.. 
     }
   }
 
