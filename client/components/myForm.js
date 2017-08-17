@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import {Link} from 'react-router-dom'
 import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph, fetchQueryTable } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
-import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
+import {FormControl, ControlLabel, FormGroup, Button, Modal} from 'react-bootstrap'
 import {saveFile} from '../../utils/saveFile'
 
 class myForm extends React.Component {
@@ -167,6 +168,11 @@ class myForm extends React.Component {
     return (
       <div>
         <h2>User {DBName} Query Selection Form</h2>
+        <div>
+          <Button>
+            <Link to="/table">preview table</Link>
+          </Button>
+        </div>
         <form>
             { this.renderTables() }
             { this.state.currentTable && this.renderSelects()} 
