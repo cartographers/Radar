@@ -13,7 +13,7 @@ class myForm extends React.Component {
       whereThese: [],
       orderedBy: ['Descending', 0 ],
       conditionals : ['greater than', 'greater than or equal to', 'less than', 'less than or equal to','equal to', 'not', 'between', 'not between'],
-      conditionalOperator: ['>', '>=', '<', '<=', '===', '!==', '[]', '![]'],
+      conditionalOperator: ['>', '>=', '<', '<=', '=', '!=', '[]', '![]'],
       orderType : ['None','Ascending', 'Descending'],
       chartTypes: ['Pie', 'Scatter', 'Donut', 'Bar', 'Line'],
       currentTable : '',
@@ -37,15 +37,23 @@ class myForm extends React.Component {
 
 
   handleChange = (index, fromWhere, evt ) => {
-    let newVal = (fromWhere === 'whereThese') ? {} : evt.target.value
+    const type = evt.target.name
+    const value = evt.target.value
+    let newVal = (fromWhere === 'whereThese') ? {} : value
     if(fromWhere === 'whereThese'){
-      const type = evt.target.name
-      newVal[type] = (type === 'is') ? this.state.conditionalOperator[evt.target.value] : evt.target.value  
+      newVal[type] = (type === 'is') ? this.state.conditionalOperator[value] : value
     }
 
     this.setState( (prevState) => ( { [fromWhere]: prevState[fromWhere].map( (val, i) => {
         if (index != i ) return val
-        if (fromWhere === 'whereThese') return {...val, ...newVal}
+        if (fromWhere === 'whereThese'){
+          if(type === 'spec'){
+            const specType = this.props.columnsType[this.props.columns.indexOf(val.col)]
+            if (specType === 'string') newVal[type]  = "'"+ value + "'" 
+            if (specType === 'integer') newVal[type] = +value
+          }
+          return {...val, ...newVal}
+        }
         return newVal;
     })}))
   }
