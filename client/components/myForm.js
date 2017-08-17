@@ -13,15 +13,15 @@ class myForm extends React.Component {
     this.state = {
       selectThese: [],
       whereThese: [],
-      orderedBy: [],
+      orderedBy: ['Descending', 0 ],
       conditionals : ['greater than', 'greater than or equal to', 'less than', 'less than or equal to','equal to', 'not', 'between', 'not between'],
-      conditionalOperator: ['>', '> =', '<', '<=', '===', '!==', '[]', '![]'],
+      conditionalOperator: ['>', '>=', '<', '<=', '===', '!==', '[]', '![]'],
       orderType : ['None','Ascending', 'Descending'],
       chartTypes: ['Pie', 'Scatter', 'Donut', 'Bar', 'Line'],
       choosenChart: '',
       Title: '',
-      xLabel: '',
-      yLabel: '',
+      xAxis: '',
+      yAxis: '',
       height: '',
       width: '',
       myGraphs: []
@@ -31,35 +31,28 @@ class myForm extends React.Component {
 
   componentDidMount() {
     let db = { database: this.props.match.params.dbName}
-
     this.props.fetchDat(db)
     this.props.setWorkingDatabase(this.props.match.params.dbName)
     this.props.loadCreatedGraphs(this.props.match.params.dbName)
   }
 
-  handleSelectChange = (evt) => {
-    const {name, value} = evt.target
-    this.setState( (prevState) => ({ selectThese: prevState.selectThese.map( (val, index) => {
-      return (index == name) ? value : val
+  handleChange = (index, fromWhere, evt ) => {
+    let newVal = (fromWhere === 'whereThese') ? {} : evt.target.value
+    console.log(fromWhere, index, newVal)
+    if(fromWhere === 'whereThese'){
+      const type = evt.target.name
+      newVal[type] = (type === 'is') ? this.state.conditionalOperator[evt.target.value] : evt.target.value  
+    }
+
+    this.setState( (prevState) => ( { [fromWhere]: prevState[fromWhere].map( (val, i) => {
+        if (index != i ) return val
+        if (fromWhere === 'whereThese') return {...val, ...newVal}
+        return newVal;
     })}))
   }
 
-  handleWhereChange = (evt) => {
-    const [type, i] = evt.target.name.split(' ')
-    let newVal = {}
-    newVal[type] = (type === 'is') ? this.state.conditionalOperator[evt.target.value] : evt.target.value
-    this.setState( (prevState) => ({ whereThese: prevState.whereThese.map( (val, index) => {
-      return (index == i) ? {...val, ...newVal} : val
-    })}))
-  }
 
-  handleOrderChange = (index, evt) => {
-    this.setState( (prevState) => ( { orderedBy: prevState.orderedBy.map( (val, i) => {
-      return (index === i) ? evt.target.value : val
-    })}))
-  }
-
-  handleChange = (fromWhere, evt) => {
+  handleChartChange = (fromWhere, evt) => {
     this.setState({
       [fromWhere]: evt.target.value
     })
@@ -80,21 +73,23 @@ class myForm extends React.Component {
 
   makeGraph = (evt) => {
     evt.preventDefault()
-    const newGraph = <div>New Graph for {this.props.workingDatabase}</div>  // null
-    this.props.savingGraph(this.props.workingDatabase, null)  // second argument should be settings of graph
-    this.setState((prevState) =>  ({
-      myGraphs: [...prevState.myGraphs, newGraph]
-    }))
+    console.log(this.state)
+    // const newGraph = <div>New Graph for {this.props.workingDatabase}</div>  // null
+    // this.props.savingGraph(this.props.workingDatabase, null)  // second argument should be settings of graph
+    // this.setState((prevState) =>  ({
+    //   myGraphs: [...prevState.myGraphs, newGraph]
+    // }))
   }
 
-  tableChange = (evt) => {
+  handleTableChange = (evt) => {
     this.props.grabTableData(this.props.match.params.dbName, evt.target.value)
+    this.props.loadCreatedGraphs(this.props.match.params.dbName, evt.target.value)
   }
 
   renderTables = () => {
       return <div>
                 <label>From</label>
-                  <select name="From" onChange={this.tableChange}>
+                  <select name="From" onChange={this.handleTableChange}>
                     {this.props.tables && this.props.tables.map((table,i) => <option value={table} key={i}>{table}</option>)}
                   </select>
               </div>
@@ -105,7 +100,7 @@ class myForm extends React.Component {
                 <label>Select</label>
                 { this.state.selectThese.map((sel, index) => {
                     return  <div>
-                                <select name={index} key={index} onChange={this.handleSelectChange}>
+                                <select key={index} onChange={this.handleChange.bind(this, index, 'selectThese')}>
                                     {this.props.columns && this.props.columns.map((val,i) => <option value={val} key={i}>{val}</option>)}
                                 </select>
                                 <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'selectThese')}> - </button>
@@ -122,14 +117,14 @@ class myForm extends React.Component {
               {
                 this.state.whereThese.map((sel, index) => {
                   return  <div>
-                            <select name={`col ${index}`} onChange={this.handleWhereChange}>
+                            <select name="col" onChange={this.handleChange.bind(this, index, 'whereThese')}>
                               {this.props.columns && this.props.columns.map(v => <option value={v}>{v}</option>)}
                             </select>
                             <h4>is</h4>
-                              <select name={`is ${index}`} onChange={this.handleWhereChange}>
+                              <select name="is" onChange={this.handleChange.bind(this, index, 'whereThese')}>
                               {this.state.conditionals && this.state.conditionals.map((val, ind) => <option value={ind} key={ind}>{val}</option>)}
                               </select>
-                              <input className="form-control" name={`spec ${index}`} onChange={this.handleWhereChange}/>
+                              <input  name="spec" onChange={this.handleChange.bind(this, index, 'whereThese')}/>
                               <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'whereThese')}> - </button>
                           </div>
                 })
@@ -142,15 +137,14 @@ class myForm extends React.Component {
     return <div className="form-group">
             <label>Order by</label>
             {
-              <select onChange={this.handleOrderChange.bind(this,0)}>
+              <select onChange={this.handleChange.bind(this, 0, 'orderedBy')}>
                { this.state.orderType.map(v => <option value={v} key={v}>{v}</option>) }
               </select>
             }
             {
-              <select onChange={this.handleOrderChange.bind(this, 1)}>
+              <select onChange={this.handleChange.bind(this, 1, 'orderedBy')}>
                { this.state.selectThese.length && this.state.selectThese.map( val => <option value={val}>{val}</option>) }
-               { !(this.state.selectThese.length) && this.props.columns && this.props.columns.map(v => <option value={v}>{v}</option>) }
-
+               { !(this.state.selectThese.length) && this.props.columns && this.props.columns.map(val => <option value={val}>{val}</option>) }
               </select>
             }
           </div>
@@ -172,37 +166,36 @@ class myForm extends React.Component {
         <h2>Chart choice</h2>
         <form>
             <label>Chart Type</label>
-              <select name='choosenChart' onChange={this.handleChange.bind(this, 'choosenChart')} >
+              <select name='choosenChart' onChange={this.handleChartChange.bind(this, 'choosenChart')} >
                {this.state.chartTypes.map((val,i) => <option value={val} key={i}>{val}</option>)}
               </select>
             <label>Chart Title</label>
-            <input className="form-control" onChange={this.handleChange.bind(this, 'Title')}/>
+            <input className="form-control" onChange={this.handleChartChange.bind(this, 'Title')}/>
          
             <label>Height</label>
-            <input className="form-control" onChange={this.handleChange.bind(this, 'height')}/>
+            <input className="form-control" onChange={this.handleChartChange.bind(this, 'height')}/>
        
             <label>Width</label>
-            <input className="form-control" onChange={this.handleChange.bind(this, 'width')}/>
+            <input className="form-control" onChange={this.handleChartChange.bind(this, 'width')}/>
    
             <label>X axis</label>
             {
-              <select onChange={this.handleChange.bind(this, 'xLabel')}>
-
-               { this.state.selectThese.length && this.state.selectThese.map( val => <option value={val.col}>{val.col}</option>) }
-               { !(this.state.selectThese.length) && this.props.columns && this.props.columns.map(val => <option value={val} key={val}>{val}</option>) }
-              </select>
-            }
-            <input className="form-control"/>
-            <label>Y axis</label>
-            {
-              <select onChange={this.handleChange.bind(this, 'yLabel')}>
+              <select onChange={this.handleChartChange.bind(this, 'xAxis')}>
                { this.state.selectThese.length 
                   ? this.state.selectThese.map( val => <option value={val}>{val}</option>) 
                   : (this.props.columns && this.props.columns.map( val => <option value={val}>{val}</option>)) }
 
               </select>
             }
-            <input className="form-control"/>
+            <label>Y axis</label>
+            {
+              <select onChange={this.handleChartChange.bind(this, 'yAxis')}>
+               { this.state.selectThese.length 
+                  ? this.state.selectThese.map( val => <option value={val}>{val}</option>) 
+                  : (this.props.columns && this.props.columns.map( val => <option value={val}>{val}</option>)) }
+
+              </select>
+            }
           <button type="submit" className="btn btn-success" onClick={this.makeGraph}>Make my graph</button>
         </form>
         {
@@ -220,7 +213,7 @@ const mapState = state => {
   return ({
     tables: state.tables,
     table: state.database,
-    columns: state.fields 
+    columns: state.fields,
     workingDatabase: state.currentDatabase,
     createdGraphs: state.createdGraphs
   })
@@ -246,6 +239,7 @@ const mapDispatch = dispatch => {
     savingGraph(currentDatabase, settings){  // settings of graph applied to newSettings
       let newSettings = {
         workingDatabase: currentDatabase
+
       }
       dispatch(saveGraph(newSettings))
     }
