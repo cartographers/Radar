@@ -5,6 +5,7 @@ import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup, Button, Modal} from 'react-bootstrap'
 import {saveFile} from '../../utils/saveFile'
+import {setSettings} from '../../util/graphUtility'
 
 class myForm extends React.Component {
 
@@ -81,8 +82,20 @@ class myForm extends React.Component {
 
   makeGraph = (evt) => {
     evt.preventDefault()
-    this.props.queryDatabase(this.state, this.props.fields)
-    const newGraph = <div>New Graph for Database: {this.state.currentDatabase} Table: {this.state.currentTable}</div>  // null
+    let settings = {
+      whereThese: this.state.whereThese,
+      selectThese: this.state.selectThese,
+      Title: this.state.Title,
+      width: this.state.width,
+      height: this.state.height,
+      xAxis: this.state.xAxis,
+      yAxis: this.state.yAxis,
+      orderedBy: this.state.orderedBy,
+      currentTable: this.state.currentTable,
+      currentDatabase : this.state.currentDatabase,
+      AndOr: this.state.AndOr
+    }
+    const newGraph = setSettings(settings, this.state.choosenChart)
     this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, newGraph)  // second argument should be settings of graph
   }
 
@@ -190,24 +203,24 @@ class myForm extends React.Component {
         <h2>Chart choice</h2>
         <form>
             <label>Chart Type</label>
-              <select name='choosenChart' onChange={this.handleChartChange.bind(this, 'choosenChart')} >
+              <select name='choosenChart' onChange={this.handleChartChange.bind(this, 'choosenChart')} required>
                {this.state.chartTypes.map((val,i) => <option value={val} key={i}>{val}</option>)}
               </select>
             <label>Chart Title</label>
-            <input className="form-control" onChange={this.handleChartChange.bind(this, 'Title')}/>
+            <input className="form-control" onChange={this.handleChartChange.bind(this, 'Title')} required/>
 
             <label>Height</label>
-            <input className="form-control" onChange={this.handleChartChange.bind(this, 'height')}/>
+            <input className="form-control" onChange={this.handleChartChange.bind(this, 'height')} required/>
 
             <label>Width</label>
-            <input className="form-control" onChange={this.handleChartChange.bind(this, 'width')}/>
+            <input className="form-control" onChange={this.handleChartChange.bind(this, 'width')} required/>
 
             <label>X axis</label>
-            <select onChange={this.handleChartChange.bind(this, 'xAxis')}>
+            <select onChange={this.handleChartChange.bind(this, 'xAxis')} required>
                { this.options() }
             </select>
             <label>Y axis</label>
-            <select onChange={this.handleChartChange.bind(this, 'yAxis')} >
+            <select onChange={this.handleChartChange.bind(this, 'yAxis')} required>
                { this.options() }
             </select>
           <button type="submit" className="btn btn-success" onClick={this.makeGraph}>Make my graph</button>
