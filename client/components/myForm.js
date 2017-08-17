@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph } from '../store'
+import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph, fetchQueryTable } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
 
@@ -72,7 +72,7 @@ class myForm extends React.Component {
 
   makeGraph = (evt) => {
     evt.preventDefault()
-    console.log(this.state)
+    this.props.queryDatabase(this.state)
     const newGraph = <div>New Graph for Database: {this.state.currentDatabase} Table: {this.state.currentTable}</div>  // null
     this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, newGraph)  // second argument should be settings of graph
   }
@@ -199,6 +199,9 @@ class myForm extends React.Component {
           })
           .map(graphInfo => graphInfo.graph)
         }
+        {
+          this.props.database && this.props.database.map(data => <li key={data.id}>{JSON.stringify(data)}</li>)
+        }       
       </div>
     )
   }
@@ -214,7 +217,8 @@ const mapState = state => {
       if(val.dataTypeID === 1184) return 'date'
       return 'text'
     }),
-    createdGraphs: state.createdGraphs
+    createdGraphs: state.createdGraphs,
+    database: state.queriedTable
   })
 }
 
@@ -236,6 +240,9 @@ const mapDispatch = dispatch => {
         graph: graph
       }
       dispatch(saveGraph(newGraphInfo))
+    },
+    queryDatabase(settings){
+      dispatch(fetchQueryTable(settings))
     }
   })
 }
