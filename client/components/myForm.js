@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
-import {saveFile} from '../../utils/saveFile'
+import {saveFile, saveSettings, openSettings} from '../../utils/saveFile'
 
 class myForm extends React.Component {
 
@@ -67,12 +67,10 @@ class myForm extends React.Component {
     }))
   }
 
-
-
   makeGraph = (evt) => {
     evt.preventDefault()
-    const newGraph = <div id="newGraph">New Graph for Database: {this.state.currentDatabase} Table: {this.state.currentTable}</div>  // null
-    this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, newGraph)  // second argument should be settings of graph
+    const newGraph = this.state.currentDatabase   // null
+    this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, newGraph)
   }
 
   handleTableChange = (evt) => {
@@ -194,7 +192,7 @@ class myForm extends React.Component {
                     ? graphInfo.database === DBName
                     : (graphInfo.database === DBName && graphInfo.table === this.state.currentTable)
           })
-          .map(graphInfo => graphInfo.graph)
+          .map(graphInfo => <div>{graphInfo.graph}</div>)
         }
         <div>
     <button id="saveFile" onClick={saveFile}>Save Graph</button>

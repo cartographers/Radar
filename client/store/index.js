@@ -7,10 +7,9 @@ import database from './database'
 import databases from './databases'
 import fields from './fields'
 import tables from './tables'
-import queriedTable from './queriedTable' 
+import queriedTable from './queriedTable'
 import currentDatabase from './currentDatabase'
 import createdGraphs from './createdGraphs'
-
 
 const reducer = combineReducers({
 	user,
