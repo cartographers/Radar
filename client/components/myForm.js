@@ -223,12 +223,6 @@ const mapState = state => {
   return ({
     tables: state.tables,
     columns: state.fields.map(val => val.name),
-    columnsType: state.fields.map(val => {
-      if(val.dataTypeID === 1043) return 'text'
-      if(val.dataTypeID === 23) return 'integer'
-      if(val.dataTypeID === 1184) return 'date'
-      return 'text'
-    }),
     createdGraphs: state.createdGraphs,
     database: state.queriedTable,
     fields: state.fields
