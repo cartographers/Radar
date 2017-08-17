@@ -62,8 +62,7 @@ const loadFields = (settings) => {
 
 	return client.query(querySearch)
 	.then(result => {
-		const fields = result.fields.map(field => field.name)
-		return fields
+		return result.fields
 	})
 	.catch(err => console.log(err))
 }
