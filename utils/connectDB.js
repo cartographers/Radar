@@ -58,11 +58,11 @@ const queryData = (settings) => {
 	const postgresUrl = 'postgres://localhost:5432/' + settings.currentDatabase
 	const client = new pg.Client(postgresUrl)
 
-	let whereThese = settings.whereThese.map(where => checkDataType(where, settings.fields))
+	let whereThese = settings.whereThese && settings.whereThese.map(where => checkDataType(where, settings.fields))
 
-	let selectThese = settings.selectThese.join(', ') || '*'
-	whereThese = whereThese.map(where => settings.currentTable + '.' + where.col + ' ' + where.is + ' ' + where.spec).join(' AND ')
-	whereThese = whereThese.length ? 'WHERE ' + whereThese : ''
+	let selectThese = settings.selectThese && settings.selectThese.join(', ') || '*'
+	whereThese = whereThese && whereThese.map(where => settings.currentTable + '.' + where.col + ' ' + where.is + ' ' + where.spec).join(' AND ')
+	whereThese = whereThese && whereThese.length ? 'WHERE ' + whereThese : ''
 	let orderType = settings.orderType
 
 	let querySearch = ['SELECT', selectThese, 'FROM', settings.currentTable, whereThese]
