@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
+import {saveFile} from '../../utils/saveFile'
 
 //this form is assuming that the table we're currently rendering is the Users table
 
@@ -18,13 +19,13 @@ class myForm extends React.Component {
       conditionalOperator: ['>', '> =', '<', '<=', '===', '!==', '[]', '![]'],
       orderType : ['None','Ascending', 'Descending'],
       chartTypes: ['Pie', 'Scatter', 'Donut', 'Bar', 'Line'],
-      choosenChart: '', // chart name 
-      Title: '', 
-      xLabel: '', // make this xAxis 
-      yLabel: '', // make this yAxis 
+      choosenChart: '', // chart name
+      Title: '',
+      xLabel: '', // make this xAxis
+      yLabel: '', // make this yAxis
       height: '',
       width: '',
-      myGraphs: [] // graphs that persist.. 
+      myGraphs: [] // graphs that persist..
     }
   }
 
@@ -174,13 +175,13 @@ class myForm extends React.Component {
               </select>
             <label>Chart Title</label>
             <input className="form-control" onChange={this.handleChange.bind(this, 'Title')}/>
-         
+
             <label>Height</label>
             <input className="form-control" onChange={this.handleChange.bind(this, 'height')}/>
-       
+
             <label>Width</label>
             <input className="form-control" onChange={this.handleChange.bind(this, 'width')}/>
-   
+
             <label>X axis</label>
             {
               <select onChange={this.handleChange.bind(this, 'xLabel')}>
@@ -197,14 +198,17 @@ class myForm extends React.Component {
               </select>
             }
             <input className="form-control"/>
-          <button type="submit" className="btn btn-success" onClick={this.makeGraph}>Make my graph</button>
+          <button type="submit" className="btn btn-success" id="makeGraph" onClick={this.makeGraph}>Make my graph</button>
         </form>
         {
-          this.props.createdGraphs && this.props.createdGraphs.filter(graph => graph.workingDatabase === DBName).map(graph => <div>New Graph for {graph.workingDatabase}</div>)
+          this.props.createdGraphs && this.props.createdGraphs.filter(graph => graph.workingDatabase === DBName).map(graph => <div id="newGraph">New Graph for {graph.workingDatabase}</div>)
         }
         {/*
           this.state.myGraphs.map(val => val)
         */}
+    <div>
+    <button id="saveFile" onClick={saveFile}>Save Graph</button>
+    </div>
       </div>
     )
   }
