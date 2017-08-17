@@ -26,7 +26,7 @@ class Home extends Component {
             {
               databases && databases.map((database) => {
                 return (
-                  <Link to={`/form/${database.datname}`}>
+                  <Link key={database.datname} to={`/form/${database.datname}`}>
                     <div>{ database.datname }</div>
                   </Link>
                 )
