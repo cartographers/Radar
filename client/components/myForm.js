@@ -168,13 +168,13 @@ class myForm extends React.Component {
                {this.state.chartTypes.map((val,i) => <option value={val} key={i}>{val}</option>)}
               </select>
             <label>Chart Title</label>
-            <input className="form-control" onChange={this.handleChange.bind(this, 'Title')}/>
+            <input className="form-control" onChange={this.handleChartChange.bind(this, 'Title')}/>
 
             <label>Height</label>
-            <input className="form-control" onChange={this.handleChange.bind(this, 'height')}/>
+            <input className="form-control" onChange={this.handleChartChange.bind(this, 'height')}/>
 
             <label>Width</label>
-            <input className="form-control" onChange={this.handleChange.bind(this, 'width')}/>
+            <input className="form-control" onChange={this.handleChartChange.bind(this, 'width')}/>
 
             <label>X axis</label>
             <select onChange={this.handleChartChange.bind(this, 'xAxis')}>
