@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchDatabase, searchDatabase, fetchFields, fetchDatabases, fetchTables, currentDatabase, fetchGraphs, saveGraph } from '../store'
+import { fetchDatabase, fetchQueryTable, fetchFields, fetchDatabases, fetchTables, currentDatabase, fetchGraphs, saveGraph } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
 
@@ -13,8 +13,8 @@ class myForm extends React.Component {
       whereThese: [],
       orderedBy: ['Descending', 0 ],
       conditionals : ['greater than', 'greater than or equal to', 'less than', 'less than or equal to','equal to', 'not', 'between', 'not between'],
-      conditionalOperator: ['>', '>=', '<', '<=', '===', '!==', '[]', '![]'],
-      orderType : ['None','Ascending', 'Descending'],
+      conditionalOperator: ['>', '>=', '<', '<=', '=', '!=', '[]', '![]'],
+      orderType : ['None','ASC', 'DESC'],
       chartTypes: ['Pie', 'Scatter', 'Donut', 'Bar', 'Line'],
       currentTable : '',
       currentDatabase : '',
@@ -210,7 +210,7 @@ const mapState = state => {
     tables: state.tables,
     columns: state.fields,
     createdGraphs: state.createdGraphs,
-    database: state.database
+    database: state.queriedTable
   })
 }
 
@@ -234,7 +234,7 @@ const mapDispatch = dispatch => {
       dispatch(saveGraph(newGraphInfo))
     },
     queryDatabase(settings){
-      dispatch(searchDatabase(settings))
+      dispatch(fetchQueryTable(settings))
     }
   })
 }

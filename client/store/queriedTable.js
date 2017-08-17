@@ -15,7 +15,7 @@ const queriedTable = table => ({type: QUERIED_TABLE, table})
 /**
  * THUNK CREATORS
  */
-export const fetchQueryTable = (queryInfo) => 
+export const fetchQueryTable = (queryInfo) =>
   dispatch => {
     console.log('QUERY INFO (queriedtable)::', queryInfo)
     const result = queryData(queryInfo)
@@ -27,7 +27,7 @@ export const fetchQueryTable = (queryInfo) =>
 /**
  * REDUCER
  */
- 
+
 export default function (state = [], action) {
   switch (action.type) {
     case QUERIED_TABLE:

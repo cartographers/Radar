@@ -15,9 +15,11 @@ const queryData = (settings) => {
 	console.log('Settings....', settings)
 
 	let selectThese = settings.selectThese.join(', ') || '*'
-	let whereThese = settings.whereThese.map(where => 'WHERE ' + where.col + ' ' + where.is + ' ' + where.spec)
+	let whereThese = settings.whereThese.map(where => settings.currentTable + '.' + where.col + ' ' + where.is + ' ' + where.spec).join(' AND ')
+	whereThese = 'WHERE ' + whereThese
+	let orderType = settings.orderType
 
-	let querySearch = ['SELECT', selectThese, 'FROM', settings.currentTable, whereThese]
+	let querySearch = ['SELECT', selectThese, 'FROM', settings.currentTable, whereThese, orderType]
 	// if (settings.join) querySearch.push('JOIN ' + settings.field)
 	// if (settings.whereThese) querySearch.push('ON ' + settings.whereThese)
 
