@@ -20,6 +20,7 @@ class myForm extends React.Component {
       chartTypes: ['Pie', 'Scatter', 'Donut', 'Bar', 'Line'],
       currentTable : '',
       currentDatabase : '',
+      AndOr: 'AND',
       choosenChart: '',
       Title: '',
       xAxis: '',
@@ -43,23 +44,21 @@ class myForm extends React.Component {
     const value = evt.target.value
     let newVal = (fromWhere === 'whereThese') ? {} : value
     if(fromWhere === 'whereThese'){
-      newVal[type] = (type === 'is') ? this.state.conditionalOperator[value] : value
+      if(type === 'is'){
+        newVal[type] = this.state.conditionalOperator[value]
+        newVal.literal = value
+      }
+      else newVal[type] = value
     }
 
     this.setState( (prevState) => ( { [fromWhere]: prevState[fromWhere].map( (val, i) => {
         if (index != i ) return val
         if (fromWhere === 'whereThese'){
-          if(type === 'spec'){
-            const specType = this.props.columnsType[this.props.columns.indexOf(val.col)]
-            if (specType === 'string') newVal[type]  = "'"+ value + "'" 
-            if (specType === 'integer') newVal[type] = +value
-          }
           return {...val, ...newVal}
         }
         return newVal;
     })}))
   }
-
 
   handleChartChange = (fromWhere, evt) => {
     this.setState({
@@ -68,7 +67,7 @@ class myForm extends React.Component {
   }
 
   handleAdd = (addTo, evt) => {
-    let newAdd = (addTo === 'selectThese') ? this.props.columns[0] : {col:this.props.columns[0], is: '>', spec: '' }
+    let newAdd = (addTo === 'selectThese') ? this.props.columns[0] : {col:this.props.columns[0], is: '>', spec: '' , literal:'greater than'}
     this.setState( (prevState) => ({ [addTo]: [...prevState[addTo], newAdd] }))
   }
 
@@ -97,7 +96,7 @@ class myForm extends React.Component {
       return <div>
                 <label>From</label>
                   <select name="From" onChange={this.handleTableChange}>
-                    <option defaultValue='' >Choose a Table</option>
+                    <option>Choose a Table</option>
                     {this.props.tables && this.props.tables.map((table,i) => <option value={table} key={i}>{table}</option>)}
                   </select>
               </div>
@@ -108,36 +107,45 @@ class myForm extends React.Component {
                 <label>Select</label>
                 { this.state.selectThese.map((sel, index) => {
                     return  <div key={index}>
-                                <select key={index} onChange={this.handleChange.bind(this, index, 'selectThese')}>
+                                <select key={index} onChange={this.handleChange.bind(this, index, 'selectThese')} value={this.state.selectThese[index]}>
                                     {this.props.columns && this.props.columns.map((val,i) => <option value={val} key={i}>{val}</option>)}
                                 </select>
                                 <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'selectThese')}> - </button>
                             </div>
                     })
                 }
-                <button type="button" className="btn btn-primary" onClick={this.handleAdd.bind(this,'selectThese')}>+</button>
+                <button type="button" className="btn btn-primary" onClick={this.handleAdd.bind(this,'selectThese')} disabled={(this.state.selectThese.length) === (this.props.columns.length-1)}>+</button>
             </div>
   }
 
   renderWheres = () => {
     return  <div>
               <label>Where</label>
+              { (this.state.whereThese.length > 1) && (<div>
+                      <input type="radio" className="form-check-input" name="AndOr" value="AND" onChange={this.handleChartChange.bind(this, 'AndOr')} checked/>
+                      And <br />
+                      <input type="radio" className="form-check-input" name="AndOr" value="OR" onChange={this.handleChartChange.bind(this, 'AndOr')} />
+                      Or <br />
+                    </div>)
+              }
               {
                 this.state.whereThese.map((sel, index) => {
                   return  <div key={index}>
-                            <select name="col" onChange={this.handleChange.bind(this, index, 'whereThese')}>
+                            <select name="col" onChange={this.handleChange.bind(this, index, 'whereThese')} value={this.state.whereThese[index].col}>
                               {this.props.columns && this.props.columns.map((val, i)  => <option value={val} key={i}>{val}</option>)}
                             </select>
                             <h4>is</h4>
-                              <select name="is" onChange={this.handleChange.bind(this, index, 'whereThese')}>
+                              <select name="is" onChange={this.handleChange.bind(this, index, 'whereThese')} value={this.state.whereThese[index].literal}>
                               {this.state.conditionals && this.state.conditionals.map((val, i) => <option value={i} key={i}>{val}</option>)}
                               </select>
-                              <input  name="spec" type={this.props.columnsType[this.props.columns.indexOf(this.state.whereThese[index].col)]} onChange={this.handleChange.bind(this, index, 'whereThese')}/>
+                              <input  name="spec" 
+                                      onChange={this.handleChange.bind(this, index, 'whereThese')}
+                                      value={this.state.whereThese[index].spec}/>
                               <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'whereThese')}> - </button>
                           </div>
                 })
               }
-                <button type="button" className="btn btn-primary" onClick={this.handleAdd.bind(this, 'whereThese')}>+</button>
+                <button type="button" className="btn btn-primary" onClick={this.handleAdd.bind(this, 'whereThese')} disabled={this.state.whereThese.length === 4}>+</button>
             </div>
   }
 
