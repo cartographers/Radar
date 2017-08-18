@@ -28,10 +28,10 @@ class Home extends Component {
               </div>
               <div className="col-lg-12">
                   {
-                    databases && databases.map((database, index) => {
+                    databases && databases.map(database => {
                       return (
-                        <div className="dbList" key={index}>
-                          <Link key={database.datname} to={`/form/${database.datname}`}>
+                        <div className="dbList" key={database.datname}>
+                          <Link to={`/form/${database.datname}`}>
                             <div className="col-md-4" style={{textAlign: 'left'}}>
                               { database.datname }
                             </div>
@@ -41,7 +41,6 @@ class Home extends Component {
                     })
                   }
               </div>
-
             </div>
           </div>
         </div>
@@ -51,7 +50,6 @@ class Home extends Component {
 }
 
 const mapState = (state) => {
-  console.log(state)
   return {
     databases: state.databases,
   }
