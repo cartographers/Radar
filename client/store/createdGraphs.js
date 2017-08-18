@@ -1,5 +1,6 @@
 import {fetchQueryTable} from './queriedTable'
 import {queryData} from '../../utils/connectDB'
+import {saveSettings, openSettings} from '../../utils/saveFile'
 /**
  * ACTION TYPES
  */
@@ -10,7 +11,7 @@ export const ADD_GRAPH = 'ADD_GRAPH'
 /**
  * ACTION CREATORS
  */
-const getGraphs = () => ({type: GET_GRAPHS})
+const getGraphs = graphs => ({type: GET_GRAPHS, graphs})
 const addGraph = graph => ({type: ADD_GRAPH, graph})
 
 /**
@@ -18,11 +19,17 @@ const addGraph = graph => ({type: ADD_GRAPH, graph})
  */
 export const fetchGraphs = () =>
   dispatch => {
-    dispatch(getGraphs())
-}
+    openSettings()
+      .then(graphs => {
+        const graphsJson = JSON.parse(graphs)
+        console.log(graphsJson)
+        dispatch(getGraphs(graphsJson))
+
+      })
+      }
 
 export const saveGraph = (settings) =>
-  dispatch => {
+  (dispatch, getState) => {
     const result = queryData(settings.settings)
     result
     .then(response => {
@@ -30,7 +37,11 @@ export const saveGraph = (settings) =>
       newSettings.settings.savedQuery = response
       return newSettings
     })
-    .then(newSettings => dispatch(addGraph(newSettings)))
+    .then(newSettings => {
+      dispatch(addGraph(newSettings))
+      const updatedGraphs = getState().createdGraphs
+      saveSettings(JSON.stringify(updatedGraphs))
+    })
     .catch(err => console.log(err))
 }
 
@@ -41,7 +52,7 @@ export const saveGraph = (settings) =>
 export default function (state = [], action) {
   switch (action.type) {
     case GET_GRAPHS:
-      return state
+      return action.graphs
     case ADD_GRAPH:
       return [...state, action.graph]
     default:

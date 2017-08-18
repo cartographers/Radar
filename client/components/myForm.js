@@ -22,12 +22,13 @@ class myForm extends React.Component {
       currentTable : '',
       currentDatabase : '',
       AndOr: 'AND',
-      choosenChart: '',
+      choosenChart: 'Pie',
       Title: '',
       xAxis: '',
       yAxis: '',
       height: '',
       width: '',
+      pieKey: '',
     }
   }
 
@@ -78,8 +79,6 @@ class myForm extends React.Component {
     }))
   }
 
-
-
   makeGraph = (evt) => {
     evt.preventDefault()
     let settings = {
@@ -95,10 +94,9 @@ class myForm extends React.Component {
       currentDatabase : this.state.currentDatabase,
       AndOr: this.state.AndOr,
       choosenChart: this.state.choosenChart,
-      fields: this.props.fields
+      fields: this.props.fields,
+      pieKey: this.state.pieKey
     }
-
-    // const newGraph = newGraphMaker(settings, this.state.choosenChart)
     this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, settings)  // second argument should be settings of graph
   }
 
@@ -154,7 +152,7 @@ class myForm extends React.Component {
                               <select name="is" onChange={this.handleChange.bind(this, index, 'whereThese')} value={this.state.whereThese[index].literal}>
                               {this.state.conditionals && this.state.conditionals.map((val, i) => <option value={i} key={i}>{val}</option>)}
                               </select>
-                              <input  name="spec" 
+                              <input  name="spec"
                                       onChange={this.handleChange.bind(this, index, 'whereThese')}
                                       value={this.state.whereThese[index].spec}/>
                               <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'whereThese')}> - </button>
@@ -190,57 +188,97 @@ class myForm extends React.Component {
   render () {
     const DBName = this.props.match.params.dbName
     return (
-      <div>
-        <h2>User {DBName} Query Selection Form</h2>
-        <div>
-          <Button>
-            <Link to="/table">preview table</Link>
-          </Button>
-        </div>
-        <form>
-            { this.renderTables() }
-            { this.state.currentTable && this.renderSelects()} 
-            { this.state.currentTable && this.renderWheres() }
-            { this.state.currentTable && this.renderOrderBy() }
-        </form>
-        <h2>Chart choice</h2>
-        <form>
-            <label>Chart Type</label>
-              <select name='choosenChart' onChange={this.handleChartChange.bind(this, 'choosenChart')} required>
-               {this.state.chartTypes.map((val,i) => <option value={val} key={i}>{val}</option>)}
+      <div className="col-md-12">
+
+      <div className="box1 col-md-6">
+
+            <Button>
+              <Link to="/table">preview table</Link>
+            </Button>
+            <Button id="saveFile" onClick={saveFile}>Save Graph</Button>
+
+              <form>
+                <div className="col-md-12">
+                  { this.renderTables() }
+                </div>
+                <div className="col-md-12">
+                  { this.state.currentTable && this.renderSelects()} 
+                </div>
+                <div className="col-md-12">
+                  { this.state.currentTable && this.renderWheres() }
+                </div>
+                <div className="col-md-12">
+                  { this.state.currentTable && this.renderOrderBy() }
+                </div>
+              </form>
+      </div>
+
+      <div className="box1 col-md-6">
+
+          <form>
+
+              <div className="col-md-12">
+                <label>Chart Type</label>
+                <select name='choosenChart' onChange={this.handleChartChange.bind(this, 'choosenChart')} required>
+                 {this.state.chartTypes.map((val,i) => <option value={val} key={i}>{val}</option>)}
+                </select>
+              </div>
+
+              <div className="col-md-12">
+                <label>Pie Key (only for pie charts)</label>
+                <input className="form-control" onChange={this.handleChartChange.bind(this, 'pieKey')} required/>
+              </div>
+
+              <div className="col-md-12">
+                <label>Chart Title</label>
+                <input className="form-control" onChange={this.handleChartChange.bind(this, 'Title')} required/>
+              </div>
+
+              <div className="col-md-12">
+                <label>Height</label>
+                <input className="form-control" onChange={this.handleChartChange.bind(this, 'height')} required/>
+              </div>
+
+              <div className="col-md-12">
+                <label>Width</label>
+                <input className="form-control" onChange={this.handleChartChange.bind(this, 'width')} required/>
+              </div>
+
+              <div className="col-md-12">
+              <label>X axis</label>
+              <select onChange={this.handleChartChange.bind(this, 'xAxis')} required>
+                 { this.options() }
               </select>
-            <label>Chart Title</label>
-            <input className="form-control" onChange={this.handleChartChange.bind(this, 'Title')} required/>
+              </div>
 
-            <label>Height</label>
-            <input className="form-control" onChange={this.handleChartChange.bind(this, 'height')} required/>
+              <div className="col-md-12">
+                <label>Y axis</label>
+                <select onChange={this.handleChartChange.bind(this, 'yAxis')} required>
+                   { this.options() }
+                </select>
+              </div>
 
-            <label>Width</label>
-            <input className="form-control" onChange={this.handleChartChange.bind(this, 'width')} required/>
+            <div className="col-md-12">
+                  <Button 
+                    type="submit" 
+                    className="btn btn-success" onClick={this.makeGraph}>
+                    Make my graph
+                  </Button>
+            </div>
 
-            <label>X axis</label>
-            <select onChange={this.handleChartChange.bind(this, 'xAxis')} required>
-               { this.options() }
-            </select>
-            <label>Y axis</label>
-            <select onChange={this.handleChartChange.bind(this, 'yAxis')} required>
-               { this.options() }
-            </select>
-          <button type="submit" className="btn btn-success" onClick={this.makeGraph}>Make my graph</button>
-        </form>
+          </form>
+        </div>
         {
           this.props.createdGraphs &&
           this.props.createdGraphs
           .filter(graphInfo => {
             return !(this.state.currentTable)
-                    ? graphInfo.database === DBName
-                    : (graphInfo.database === DBName && graphInfo.table === this.state.currentTable)
+                    ? graphInfo.database == DBName
+                    : (graphInfo.database == DBName && graphInfo.table == this.state.currentTable)
           })
           .map(graphInfo => newGraphMaker(graphInfo.settings))
         }
-        <div>
-    <button id="saveFile" onClick={saveFile}>Save Graph</button>
-    </div>
+
       </div>
     )
   }

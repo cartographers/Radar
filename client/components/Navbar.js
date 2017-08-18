@@ -1,21 +1,17 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import history from '../history'
-import {logout} from '../store'
 
 class Navbar extends React.Component {
 
   render() {
-
-    const {handleClick, isLoggedIn} = this.props
 
     return (
       <nav className="navbar navbar-default">
         <div className="container">
           <div className="navbar-left">
             <Link to="/home"><h4>HOME</h4></Link>
-            <Link to="/form"><h4>form sample</h4></Link>
+            <Link to={`/form/${this.props.currentDatabase}`}><h4>Form Sample</h4></Link>
             <Link to="/scatter"><h4>scatter</h4></Link>
             <Link to="/bar"><h4>bar</h4></Link>
             <Link to="/table"><h4>table</h4></Link>
@@ -31,16 +27,12 @@ class Navbar extends React.Component {
 
 const mapState = (state) => {
   return {
-    isLoggedIn: !!state.user.id
+    currentDatabase: state.currentDatabase
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    handleClick() {
-      dispatch(logout())
-      history.push('/')
-    }
   }
 }
 
