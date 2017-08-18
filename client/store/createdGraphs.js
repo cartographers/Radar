@@ -22,7 +22,6 @@ export const fetchGraphs = () =>
     openSettings()
       .then(graphs => {
         const graphsJson = JSON.parse(graphs)
-        console.log(graphsJson)
         dispatch(getGraphs(graphsJson))
 
       })

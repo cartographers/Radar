@@ -32,22 +32,9 @@ class PieGraph extends Component {
       pieKey
     } = this.props
 
-    const graphData = savedQuery.map((row, index) => {
-      return row  // Tom, look at this thing!
-    }
-                                     
-    const data02 = [{name: 'A1', value: 100},
-                    {name: 'A2', value: 300},
-                   {name: 'B1', value: 100},
-                   {name: 'B2', value: 80},
-                   {name: 'B3', value: 40},
-                   {name: 'B4', value: 30},
-                   {name: 'B5', value: 50},
-                  {name: 'C1', value: 100},
-                  {name: 'C2', value: 200},
-                   {name: 'D1', value: 150},
-                   {name: 'D2', value: 50}]
-
+    const graphData = savedQuery.map(row => {
+      return row  // Tom, look at this thing! - by NG
+    })
 
     return (
       <div className="col-md-6">
@@ -73,11 +60,11 @@ const mapState = (state, ownProps) => {
     database: ownProps.database,
     fields: state.fields,
     queriedTable: state.queriedTable,
-    fields: state.fields,
     savedQuery: ownProps.savedQuery,
     pieKey: ownProps.pieKey
   })
 }
+
 const mapDispatch = (dispatch) => {
   return ({
     fetchQueriedData(queryInfo) {
@@ -85,4 +72,5 @@ const mapDispatch = (dispatch) => {
     }
   })
 }
+
 export default connect(mapState, mapDispatch)(PieGraph)
