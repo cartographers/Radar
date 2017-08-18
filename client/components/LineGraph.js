@@ -27,7 +27,6 @@ class LineGraph extends Component {
       orderBy,
       whereThese
     } = this.props
-    console.log(queriedTable)
     const graphData = queriedTable.map((row, index) => {
       return {x: row[x], y: row[y]}
     })
