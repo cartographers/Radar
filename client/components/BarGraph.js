@@ -11,10 +11,10 @@ class BarGraph extends Component {
       selectThese: this.props.selectThese,
       whereThese: this.props.whereThese,
       currentTable: this.props.table,
-      orderedBy: this.props.orderBy,
+      orderBy: this.props.orderBy,
       fields: this.props.fields
     }
-    //this.props.fetchQueriedData(queryInfo)
+    this.props.fetchQueriedData(queryInfo)
   }
 
   render () {
@@ -29,9 +29,9 @@ class BarGraph extends Component {
       orderBy,
       whereThese
     } = this.props
-
+    console.log(queriedTable)
     const graphData = queriedTable.map((row, index) => {
-      return {x: row[x].slice(0, 4), y: row[y]}
+      return {x: row[x], y: row[y]}
     })
 
     return (
@@ -59,17 +59,17 @@ class BarGraph extends Component {
 
 const mapState = (state, ownProps) => {
   return ({
-    title: ownProps.Title || 'Name vs age ',
-    width: ownProps.width || 900,
-    height: ownProps.height || 500,
-    x: ownProps.xAxis || 'name',
-    y: ownProps.yAxis || 'age',
+    title: ownProps.title,
+    width: ownProps.width,
+    height: ownProps.height,
+    x: ownProps.x,
+    y: ownProps.y,
     orderBy: ownProps.orderedBy,
     whereThese: ownProps.whereThese,
-    table: ownProps.currentTable,
-    queriedTable: state.queriedTable,
-    database: ownProps.currentDatabase,
-    fields: state.fields
+    table: ownProps.table,
+    database: ownProps.database,
+    fields: state.fields,
+    queriedTable: state.queriedTable
   })
 }
 const mapDispatch = (dispatch) => {

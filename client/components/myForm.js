@@ -5,7 +5,7 @@ import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup, Button, Modal} from 'react-bootstrap'
 import {saveFile} from '../../utils/saveFile'
-import {setSettings} from '../../util/graphUtility'
+import {newGraphMaker} from '../../utils/graphUtility'
 
 class myForm extends React.Component {
 
@@ -18,7 +18,7 @@ class myForm extends React.Component {
       conditionals : ['greater than', 'greater than or equal to', 'less than', 'less than or equal to','equal to', 'not', 'between', 'not between'],
       conditionalOperator: ['>', '>=', '<', '<=', '=', '!=', '[]', '![]'],
       orderType : ['None','Ascending', 'Descending'],
-      chartTypes: ['Pie', 'Scatter', 'Donut', 'Bar', 'Line'],
+      chartTypes: ['Pie', 'Scatter', 'Area', 'Bar', 'Line'],
       currentTable : '',
       currentDatabase : '',
       AndOr: 'AND',
@@ -57,7 +57,7 @@ class myForm extends React.Component {
         if (fromWhere === 'whereThese'){
           return {...val, ...newVal}
         }
-        return newVal;
+        return newVal
     })}))
   }
 
@@ -93,10 +93,11 @@ class myForm extends React.Component {
       orderedBy: this.state.orderedBy,
       currentTable: this.state.currentTable,
       currentDatabase : this.state.currentDatabase,
-      AndOr: this.state.AndOr
+      AndOr: this.state.AndOr,
+      choosenChart: this.state.choosenChart
     }
-    const newGraph = setSettings(settings, this.state.choosenChart)
-    this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, newGraph)  // second argument should be settings of graph
+    // const newGraph = newGraphMaker(settings, this.state.choosenChart)
+    this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, settings)  // second argument should be settings of graph
   }
 
   handleTableChange = (evt) => {
@@ -233,11 +234,8 @@ class myForm extends React.Component {
                     ? graphInfo.database === DBName
                     : (graphInfo.database === DBName && graphInfo.table === this.state.currentTable)
           })
-          .map(graphInfo => graphInfo.graph)
+          .map(graphInfo => newGraphMaker(graphInfo.settings))
         }
-        {
-          this.props.database && this.props.database.map(data => <li key={data.id}>{JSON.stringify(data)}</li>)
-        }    
         <div>
     <button id="saveFile" onClick={saveFile}>Save Graph</button>
     </div>
@@ -267,11 +265,11 @@ const mapDispatch = dispatch => {
     loadCreatedGraphs(){
       dispatch(fetchGraphs())
     },
-    savingGraph(currentDatabase, currentTable, graph){  // settings of graph applied to newSettings
+    savingGraph(currentDatabase, currentTable, settings){  // settings of graph applied to newSettings
       let newGraphInfo = {
         database: currentDatabase,
         table: currentTable,
-        graph: graph
+        settings: settings
       }
       dispatch(saveGraph(newGraphInfo))
     },
