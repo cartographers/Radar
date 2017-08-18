@@ -21,14 +21,12 @@ class Home extends Component {
         <div className="row">
           <div className="row">
             <div className="row">
-
               <div className="col-lg-12">
                 <h4>
-                  Postgres Databases 
+                  Postgres Databases
                   <Badge> {databases.length} </Badge>
                 </h4>
               </div>
-              
               <div className="col-lg-12">
                   {
                     databases && databases.map((database, index) => {
@@ -38,7 +36,7 @@ class Home extends Component {
                             <div className="col-md-4" style={{textAlign: 'left'}}>
                               { database.datname }
                             </div>
-                          </Link> 
+                          </Link>
                         </div>
                       )
                     })

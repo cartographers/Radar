@@ -10,9 +10,7 @@
     "build-client": "webpack",
     "build-client-watch": "webpack -w",
     "deploy": "webpack -p && git add -f public/bundle.js public/bundle.js.map && git commit --allow-empty -m 'Deploying' && git push heroku deploy:master",
-    "start": "node server",
-    "start-dev": "npm run build-client-watch & npm run start-server",
-    "start-server": "NODE_ENV='development' nodemon server -e html,js,scss --ignore public",
+    "start": "npm run build-client && electron . & webpack -w",
     "test": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/boilermaker-test' mocha ./**/*.spec.js --compilers js:babel-register",
     "test-client-watch": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/boilermaker-test' mocha -w ./client/**/*.spec.js --compilers js:babel-register",
     "electron": "npm run build-client && electron . & webpack -w"
@@ -27,8 +25,6 @@
     "connect-session-sequelize": "^4.1.0",
     "d3": "^4.10.0",
     "electron": "^1.7.5",
-    "express": "^4.14.1",
-    "express-session": "^1.15.1",
     "history": "^4.6.3",
     "morgan": "^1.8.1",
     "passport": "^0.3.2",
@@ -46,9 +42,7 @@
     "recharts": "^1.0.0-alpha.3",
     "redux": "^3.6.0",
     "redux-logger": "^2.8.1",
-    "redux-thunk": "^2.2.0",
-    "sequelize": "^4.3.1",
-    "socket.io": "^2.0.3"
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "axios-mock-adapter": "^1.9.0",
