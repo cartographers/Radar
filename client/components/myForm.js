@@ -18,7 +18,7 @@ class myForm extends React.Component {
       conditionals : ['greater than', 'greater than or equal to', 'less than', 'less than or equal to','equal to', 'not', 'between', 'not between'],
       conditionalOperator: ['>', '>=', '<', '<=', '=', '!=', '[]', '![]'],
       orderType : ['None','Ascending', 'Descending'],
-      chartTypes: ['Scatter', 'Area', 'Bar', 'Line', 'Pie'],
+      chartTypes: ['Scatter', 'Area', 'Bar', 'Line', 'Pie', 'Table'],
       currentTable : '',
       currentDatabase : '',
       AndOr: 'AND',
@@ -26,8 +26,8 @@ class myForm extends React.Component {
       Title: '',
       xAxis: '',
       yAxis: '',
-      height: '',
-      width: '',
+      height: '400',
+      width: '400',
       pieKey: '',
     }
   }
@@ -181,15 +181,47 @@ class myForm extends React.Component {
   }
 
   options = (yAxis) => {
-    if !(yAxis) return this.state.selectThese.length
+    if (!yAxis) return this.state.selectThese.length
             ? this.state.selectThese.map( (val, index) => <option value={val} key={index}>{val}</option>)
             : (this.props.columns && this.props.columns.map( (val, index) => <option value={val} key={index}>{val}</option>) )
     let mapThis = this.state.selectThese.length
                   ? this.state.selectThese
                   : this.props.columns 
-    mapThis = mapThis.filter((val) => this.props.columnType[this.props.columns.indexOf(val)]) === 23)
-    return mapThis.map( (val, index) => <option value={val} key={index}>{val}</option>) )
+    mapThis = mapThis.filter((val) => (this.props.columnType[this.props.columns.indexOf(val)] === 23))
+    return mapThis.map( (val, index) => <option value={val} key={index}>{val}</option> ) 
   }
+
+  pieOptions = () => {
+    return (<div className="col-md-12">
+              <label>Pie Key (only for pie charts)</label>
+              <select onChange={this.handleChartChange.bind(this, 'pieKey')} >
+                <option>Please choose an Option</option>
+                { this.options() }
+              </select>
+            </div>)
+  }
+
+  chartOptions = () => {
+    return (<div>
+                <div className="col-md-12">
+                <label>X axis</label>
+                <select onChange={this.handleChartChange.bind(this, 'xAxis')} required>
+                    <option>Please choose an Option</option>
+                   { this.options() }
+                </select>
+                </div>
+
+                <div className="col-md-12">
+                  <label>Y axis</label>
+                  <select onChange={this.handleChartChange.bind(this, 'yAxis')} required>
+                      <option>Please choose an Option</option>
+                     { this.options(true) }
+                  </select>
+                </div>
+
+            </div>)
+  }
+
 
   render () {
     const DBName = this.props.match.params.dbName
@@ -205,7 +237,6 @@ class myForm extends React.Component {
                 <form>
                   <Well>
                     <div className="col-md-12">
-                      
                       { this.renderTables() }
                     </div>
                     <div className="col-md-12">
@@ -232,14 +263,6 @@ class myForm extends React.Component {
                   </select>
                 </div>
 
-                { this.state.choosenChart === 'Pie' && (<div className="col-md-12">
-                                            <label>Pie Key (only for pie charts)</label>
-                                            <select onChange={this.handleChartChange.bind(this, 'pieKey')} >
-                                              <option>Please choose an Option</option>
-                                              { this.options() }
-                                            </select>
-                                          </div>)
-                }
                 <div className="col-md-12">
                   <label>Chart Title</label>
                   <input className="form-control" onChange={this.handleChartChange.bind(this, 'Title')} required/>
@@ -254,23 +277,8 @@ class myForm extends React.Component {
                   <label>Width</label>
                   <input className="form-control" onChange={this.handleChartChange.bind(this, 'width')} required/>
                 </div>
-
-                <div className="col-md-12">
-                <label>X axis</label>
-                <select onChange={this.handleChartChange.bind(this, 'xAxis')} required>
-                    <option>Please choose an Option</option>
-                   { this.options() }
-                </select>
-                </div>
-
-                <div className="col-md-12">
-                  <label>Y axis</label>
-                  <select onChange={this.handleChartChange.bind(this, 'yAxis')} required>
-                      <option>Please choose an Option</option>
-                     { this.options(true) }
-                  </select>
-                </div>
-
+                {  this.state.choosenChart === 'Pie' && this.pieOptions() } 
+                {  this.state.choosenChart !== 'Pie' && this.state.choosenChart !== 'Table' && this.chartOptions() }
               <div className="col-md-12">
                     <Button 
                       type="submit" 
