@@ -53,6 +53,17 @@ const checkDataType = (whereSpec, fields) => {
 	return newWhereSpec
 }
 
+const formatOrderBy = (orderOptions) => {
+	console.log('ORDER OPTIONS', orderOptions)
+	if (!orderOptions) return ''
+	let [orderCondition, orderCol] = orderOptions
+	if (orderCondition === 'Ascending') orderCondition = 'ASC'
+	else if (orderCondition === 'Descending') orderCondition = 'DESC'
+	else return ''
+	if (!orderCol) return ''
+	return 'ORDER BY ' + orderCol + ' ' + orderCondition
+}
+
 const queryData = (settings) => {
 	// const postgresUrl = 'postgres://localhost:' + settings.port + '/' + settings.database
 	const postgresUrl = 'postgres://localhost:5432/' + settings.currentDatabase
@@ -61,11 +72,12 @@ const queryData = (settings) => {
 	let whereThese = settings.whereThese && settings.whereThese.map(where => checkDataType(where, settings.fields))
 
 	let selectThese = settings.selectThese && settings.selectThese.join(', ') || '*'
-	whereThese = whereThese && whereThese.map(where => settings.currentTable + '.' + where.col + ' ' + where.is + ' ' + where.spec).join(' AND ')
+	let whereConditional = ' ' + settings.AndOr + ' '
+	whereThese = whereThese && whereThese.map(where => settings.currentTable + '.' + where.col + ' ' + where.is + ' ' + where.spec).join(whereConditional)
 	whereThese = whereThese && whereThese.length ? 'WHERE ' + whereThese : ''
-	let orderType = settings.orderType
+	let orderBy = formatOrderBy(settings.orderedBy)
 
-	let querySearch = ['SELECT', selectThese, 'FROM', settings.currentTable, whereThese]
+	let querySearch = ['SELECT', selectThese, 'FROM', settings.currentTable, whereThese, orderBy]
 
 	querySearch = querySearch.join(' ').trim()
 	console.log('QUERY SEARCH (connectDB):', querySearch)

@@ -21,13 +21,13 @@ class myForm extends React.Component {
       chartTypes: ['Scatter', 'Area', 'Bar', 'Line', 'Pie', 'Table'],
       currentTable : '',
       currentDatabase : '',
-      AndOr: 'AND',
+      AndOr: '',
       choosenChart: 'Scatter',
       Title: '',
       xAxis: '',
       yAxis: '',
-      height: '400',
-      width: '400',
+      height: '',
+      width: '',
       pieKey: '',
     }
   }
@@ -92,7 +92,7 @@ class myForm extends React.Component {
       orderedBy: this.state.orderedBy,
       currentTable: this.state.currentTable,
       currentDatabase : this.state.currentDatabase,
-      AndOr: this.state.AndOr,
+      AndOr: this.state.AndOr || 'AND',
       choosenChart: this.state.choosenChart,
       fields: this.props.fields,
       pieKey: this.state.pieKey
@@ -174,7 +174,7 @@ class myForm extends React.Component {
             {
               <select onChange={this.handleChange.bind(this, 1, 'orderedBy')}>
                 <option>Please choose an Option</option>
-                { this.options() }
+                { this.options(true) }
               </select>
             }
           </div>
