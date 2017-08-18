@@ -22,12 +22,13 @@ class myForm extends React.Component {
       currentTable : '',
       currentDatabase : '',
       AndOr: 'AND',
-      choosenChart: '',
+      choosenChart: 'Pie',
       Title: '',
       xAxis: '',
       yAxis: '',
       height: '',
       width: '',
+      pieKey: '',
     }
   }
 
@@ -78,8 +79,6 @@ class myForm extends React.Component {
     }))
   }
 
-
-
   makeGraph = (evt) => {
     evt.preventDefault()
     let settings = {
@@ -94,7 +93,8 @@ class myForm extends React.Component {
       currentTable: this.state.currentTable,
       currentDatabase : this.state.currentDatabase,
       AndOr: this.state.AndOr,
-      choosenChart: this.state.choosenChart
+      choosenChart: this.state.choosenChart,
+      pieKey: this.state.pieKey
     }
     // const newGraph = newGraphMaker(settings, this.state.choosenChart)
     this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, settings)  // second argument should be settings of graph
@@ -152,7 +152,7 @@ class myForm extends React.Component {
                               <select name="is" onChange={this.handleChange.bind(this, index, 'whereThese')} value={this.state.whereThese[index].literal}>
                               {this.state.conditionals && this.state.conditionals.map((val, i) => <option value={i} key={i}>{val}</option>)}
                               </select>
-                              <input  name="spec" 
+                              <input  name="spec"
                                       onChange={this.handleChange.bind(this, index, 'whereThese')}
                                       value={this.state.whereThese[index].spec}/>
                               <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'whereThese')}> - </button>
@@ -263,14 +263,13 @@ class myForm extends React.Component {
 
           </form>
         </div>
-
         {
           this.props.createdGraphs &&
           this.props.createdGraphs
           .filter(graphInfo => {
             return !(this.state.currentTable)
-                    ? graphInfo.database === DBName
-                    : (graphInfo.database === DBName && graphInfo.table === this.state.currentTable)
+                    ? graphInfo.database == DBName
+                    : (graphInfo.database == DBName && graphInfo.table == this.state.currentTable)
           })
           .map(graphInfo => newGraphMaker(graphInfo.settings))
         }

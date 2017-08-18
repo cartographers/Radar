@@ -1,4 +1,4 @@
-
+import {saveSettings, openSettings} from '../../utils/saveFile'
 /**
  * ACTION TYPES
  */
@@ -9,7 +9,7 @@ export const ADD_GRAPH = 'ADD_GRAPH'
 /**
  * ACTION CREATORS
  */
-const getGraphs = () => ({type: GET_GRAPHS})
+const getGraphs = graphs => ({type: GET_GRAPHS, graphs})
 const addGraph = graph => ({type: ADD_GRAPH, graph})
 
 /**
@@ -17,12 +17,20 @@ const addGraph = graph => ({type: ADD_GRAPH, graph})
  */
 export const fetchGraphs = () =>
   dispatch => {
-    dispatch(getGraphs())
-}
+    openSettings()
+      .then(graphs => {
+        const graphsJson = JSON.parse(graphs)
+        console.log(graphsJson)
+        dispatch(getGraphs(graphsJson))
+
+      })
+      }
 
 export const saveGraph = (settings) =>
-  dispatch => {
+  (dispatch, getState) => {
     dispatch(addGraph(settings))
+    const updatedGraphs = getState().createdGraphs
+    saveSettings(JSON.stringify(updatedGraphs))
 }
 
 /**
@@ -32,7 +40,7 @@ export const saveGraph = (settings) =>
 export default function (state = [], action) {
   switch (action.type) {
     case GET_GRAPHS:
-      return state
+      return action.graphs
     case ADD_GRAPH:
       return [...state, action.graph]
     default:
