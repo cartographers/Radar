@@ -18,13 +18,11 @@ export const newGraphMaker = (settings) => {
     const x = settings.xAxis
     const y = settings.yAxis
     const savedQuery = settings.savedQuery
+    const pieKey = settings.pieKey
 
-    if (makeGraph === 'Pie'){
-      return <PieGraph title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} whereThese={whereThese} savedQuery={savedQuery} />
-    }
     if (makeGraph === 'Area') return <AreaGraph title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} savedQuery={savedQuery} />
     if (makeGraph === 'Line') return <LineGraph title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} savedQuery={savedQuery} />
     if (makeGraph === 'Bar') return <BarGraph title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} savedQuery={savedQuery} />
     if (makeGraph === 'Scatter') return <Scatter title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} savedQuery={savedQuery} />
-
+    if (makeGraph === 'Pie') return <PieGraph pieKey={pieKey} title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} whereThese={whereThese} savedQuery={savedQuery} />
 }
