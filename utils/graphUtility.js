@@ -11,9 +11,14 @@ export const newGraphMaker = (settings) => {
 		const orderedBy = settings.orderedBy
 		const database = settings.currentDatabase
 		const table = settings.currentTable
+<<<<<<< HEAD
 		if(makeGraph === 'Pie'){
 			return <PieGraph title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} whereThese={whereThese}/>
 		}
+=======
+		const pieKey = settings.pieKey
+		console.log('SETTINGS (GRAPH UTILITY)',settings, makeGraph)
+>>>>>>> b84a9b8fec752f570fe0f07a177d27a51a89d35f
 		const x = settings.xAxis
 		const y = settings.yAxis
 		if(makeGraph ==='Area')
@@ -24,4 +29,7 @@ export const newGraphMaker = (settings) => {
 			return <BarGraph title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} />
 		if(makeGraph ==='Scatter')
 			return <Scatter title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} />
+		if(makeGraph === 'Pie'){
+			return <PieGraph title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} whereThese={whereThese} pieKey={pieKey}/>
+		}
 }
