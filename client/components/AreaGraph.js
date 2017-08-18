@@ -42,20 +42,22 @@ class AreaGraph extends Component {
     })
 
     return (
-      <AreaChart
-        width={width}
-        height={height}
-        data={graphData}
-        margin={{top: 10, right: 30, left: 0, bottom: 0}}>
+      <div className="col-md-6">
+        <AreaChart
+          width={width}
+          height={height}
+          data={graphData}
+          margin={{top: 10, right: 30, left: 0, bottom: 0}}>
 
-          <XAxis dataKey="x" />
-          <YAxis />
-          <CartesianGrid strokeDasharray="3 3" />
-          <Tooltip />
+            <XAxis dataKey="x" />
+            <YAxis />
+            <CartesianGrid strokeDasharray="3 3" />
+            <Tooltip />
 
-          <Area type="monotone" dataKey="y" stroke="#8884d8" fill="#8884d8" />
+            <Area type="monotone" dataKey="y" stroke="#8884d8" fill="#8884d8" label />
 
-      </AreaChart>
+        </AreaChart>
+      </div>
     )
   }
 }

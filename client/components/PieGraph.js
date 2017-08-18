@@ -53,19 +53,13 @@ class PieGraph extends Component {
 
 
     return (
-      <div>
-        <div>
-          <h4>Pie Graph</h4>
-        </div>
+      <div className="col-md-6">
+            <PieChart
+              width={800}
+              height={400}>
 
-        <div>
-          <PieChart
-            width={800}
-            height={400}>
-
-            <Pie dataKey={pieKey} data={graphData} cx={200} cy={200} innerRadius={70} outerRadius={90} fill="#82ca9d" label />
-          </PieChart>
-        </div>
+              <Pie data={graphData} cx={200} cy={200} innerRadius={70} outerRadius={90} fill="#82ca9d" label />
+            </PieChart>
       </div>
     )
   }

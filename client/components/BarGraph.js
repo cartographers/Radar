@@ -35,23 +35,15 @@ class BarGraph extends Component {
     })
 
     return (
-      <div>
-
-        <div>
-          <h4>Bar Graph</h4>
-        </div>
-
-        <div className="center">
-          <BarChart width={width} height={height} data={graphData}>
+      <div className="col-md-6">
+          <BarChart width={width} height={height} data={graphData} label>
             <XAxis dataKey="x" />
             <YAxis />
             <CartesianGrid strokeDasharray="3 3" />
             <Tooltip />
             <Legend />
-            <Bar dataKey="y" fill="#82ca9d" />
+            <Bar dataKey="y" fill="#82ca9d" label />
           </BarChart>
-        </div>
-
       </div>
     )
   }
