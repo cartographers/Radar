@@ -215,7 +215,7 @@ class myForm extends React.Component {
                   <label>Y axis</label>
                   <select onChange={this.handleChartChange.bind(this, 'yAxis')} required>
                       <option>Please choose an Option</option>
-                     { this.options(true) }
+                     { this.options() }
                   </select>
                 </div>
 
