@@ -79,8 +79,6 @@ class myForm extends React.Component {
     }))
   }
 
-
-
   makeGraph = (evt) => {
     evt.preventDefault()
     let settings = {
@@ -154,7 +152,7 @@ class myForm extends React.Component {
                               <select name="is" onChange={this.handleChange.bind(this, index, 'whereThese')} value={this.state.whereThese[index].literal}>
                               {this.state.conditionals && this.state.conditionals.map((val, i) => <option value={i} key={i}>{val}</option>)}
                               </select>
-                              <input  name="spec" 
+                              <input  name="spec"
                                       onChange={this.handleChange.bind(this, index, 'whereThese')}
                                       value={this.state.whereThese[index].spec}/>
                               <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'whereThese')}> - </button>
@@ -199,7 +197,7 @@ class myForm extends React.Component {
         </div>
         <form>
             { this.renderTables() }
-            { this.state.currentTable && this.renderSelects()} 
+            { this.state.currentTable && this.renderSelects()}
             { this.state.currentTable && this.renderWheres() }
             { this.state.currentTable && this.renderOrderBy() }
         </form>
@@ -236,8 +234,8 @@ class myForm extends React.Component {
           this.props.createdGraphs
           .filter(graphInfo => {
             return !(this.state.currentTable)
-                    ? graphInfo.database === DBName
-                    : (graphInfo.database === DBName && graphInfo.table === this.state.currentTable)
+                    ? graphInfo.database == DBName
+                    : (graphInfo.database == DBName && graphInfo.table == this.state.currentTable)
           })
           .map(graphInfo => newGraphMaker(graphInfo.settings))
         }

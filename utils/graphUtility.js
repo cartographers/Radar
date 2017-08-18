@@ -15,13 +15,13 @@ export const newGraphMaker = (settings) => {
 		console.log('SETTINGS (GRAPH UTILITY)',settings, makeGraph)
 		const x = settings.xAxis
 		const y = settings.yAxis
-		if(makeGraph ==='Area') 
+		if(makeGraph ==='Area')
 			return <AreaGraph title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} />
-		if(makeGraph ==='Line') 
+		if(makeGraph ==='Line')
 			return <LineGraph title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} />
-		if(makeGraph ==='Bar') 
+		if(makeGraph ==='Bar')
 			return <BarGraph title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} />
-		if(makeGraph ==='Scatter') 
+		if(makeGraph ==='Scatter')
 			return <Scatter title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} />
 		if(makeGraph === 'Pie'){
 			return <PieGraph title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} whereThese={whereThese} pieKey={pieKey}/>
