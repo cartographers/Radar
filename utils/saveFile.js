@@ -32,7 +32,6 @@ function openSettings() {
 }
 
 
-
 module.exports = {saveFile, saveSettings, openSettings}
 
   // fs.open(path, 'w+', function(err, data) {
