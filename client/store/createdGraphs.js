@@ -22,12 +22,12 @@ const deleteGraph = graph => ({type: DELETE_GRAPH, graph})
 export const fetchGraphs = () =>
   dispatch => {
     openSettings()
-    .then(graphs => {
-      if (!graphs) return
-      const graphsJson = JSON.parse(graphs)
-      dispatch(getGraphs(graphsJson))
-    })
-}
+      .then(graphs => {
+        const graphsJson = JSON.parse(graphs)
+        dispatch(getGraphs(graphsJson))
+      })
+      .catch(err => (err))
+  }
 
 export const saveGraph = (settings) =>
   (dispatch, getState) => {

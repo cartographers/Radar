@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import {Link} from 'react-router-dom'
 import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph, fetchQueryTable } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
-import {FormControl, ControlLabel, FormGroup, Button, Modal} from 'react-bootstrap'
+import {FormControl, ControlLabel, FormGroup, Button, Well} from 'react-bootstrap'
 import {saveFile} from '../../utils/saveFile'
 import {newGraphMaker} from '../../utils/graphUtility'
 
@@ -190,86 +190,89 @@ class myForm extends React.Component {
     return (
       <div className="col-md-12">
 
-      <div className="box1 col-md-6">
+        <div className="box1 col-md-6">
+              <Button>
+                <Link to="/table">preview table</Link>
+              </Button>
+              <Button id="saveFile" onClick={saveFile}>Save Graph</Button>
 
-            <Button>
-              <Link to="/table">preview table</Link>
-            </Button>
-            <Button id="saveFile" onClick={saveFile}>Save Graph</Button>
+                <form>
+                  <Well>
+                    <div className="col-md-12">
+                      
+                      { this.renderTables() }
+                    </div>
+                    <div className="col-md-12">
+                      { this.state.currentTable && this.renderSelects()} 
+                    </div>
+                    <div className="col-md-12">
+                      { this.state.currentTable && this.renderWheres() }
+                    </div>
+                    <div className="col-md-12">
+                      { this.state.currentTable && this.renderOrderBy() }
+                    </div>
+                  </Well>
+                </form>
+        </div>
 
-              <form>
+        <div className="box1 col-md-6">
+
+            <form>
+              <Well>
                 <div className="col-md-12">
-                  { this.renderTables() }
+                  <label>Chart Type</label>
+                  <select name='choosenChart' onChange={this.handleChartChange.bind(this, 'choosenChart')} required>
+                   {this.state.chartTypes.map((val,i) => <option value={val} key={i}>{val}</option>)}
+                  </select>
                 </div>
+
+                { this.state.choosenChart === 'Pie' && (<div className="col-md-12">
+                                            <label>Pie Key (only for pie charts)</label>
+                                            <select onChange={this.handleChartChange.bind(this, 'pieKey')} >
+                                              { this.options() }
+                                            </select>
+                                          </div>)
+                }
                 <div className="col-md-12">
-                  { this.state.currentTable && this.renderSelects()} 
+                  <label>Chart Title</label>
+                  <input className="form-control" onChange={this.handleChartChange.bind(this, 'Title')} required/>
                 </div>
+
                 <div className="col-md-12">
-                  { this.state.currentTable && this.renderWheres() }
+                  <label>Height</label>
+                  <input className="form-control" onChange={this.handleChartChange.bind(this, 'height')} required/>
                 </div>
+
                 <div className="col-md-12">
-                  { this.state.currentTable && this.renderOrderBy() }
+                  <label>Width</label>
+                  <input className="form-control" onChange={this.handleChartChange.bind(this, 'width')} required/>
                 </div>
-              </form>
-      </div>
 
-      <div className="box1 col-md-6">
-
-          <form>
-
-              <div className="col-md-12">
-                <label>Chart Type</label>
-                <select name='choosenChart' onChange={this.handleChartChange.bind(this, 'choosenChart')} required>
-                 {this.state.chartTypes.map((val,i) => <option value={val} key={i}>{val}</option>)}
-                </select>
-              </div>
-
-              { this.state.choosenChart === 'Pie' && (<div className="col-md-12">
-                                          <label>Pie Key (only for pie charts)</label>
-                                          <select onChange={this.handleChartChange.bind(this, 'pieKey')} >
-                                            { this.options() }
-                                          </select>
-                                        </div>)
-              }
-              <div className="col-md-12">
-                <label>Chart Title</label>
-                <input className="form-control" onChange={this.handleChartChange.bind(this, 'Title')} required/>
-              </div>
-
-              <div className="col-md-12">
-                <label>Height</label>
-                <input className="form-control" onChange={this.handleChartChange.bind(this, 'height')} required/>
-              </div>
-
-              <div className="col-md-12">
-                <label>Width</label>
-                <input className="form-control" onChange={this.handleChartChange.bind(this, 'width')} required/>
-              </div>
-
-              <div className="col-md-12">
-              <label>X axis</label>
-              <select onChange={this.handleChartChange.bind(this, 'xAxis')} required>
-                 { this.options() }
-              </select>
-              </div>
-
-              <div className="col-md-12">
-                <label>Y axis</label>
-                <select onChange={this.handleChartChange.bind(this, 'yAxis')} required>
+                <div className="col-md-12">
+                <label>X axis</label>
+                <select onChange={this.handleChartChange.bind(this, 'xAxis')} required>
                    { this.options() }
                 </select>
+                </div>
+
+                <div className="col-md-12">
+                  <label>Y axis</label>
+                  <select onChange={this.handleChartChange.bind(this, 'yAxis')} required>
+                     { this.options() }
+                  </select>
+                </div>
+
+              <div className="col-md-12">
+                    <Button 
+                      type="submit" 
+                      className="btn btn-success" onClick={this.makeGraph}>
+                      Make my graph
+                    </Button>
               </div>
+            </Well>
 
-            <div className="col-md-12">
-                  <Button 
-                    type="submit" 
-                    className="btn btn-success" onClick={this.makeGraph}>
-                    Make my graph
-                  </Button>
-            </div>
-
-          </form>
-        </div>
+            </form>
+          </div>
         {
           this.props.createdGraphs &&
           this.props.createdGraphs
