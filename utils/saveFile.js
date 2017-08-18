@@ -18,7 +18,7 @@ function saveFile() {
 function saveSettings(settings) {
   const filePath = process.env.HOME + '/Documents/capstoneSettings/settings.txt'
   const filedir = process.env.HOME + '/Documents/capstoneSettings/'
-  fs.open(filePath, 'r', (err) => {
+  fs.open(filedir, 'r', (err) => {
     if (err) {
       fs.mkdirSync(filedir, (error) => {
         if (error) throw (error)
