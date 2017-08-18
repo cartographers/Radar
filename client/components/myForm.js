@@ -22,12 +22,13 @@ class myForm extends React.Component {
       currentTable : '',
       currentDatabase : '',
       AndOr: 'AND',
-      choosenChart: '',
+      choosenChart: 'Pie',
       Title: '',
       xAxis: '',
       yAxis: '',
       height: '',
       width: '',
+      pieKey: '',
     }
   }
 
@@ -94,7 +95,8 @@ class myForm extends React.Component {
       currentTable: this.state.currentTable,
       currentDatabase : this.state.currentDatabase,
       AndOr: this.state.AndOr,
-      choosenChart: this.state.choosenChart
+      choosenChart: this.state.choosenChart,
+      pieKey: this.state.pieKey
     }
     // const newGraph = newGraphMaker(settings, this.state.choosenChart)
     this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, settings)  // second argument should be settings of graph
@@ -211,10 +213,13 @@ class myForm extends React.Component {
             <input className="form-control" onChange={this.handleChartChange.bind(this, 'Title')} required/>
 
             <label>Height</label>
-            <input className="form-control" onChange={this.handleChartChange.bind(this, 'height')} required/>
+            <input className="form-control" onChange={this.handleChartChange.bind(this, 'height')} defaultValue={430} required/>
 
             <label>Width</label>
-            <input className="form-control" onChange={this.handleChartChange.bind(this, 'width')} required/>
+            <input className="form-control" onChange={this.handleChartChange.bind(this, 'width')} defaultValue={700} required/>
+
+            <label>Pie chart key (if applicable)</label>
+            <input className="form-control" onChange={this.handleChartChange.bind(this, 'pieKey')} />
 
             <label>X axis</label>
             <select onChange={this.handleChartChange.bind(this, 'xAxis')} required>

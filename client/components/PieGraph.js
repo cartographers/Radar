@@ -11,10 +11,11 @@ class PieGraph extends Component {
       selectThese: this.props.selectThese,
       whereThese: this.props.whereThese,
       currentTable: this.props.table,
-      orderedBy: this.props.orderBy,
-      fields: this.props.fields
+      orderBy: this.props.orderBy,
+      fields: this.props.fields,
+      pieKey: this.props.pieKey
     }
-    // this.props.fetchQueriedData(queryInfo)
+    this.props.fetchQueriedData(queryInfo)
   }
 
   render() {
@@ -24,15 +25,32 @@ class PieGraph extends Component {
       width,
       height,
       title,
-      x,
-      y,
       orderBy,
-      whereThese
+      whereThese,
+      fields,
+      pieKey
     } = this.props
 
+    console.log('PIE KEY (PIEGRAPH.JS)', pieKey)
+
     const graphData = queriedTable.map((row, index) => {
-      return {name: row[x].slice(0, 4), value: row[y]}
+      console.log('ROW:', row)
+      return row
     })
+
+
+    const data02 = [{name: 'A1', value: 100},
+                    {name: 'A2', value: 300},
+                   {name: 'B1', value: 100},
+                   {name: 'B2', value: 80},
+                   {name: 'B3', value: 40},
+                   {name: 'B4', value: 30},
+                   {name: 'B5', value: 50},
+                  {name: 'C1', value: 100},
+                  {name: 'C2', value: 200},
+                   {name: 'D1', value: 150},
+                   {name: 'D2', value: 50}]
+
 
     return (
       <div>
@@ -45,7 +63,7 @@ class PieGraph extends Component {
             width={800}
             height={400}>
 
-            <Pie data={graphData} cx={200} cy={200} innerRadius={70} outerRadius={90} fill="#82ca9d" label />
+            <Pie dataKey={pieKey} data={graphData} cx={200} cy={200} innerRadius={70} outerRadius={90} fill="#82ca9d" label />
           </PieChart>
         </div>
       </div>
@@ -55,20 +73,18 @@ class PieGraph extends Component {
 
 const mapState = (state, ownProps) => {
   return ({
-    title: ownProps.Title,
+    title: ownProps.title,
     width: ownProps.width,
     height: ownProps.height,
-    x: ownProps.xAxis,
-    y: ownProps.yAxis,
     orderBy: ownProps.orderedBy,
     whereThese: ownProps.whereThese,
-    table: ownProps.currentTable,
-    database: ownProps.currentDatabase,
+    table: ownProps.table,
+    database: ownProps.database,
+    fields: state.fields,
     queriedTable: state.queriedTable,
-    fields: state.fields
+    pieKey: ownProps.pieKey
   })
 }
-
 const mapDispatch = (dispatch) => {
   return ({
     fetchQueriedData(queryInfo) {
@@ -76,5 +92,4 @@ const mapDispatch = (dispatch) => {
     }
   })
 }
-
 export default connect(mapState, mapDispatch)(PieGraph)
