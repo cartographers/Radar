@@ -18,11 +18,11 @@ class myForm extends React.Component {
       conditionals : ['greater than', 'greater than or equal to', 'less than', 'less than or equal to','equal to', 'not', 'between', 'not between'],
       conditionalOperator: ['>', '>=', '<', '<=', '=', '!=', '[]', '![]'],
       orderType : ['None','Ascending', 'Descending'],
-      chartTypes: ['Pie', 'Scatter', 'Area', 'Bar', 'Line'],
+      chartTypes: ['Scatter', 'Area', 'Bar', 'Line', 'Pie'],
       currentTable : '',
       currentDatabase : '',
       AndOr: 'AND',
-      choosenChart: 'Pie',
+      choosenChart: 'Scatter',
       Title: '',
       xAxis: '',
       yAxis: '',
@@ -224,11 +224,13 @@ class myForm extends React.Component {
                 </select>
               </div>
 
-              <div className="col-md-12">
-                <label>Pie Key (only for pie charts)</label>
-                <input className="form-control" onChange={this.handleChartChange.bind(this, 'pieKey')} required/>
-              </div>
-
+              { this.state.choosenChart === 'Pie' && (<div className="col-md-12">
+                                          <label>Pie Key (only for pie charts)</label>
+                                          <select onChange={this.handleChartChange.bind(this, 'pieKey')} >
+                                            { this.options() }
+                                          </select>
+                                        </div>)
+              }
               <div className="col-md-12">
                 <label>Chart Title</label>
                 <input className="form-control" onChange={this.handleChartChange.bind(this, 'Title')} required/>
