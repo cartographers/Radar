@@ -35,13 +35,7 @@ class ScatterGraph extends Component {
     })
     
     return (
-      <div>
-
-        <div>
-          <h4>Scatter Plot</h4>
-        </div>
-
-        <div className="center">
+      <div className="col-md-6">
           <ScatterChart
             width={width}
             height={height}
@@ -52,9 +46,8 @@ class ScatterGraph extends Component {
             <CartesianGrid strokeDasharray="3 3" />
             <Tooltip cursor={{strokeDasharray: '3 3'}} />
             <Legend />
-            <Scatter name={title} data={graphData} fill="#8884d8" />
+            <Scatter name={title} data={graphData} fill="#8884d8" label />
           </ScatterChart>
-        </div>
       </div>
     )
   }
