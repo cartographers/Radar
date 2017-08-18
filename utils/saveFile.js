@@ -9,40 +9,34 @@ function saveFile() {
     ]
   }, (fileName) => {
     if (fileName === undefined) return;
-    fs.writeFile(fileName, document.getElementById("newGraph").innerText, (err) => {
+    fs.writeFile(fileName, document.getElementById("chartButton").innerText, (err) => {
       if (err) console.log(err)
     });
   });
 }
 
 function saveSettings(settings) {
-  const path = process.env.HOME + '/Documents/settings.txt'
-  fs.writeFile(path, settings, (err) => {
-    if (err) console.log(err)
+  const filePath = process.env.HOME + '/Documents/capstoneSettings/settings.txt'
+  const filedir = process.env.HOME + '/Documents/capstoneSettings/'
+  fs.open(filePath, 'r', (err) => {
+    if (err) {
+      fs.mkdirSync(filedir, (error) => {
+        if (error) throw (error)
+      })
+    }
+  fs.writeFile(filePath, settings, (errors) => {
+    if (errors) console.log(errors)
+  })
   })
 }
 
 function openSettings() {
-  const path = process.env.HOME + '/Documents/settings.txt'
+  const path = process.env.HOME + '/Documents/capstoneSettings/settings.txt'
   return new Promise((resolve, reject) => {
     fs.readFile(path, 'utf8', (err, data) => {
-      if (err) console.log(err)
+      if (err) reject(data)
       resolve(data)
     })})
 }
 
-
-
 module.exports = {saveFile, saveSettings, openSettings}
-
-  // fs.open(path, 'w+', function(err, data) {
-  //   if (err) {
-  //     console.log(err)
-  // } else {
-  //   fs.writeFile('settings.txt', settings, 'utf8', (err) => {
-  //     if (err) console.log(err)
-  //     console.log('File has been saved')
-  //   } )
-  // }
-  // }
-  // )

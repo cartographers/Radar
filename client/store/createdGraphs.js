@@ -23,9 +23,9 @@ export const fetchGraphs = () =>
       .then(graphs => {
         const graphsJson = JSON.parse(graphs)
         dispatch(getGraphs(graphsJson))
-
       })
-      }
+      .catch(err => (err))
+  }
 
 export const saveGraph = (settings) =>
   (dispatch, getState) => {
