@@ -41,7 +41,7 @@ class ScatterGraph extends Component {
             height={height}
             margin={{top: 20, right: 20, bottom: 10, left: 10}}>
 
-            <XAxis dataKey="x" name={x.toString()} />
+            <XAxis dataKey="x" name={x} />
             <YAxis dataKey="y" name={y} />
             <CartesianGrid strokeDasharray="3 3" />
             <Tooltip cursor={{strokeDasharray: '3 3'}} />

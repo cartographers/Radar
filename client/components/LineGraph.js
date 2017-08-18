@@ -27,20 +27,20 @@ class LineGraph extends Component {
       whereThese,
       savedQuery
     } = this.props
-    
+
     const graphData = savedQuery.map((row, index) => {
       return {x: row[x], y: row[y]}
     })
 
     return (
       <div className="col-md-6">
-        <LineChart 
-          width={width} 
-          height={height} 
+        <LineChart
+          width={width}
+          height={height}
           data={graphData}
           margin={{top: 5, right: 30, left: 20, bottom: 5}}>
 
-           <XAxis dataKey="name" />
+           <XAxis dataKey="x" />
            <YAxis />
            <CartesianGrid strokeDasharray="3 3" />
            <Tooltip />

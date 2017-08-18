@@ -281,7 +281,7 @@ class myForm extends React.Component {
                     ? graphInfo.database == DBName
                     : (graphInfo.database == DBName && graphInfo.table == this.state.currentTable)
           })
-          .map(graphInfo => newGraphMaker(graphInfo.settings))
+          .map((graphInfo, index) => <div key={index}>{newGraphMaker(graphInfo.settings)}</div>)
         }
 
       </div>
