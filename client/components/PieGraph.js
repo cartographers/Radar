@@ -42,7 +42,7 @@ class PieGraph extends Component {
               width={800}
               height={400}>
 
-              <Pie dataKey={pieKey} data={graphData} cx={200} cy={200} innerRadius={70} outerRadius={90} fill="#82ca9d" label />
+              <Pie dataKey={pieKey} data={savedQuery} cx={200} cy={200} innerRadius={70} outerRadius={90} fill="#82ca9d" label />
             </PieChart>
       </div>
     )
