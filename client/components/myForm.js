@@ -225,6 +225,11 @@ class myForm extends React.Component {
               </div>
 
               <div className="col-md-12">
+                <label>Pie Key (only for pie charts)</label>
+                <input className="form-control" onChange={this.handleChartChange.bind(this, 'pieKey')} required/>
+              </div>
+
+              <div className="col-md-12">
                 <label>Chart Title</label>
                 <input className="form-control" onChange={this.handleChartChange.bind(this, 'Title')} required/>
               </div>
