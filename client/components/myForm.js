@@ -18,7 +18,7 @@ class myForm extends React.Component {
       conditionals : ['greater than', 'greater than or equal to', 'less than', 'less than or equal to','equal to', 'not', 'between', 'not between'],
       conditionalOperator: ['>', '>=', '<', '<=', '=', '!=', '[]', '![]'],
       orderType : ['None','Ascending', 'Descending'],
-      chartTypes: ['Scatter', 'Area', 'Bar', 'Line', 'Pie'],
+      chartTypes: ['Scatter', 'Area', 'Bar', 'Line', 'Pie', 'Table'],
       currentTable : '',
       currentDatabase : '',
       AndOr: 'AND',
