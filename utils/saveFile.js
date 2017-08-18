@@ -9,7 +9,7 @@ function saveFile() {
     ]
   }, (fileName) => {
     if (fileName === undefined) return;
-    fs.writeFile(fileName, document.getElementById("chartButton").innerText, (err) => {
+    fs.writeFile(fileName, document.getElementById('saveFile').innerText, (err) => {
       if (err) console.log(err)
     });
   });
