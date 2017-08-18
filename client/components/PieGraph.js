@@ -27,10 +27,11 @@ class PieGraph extends Component {
       x,
       y,
       orderBy,
-      whereThese
+      whereThese,
+      savedQuery
     } = this.props
 
-    const graphData = queriedTable.map((row, index) => {
+    const graphData = savedQuery.map((row, index) => {
       return {name: row[x].slice(0, 4), value: row[y]}
     })
 
@@ -65,7 +66,8 @@ const mapState = (state, ownProps) => {
     table: ownProps.currentTable,
     database: ownProps.currentDatabase,
     queriedTable: state.queriedTable,
-    fields: state.fields
+    fields: state.fields,
+    savedQuery: ownProps.savedQuery
   })
 }
 

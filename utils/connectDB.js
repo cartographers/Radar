@@ -57,7 +57,7 @@ const queryData = (settings) => {
 	// const postgresUrl = 'postgres://localhost:' + settings.port + '/' + settings.database
 	const postgresUrl = 'postgres://localhost:5432/' + settings.currentDatabase
 	const client = new pg.Client(postgresUrl)
-
+	console.log('Query settings....', settings)
 	let whereThese = settings.whereThese && settings.whereThese.map(where => checkDataType(where, settings.fields))
 
 	let selectThese = settings.selectThese && settings.selectThese.join(', ') || '*'

@@ -14,7 +14,7 @@ class ScatterGraph extends Component {
       orderBy: this.props.orderBy,
       fields: this.props.fields
     }
-    this.props.fetchQueriedData(queryInfo)
+    // this.props.fetchQueriedData(queryInfo)
   }
 
   render () {
@@ -27,9 +27,10 @@ class ScatterGraph extends Component {
       x,
       y,
       orderBy,
-      whereThese
+      whereThese,
+      savedQuery
     } = this.props
-    const graphData = queriedTable.map((row, index) => {
+    const graphData = savedQuery.map((row, index) => {
       return {x: row[x], y: row[y]}
     })
 
@@ -71,7 +72,8 @@ const mapState = (state, ownProps) => {
     table: ownProps.table,
     database: ownProps.database,
     fields: state.fields,
-    queriedTable: state.queriedTable
+    queriedTable: state.queriedTable,
+    savedQuery: ownProps.savedQuery
   })
 }
 

@@ -1,4 +1,5 @@
-
+import {fetchQueryTable} from './queriedTable'
+import {queryData} from '../../utils/connectDB'
 /**
  * ACTION TYPES
  */
@@ -22,7 +23,15 @@ export const fetchGraphs = () =>
 
 export const saveGraph = (settings) =>
   dispatch => {
-    dispatch(addGraph(settings))
+    const result = queryData(settings.settings)
+    result
+    .then(response => {
+      let newSettings = {...settings}
+      newSettings.settings.savedQuery = response
+      return newSettings
+    })
+    .then(newSettings => dispatch(addGraph(newSettings)))
+    .catch(err => console.log(err))
 }
 
 /**

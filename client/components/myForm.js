@@ -94,8 +94,10 @@ class myForm extends React.Component {
       currentTable: this.state.currentTable,
       currentDatabase : this.state.currentDatabase,
       AndOr: this.state.AndOr,
-      choosenChart: this.state.choosenChart
+      choosenChart: this.state.choosenChart,
+      fields: this.props.fields
     }
+
     // const newGraph = newGraphMaker(settings, this.state.choosenChart)
     this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, settings)  // second argument should be settings of graph
   }
