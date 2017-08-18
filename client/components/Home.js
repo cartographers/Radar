@@ -14,7 +14,6 @@ class Home extends Component {
   render() {
 
     const {databases} = this.props
-    const wellStyles = {maxWidth: 400, margin: '0 auto 10px'}
 
     return (
       <div className="container">
@@ -52,8 +51,9 @@ class Home extends Component {
 }
 
 const mapState = (state) => {
+  console.log(state)
   return {
-    databases: state.databases
+    databases: state.databases,
   }
 }
 
