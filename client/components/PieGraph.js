@@ -27,18 +27,15 @@ class PieGraph extends Component {
       title,
       orderBy,
       whereThese,
+      savedQuery,
       fields,
       pieKey
     } = this.props
 
-    console.log('PIE KEY (PIEGRAPH.JS)', pieKey)
-
-    const graphData = queriedTable.map((row, index) => {
-      console.log('ROW:', row)
-      return row
-    })
-
-
+    const graphData = savedQuery.map((row, index) => {
+      return row  // Tom, look at this thing!
+    }
+                                     
     const data02 = [{name: 'A1', value: 100},
                     {name: 'A2', value: 300},
                    {name: 'B1', value: 100},
@@ -76,6 +73,8 @@ const mapState = (state, ownProps) => {
     database: ownProps.database,
     fields: state.fields,
     queriedTable: state.queriedTable,
+    fields: state.fields,
+    savedQuery: ownProps.savedQuery,
     pieKey: ownProps.pieKey
   })
 }

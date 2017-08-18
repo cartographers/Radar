@@ -1,5 +1,4 @@
 import {queryData} from '../../utils/connectDB'
-
 /**
  * ACTION TYPES
  */
@@ -19,7 +18,9 @@ export const fetchQueryTable = (queryInfo) =>
   dispatch => {
     const result = queryData(queryInfo)
     result
-    .then(response => dispatch(queriedTable(response)))
+    .then(response => {
+      dispatch(queriedTable(response))
+    })
     .catch(err => console.log(err))
 }
 

@@ -14,7 +14,7 @@ class TableDB extends Component {
       currentTable: this.props.table,
       fields: this.props.fields
     }
-    this.props.fetchQueriedData(queryInfo)
+    // this.props.fetchQueriedData(queryInfo)
   }
 
   render() {
@@ -24,10 +24,11 @@ class TableDB extends Component {
       title,
       orderBy,
       whereThese,
-      fields
+      fields,
+      savedQuery
     } = this.props
 
-    const graphData = queriedTable.map((row, index) => {
+    const graphData = savedQuery.map((row, index) => {
       return row
     })
 
@@ -90,7 +91,8 @@ const mapState = (state, ownProps) => {
     selectThese: ownProps.selectThese,
     queriedTable: state.queriedTable,
     fields: state.fields,
-    database: ownProps.currentDatabase
+    database: ownProps.currentDatabase,
+    savedQuery: ownProps.savedQuery
   })
 }
 
