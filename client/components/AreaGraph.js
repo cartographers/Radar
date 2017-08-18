@@ -12,19 +12,20 @@ import {
 
 class AreaGraph extends Component {
 
-  componentDidMount() {
+  componentDidMount () {
     const queryInfo = {
       currentDatabase: this.props.database,
       selectThese: this.props.selectThese,
       whereThese: this.props.whereThese,
-      orderBy: this.props.orderBy,
       currentTable: this.props.table,
+      orderBy: this.props.orderBy,
       fields: this.props.fields
     }
-    // this.props.fetchQueriedData(queryInfo)
+    this.props.fetchQueriedData(queryInfo)
   }
 
   render () {
+
     const {
       queriedTable,
       width,
@@ -35,12 +36,9 @@ class AreaGraph extends Component {
       orderBy,
       whereThese
     } = this.props
-
+    console.log(queriedTable)
     const graphData = queriedTable.map((row, index) => {
-      return {
-        x: row[x].slice(0, 4),
-        y: row[y]
-      }
+      return {x: row[x], y: row[y]}
     })
 
     return (
@@ -64,17 +62,17 @@ class AreaGraph extends Component {
 
 const mapState = (state, ownProps) => {
   return ({
-    title: ownProps.Title,
+    title: ownProps.title,
     width: ownProps.width,
     height: ownProps.height,
-    x: ownProps.xAxis,
-    y: ownProps.yAxis,
+    x: ownProps.x,
+    y: ownProps.y,
     orderBy: ownProps.orderedBy,
     whereThese: ownProps.whereThese,
-    table: ownProps.currentTable,
-    queriedTable: state.queriedTable,
+    table: ownProps.table,
+    database: ownProps.database,
     fields: state.fields,
-    database: ownProps.currentDatabase
+    queriedTable: state.queriedTable
   })
 }
 

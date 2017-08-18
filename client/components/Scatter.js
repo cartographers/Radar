@@ -11,13 +11,13 @@ class ScatterGraph extends Component {
       selectThese: this.props.selectThese,
       whereThese: this.props.whereThese,
       currentTable: this.props.table,
-      orderedBy: this.props.orderBy,
+      orderBy: this.props.orderBy,
       fields: this.props.fields
     }
-    // this.props.fetchQueriedData(queryInfo)
+    this.props.fetchQueriedData(queryInfo)
   }
 
-  render() {
+  render () {
 
     const {
       queriedTable,
@@ -29,11 +29,11 @@ class ScatterGraph extends Component {
       orderBy,
       whereThese
     } = this.props
-
+    console.log(queriedTable)
     const graphData = queriedTable.map((row, index) => {
-      return {x: row[x].slice(0, 4), y: row[y]}
+      return {x: row[x], y: row[y]}
     })
-
+    
     return (
       <div>
 
@@ -62,18 +62,17 @@ class ScatterGraph extends Component {
 
 const mapState = (state, ownProps) => {
   return ({
-    title: ownProps.Title || 'Name vs age ',
-    width: ownProps.width || 900,
-    height: ownProps.height || 500,
-    x: ownProps.xAxis || 'name',
-    y: ownProps.yAxis || 'age',
+    title: ownProps.title,
+    width: ownProps.width,
+    height: ownProps.height,
+    x: ownProps.x,
+    y: ownProps.y,
     orderBy: ownProps.orderedBy,
-    selectThese: ownProps.selectThese,
     whereThese: ownProps.whereThese,
     table: ownProps.table,
-    database: ownProps.currentDatabase,
-    queriedTable: state.queriedTable,
-    fields: state.fields
+    database: ownProps.database,
+    fields: state.fields,
+    queriedTable: state.queriedTable
   })
 }
 
