@@ -10,18 +10,31 @@ class LineGraph extends Component {
       selectThese: this.props.selectThese,
       whereThese: this.props.whereThese,
       currentTable: this.props.table,
-      orderedBy: this.props.orderBy,
+      orderBy: this.props.orderBy,
       fields: this.props.fields
     }
-    // this.props.fetchQueriedData(queryInfo)
+    this.props.fetchQueriedData(queryInfo)
   }
 
   render () {
-    const {queriedTable, width, height, title, x, y, orderBy, whereThese} = this.props
+    const {
+      queriedTable,
+      width,
+      height,
+      title,
+      x,
+      y,
+      orderBy,
+      whereThese
+    } = this.props
+    console.log(queriedTable)
     const graphData = queriedTable.map((row, index) => {
-      return {name: row[x].slice(0, 4), y: row[y], sales: row['sales']}
+      return {x: row[x], y: row[y]}
     })
+
     return (
+      <div>
+      <div><h4>{title}</h4></div>
       <LineChart width={width} height={height} data={graphData}
             margin={{top: 5, right: 30, left: 20, bottom: 5}}>
        <XAxis dataKey="name" />
@@ -31,23 +44,24 @@ class LineGraph extends Component {
        <Legend />
        <Line type="monotone" dataKey="y" stroke="#8884d8" activeDot={{r: 8}} />
       </LineChart>
+      </div>
     );
   }
 }
 
 const mapState = (state, ownProps) => {
   return ({
-    title: ownProps.Title,
+    title: ownProps.title,
     width: ownProps.width,
     height: ownProps.height,
-    x: ownProps.xAxis,
-    y: ownProps.yAxis,
+    x: ownProps.x,
+    y: ownProps.y,
     orderBy: ownProps.orderedBy,
     whereThese: ownProps.whereThese,
-    table: ownProps.currentTable,
-    queriedTable: state.queriedTable,
-    database: ownProps.currentDatabase,
-    fields: state.fields
+    table: ownProps.table,
+    database: ownProps.database,
+    fields: state.fields,
+    queriedTable: state.queriedTable
   })
 }
 
