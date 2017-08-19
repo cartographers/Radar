@@ -10,6 +10,7 @@ import tables from './tables'
 import queriedTable from './queriedTable'
 import currentDatabase from './currentDatabase'
 import createdGraphs from './createdGraphs'
+import foreignKeys from './foreignKeys'
 
 const reducer = combineReducers({
 	user,
@@ -20,7 +21,8 @@ const reducer = combineReducers({
 	tables,
 	queriedTable,
 	currentDatabase,
-	createdGraphs
+	createdGraphs,
+	foreignKeys
 })
 
 const middleware = applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
@@ -36,3 +38,4 @@ export * from './tables'
 export * from './queriedTable'
 export * from './currentDatabase'
 export * from './createdGraphs'
+export * from './foreignKeys'

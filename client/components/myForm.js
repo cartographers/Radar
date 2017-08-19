@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {Link} from 'react-router-dom'
-import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph, fetchQueryTable } from '../store'
+import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph, fetchQueryTable, fetchKeys } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup, Button, Well} from 'react-bootstrap'
 import {saveFile} from '../../utils/saveFile'
@@ -313,7 +313,8 @@ const mapState = state => {
     createdGraphs: state.createdGraphs,
     database: state.queriedTable,
     fields: state.fields,
-    columnType: state.fields.map(val => val.dataTypeID)
+    columnType: state.fields.map(val => val.dataTypeID),
+    foreignKeys: state.foreignKeys
   })
 }
 
@@ -324,6 +325,8 @@ const mapDispatch = dispatch => {
     },
     grabTableData(database, table) {
       dispatch( fetchFields({ database, table}))
+      debugger
+      dispatch( fetchKeys({ database, table}))
     },
     loadCreatedGraphs(){
       dispatch(fetchGraphs())
