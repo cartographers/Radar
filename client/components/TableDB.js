@@ -30,7 +30,6 @@ class TableDB extends Component {
     let fields = savedQuery[0]
                   ? Object.keys(savedQuery[0])
                   : []
-    debugger
     return (
       <div>
         <div>
