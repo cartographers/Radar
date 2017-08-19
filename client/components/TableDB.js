@@ -17,7 +17,6 @@ class TableDB extends Component {
   }
 
  render() {
-
     const {
       queriedTable,
       width,
@@ -34,7 +33,6 @@ class TableDB extends Component {
         <div>
           <h4>Table</h4>
         </div>
-
         <div>
           <Table>
             <thead>
@@ -43,7 +41,7 @@ class TableDB extends Component {
                 fields.map((field, index) => {
                   return (
                     <th key={index}>
-                      {field}
+                      {field.name}
                     </th>
                   )
                 })
@@ -56,16 +54,7 @@ class TableDB extends Component {
                   const values = Object.values(row)
                   return (
                     <tr key={index}>
-                      <td>
-                        {
-                          values[0]
-                        }
-                      </td>
-                      <td>
-                        {
-                          values[1]
-                        }
-                      </td>
+                        { values.map( (val, index) => <td key={index}>{val}</td>)}
                     </tr>
                   )
                 })
