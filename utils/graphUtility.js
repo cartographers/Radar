@@ -1,4 +1,4 @@
-import {AreaGraph, BarGraph, LineGraph, PieGraph, Scatter, Table} from '../client/components'
+import {AreaGraph, BarGraph, LineGraph, PieGraph, Scatter, TableDB} from '../client/components'
 import React from 'react'
 
 export const saveQueryData = (data) => {
@@ -29,6 +29,11 @@ export const newGraphMaker = (settings) => {
         // If x or y values do not meet correct data type, return error
         return <BarGraph title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} savedQuery={savedQuery} />
     }
+    if (makeGraph === 'Table') {
+        // If x or y values do not meet correct data type, return error
+        return <TableDB title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} whereThese={whereThese} savedQuery={savedQuery} />
+    }
     if (makeGraph === 'Scatter') return <Scatter title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} savedQuery={savedQuery} />
     if (makeGraph === 'Pie') return <PieGraph pieKey={pieKey} title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} whereThese={whereThese} savedQuery={savedQuery} />
+
 }

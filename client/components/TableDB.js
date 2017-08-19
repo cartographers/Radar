@@ -10,34 +10,29 @@ class TableDB extends Component {
       currentDatabase: this.props.database,
       selectThese: this.props.selectThese,
       whereThese: this.props.whereThese,
-      orderedBy: this.props.orderBy,
       currentTable: this.props.table,
+      orderBy: this.props.orderBy,
       fields: this.props.fields
     }
-    // this.props.fetchQueriedData(queryInfo)
   }
 
-  render() {
-
+ render() {
     const {
       queriedTable,
+      width,
+      height,
       title,
       orderBy,
       whereThese,
-      fields,
-      savedQuery
+      savedQuery,
+      fields
     } = this.props
-
-    const graphData = savedQuery.map((row, index) => {
-      return row
-    })
 
     return (
       <div>
         <div>
           <h4>Table</h4>
         </div>
-
         <div>
           <Table>
             <thead>
@@ -46,7 +41,7 @@ class TableDB extends Component {
                 fields.map((field, index) => {
                   return (
                     <th key={index}>
-                      {field}
+                      {field.name}
                     </th>
                   )
                 })
@@ -55,20 +50,11 @@ class TableDB extends Component {
             </thead>
             <tbody>
               {
-                graphData.map((row, index) => {
+                savedQuery.map((row, index) => {
                   const values = Object.values(row)
                   return (
                     <tr key={index}>
-                      <td>
-                        {
-                          values[0]
-                        }
-                      </td>
-                      <td>
-                        {
-                          values[1]
-                        }
-                      </td>
+                        { values.map( (val, index) => <td key={index}>{val}</td>)}
                     </tr>
                   )
                 })
@@ -82,16 +68,16 @@ class TableDB extends Component {
 }
 
 const mapState = (state, ownProps) => {
-  console.log(state)
   return ({
-    title: ownProps.Title || 'Name vs age ',
+    title: ownProps.title,
+    width: ownProps.width,
+    height: ownProps.height,
     orderBy: ownProps.orderedBy,
     whereThese: ownProps.whereThese,
-    table: ownProps.currentTable,
-    selectThese: ownProps.selectThese,
-    queriedTable: state.queriedTable,
+    table: ownProps.table,
+    database: ownProps.database,
     fields: state.fields,
-    database: ownProps.currentDatabase,
+    queriedTable: state.queriedTable,
     savedQuery: ownProps.savedQuery
   })
 }
