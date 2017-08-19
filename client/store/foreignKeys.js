@@ -19,7 +19,6 @@ export const fetchKeys = (data) =>
     const result = loadTableForeignKeys(data)
     result
     .then(response => {
-      console.log(response)
       return dispatch(getKeys(response.rows))
     })
     .catch(err => console.log(err))
