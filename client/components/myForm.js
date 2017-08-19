@@ -325,7 +325,6 @@ const mapDispatch = dispatch => {
     },
     grabTableData(database, table) {
       dispatch( fetchFields({ database, table}))
-      debugger
       dispatch( fetchKeys({ database, table}))
     },
     loadCreatedGraphs(){
