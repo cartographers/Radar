@@ -25,9 +25,12 @@ class TableDB extends Component {
       orderBy,
       whereThese,
       savedQuery,
-      fields
     } = this.props
 
+    let fields = savedQuery[0]
+                  ? Object.keys(savedQuery[0])
+                  : []
+    debugger
     return (
       <div>
         <div>
@@ -41,7 +44,7 @@ class TableDB extends Component {
                 fields.map((field, index) => {
                   return (
                     <th key={index}>
-                      {field.name}
+                      {field}
                     </th>
                   )
                 })
@@ -76,7 +79,6 @@ const mapState = (state, ownProps) => {
     whereThese: ownProps.whereThese,
     table: ownProps.table,
     database: ownProps.database,
-    fields: state.fields,
     queriedTable: state.queriedTable,
     savedQuery: ownProps.savedQuery
   })
