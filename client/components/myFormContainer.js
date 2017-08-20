@@ -1,18 +1,19 @@
 import React from 'react'
 import {FormControl, ControlLabel, FormGroup, Button, Well} from 'react-bootstrap'
 import {newGraphMaker} from '../../utils/graphUtility'
+import {saveFile} from '../../utils/saveFile'
 
-const renderTables = (props) => {
+const RenderTables = (props) => {
     return <div>
               <label>From</label>
                 <select name="From" onChange={props.handleTableChange}>
                   <option>Choose a Table</option>
-                  {this.props.tables && this.props.tables.map((table,i) => <option value={table} key={i}>{table}</option>)}
+                  {props.tables && props.tables.map((table,i) => <option value={table} key={i}>{table}</option>)}
                 </select>
             </div>
 }
 
-const renderSelects = (props) => {
+const RenderSelects = (props) => {
       return <div>
                 <label>Select</label>
                 { props.selectThese.map((sel, index) => {
@@ -28,89 +29,90 @@ const renderSelects = (props) => {
             </div>
   }
 
-renderWheres = (props) => {
+const RenderWheres = (props) => {
   return  <div>
             <label>Where</label>
-            { (this.state.whereThese.length > 1) && (<div>
-                    <input type="radio" className="form-check-input" name="AndOr" value="AND" onChange={this.handleChartChange.bind(this, 'AndOr')} checked/>
+            { (props.whereThese.length > 1) && (<div>
+                    <input type="radio" className="form-check-input" name="AndOr" value="AND" onChange={props.handleChartChange.bind(this, 'AndOr')} checked/>
                     And <br />
-                    <input type="radio" className="form-check-input" name="AndOr" value="OR" onChange={this.handleChartChange.bind(this, 'AndOr')} />
+                    <input type="radio" className="form-check-input" name="AndOr" value="OR" onChange={props.handleChartChange.bind(this, 'AndOr')} />
                     Or <br />
                   </div>)
             }
             {
-              this.state.whereThese.map((sel, index) => {
+              props.whereThese.map((sel, index) => {
                 return  <div key={index}>
-                          <select name="col" onChange={this.handleChange.bind(this, index, 'whereThese')} value={this.state.whereThese[index].col}>
-                            {this.props.columns && this.props.columns.map((val, i)  => <option value={val} key={i}>{val}</option>)}
+                          <select name="col" onChange={props.handleChange.bind(this, index, 'whereThese')} value={props.whereThese[index].col}>
+                            {props.columns && props.columns.map((val, i)  => <option value={val} key={i}>{val}</option>)}
                           </select>
                           <h4>is</h4>
-                            <select name="is" onChange={this.handleChange.bind(this, index, 'whereThese')} value={this.state.whereThese[index].literal}>
-                            {this.state.conditionals && this.state.conditionals.map((val, i) => <option value={i} key={i}>{val}</option>)}
+                            <select name="is" onChange={props.handleChange.bind(this, index, 'whereThese')} value={props.whereThese[index].literal}>
+                            {props.conditionals && props.conditionals.map((val, i) => <option value={i} key={i}>{val}</option>)}
                             </select>
                             <input  name="spec"
-                                    onChange={this.handleChange.bind(this, index, 'whereThese')}
-                                    value={this.state.whereThese[index].spec}/>
-                            <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'whereThese')}> - </button>
+                                    onChange={props.handleChange.bind(this, index, 'whereThese')}
+                                    value={props.whereThese[index].spec}/>
+                            <button type="button" className="btn btn-danger" onClick={props.handleRemove.bind(this, index, 'whereThese')}> - </button>
                         </div>
               })
             }
-              <button type="button" className="btn btn-primary" onClick={this.handleAdd.bind(this, 'whereThese')} disabled={this.state.whereThese.length === 4}>+</button>
+              <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this, 'whereThese')} disabled={props.whereThese.length === 4}>+</button>
           </div>
 }
 
-const renderOrderBy = (props) =>  {
-  return <div className="form-group">
+const RenderOrderBy = (props) =>  {
+  return (<div className="form-group">
           <label>Order by</label>
           {
-            <select onChange={this.handleChange.bind(this, 0, 'orderedBy')}>
-             { this.state.orderType.map((val,i) => <option value={val} key={i}>{val}</option>) }
+            <select onChange={props.handleChange.bind(this, 0, 'orderedBy')}>
+             { props.orderType.map((val, i) => <option value={val} key={i}>{val}</option>) }
             </select>
           }
           {
-            <select onChange={this.handleChange.bind(this, 1, 'orderedBy')}>
+            <select onChange={props.handleChange.bind(this, 1, 'orderedBy')}>
               <option>Please choose an Option</option>
-              { this.options(true) }
             </select>
           }
-        </div>
+        </div>)
 }
-const options = (props) => {
-    if (!props.yAxis) return this.state.selectThese.length
-            ? this.state.selectThese.map( (val, index) => <option value={val} key={index}>{val}</option>)
-            : (this.props.columns && this.props.columns.map( (val, index) => <option value={val} key={index}>{val}</option>) )
-    let mapThis = this.state.selectThese.length
-                  ? this.state.selectThese
-                  : this.props.columns 
-    mapThis = mapThis.filter((val) => (this.props.columnType[this.props.columns.indexOf(val)] === 23))
-    return mapThis.map( (val, index) => <option value={val} key={index}>{val}</option> ) 
-  }
 
-const pieOptions = (props) => {
+
+const options = (selectThese, columns, columnType, filtered) => {
+    if (!filtered) return selectThese.length
+            ? selectThese.map( (val, index) => <option value={val} key={index}>{val}</option>)
+            : (columns && columns.map( (val, index) => <option value={val} key={index}>{val}</option>) )
+    let mapThis = selectThese.length
+                  ? selectThese
+                  : columns
+    mapThis = mapThis.filter((val) => (columnType[columns.indexOf(val)] === 23))
+    return mapThis.map( (val, index) => <option value={val} key={index}>{val}</option> )
+}
+
+const PieOptions = (props) => {
   return (<div className="col-md-12">
             <label>Pie Key (only for pie charts)</label>
-            <select onChange={this.handleChartChange.bind(this, 'pieKey')} >
+            <select onChange={props.handleChartChange.bind(this, 'pieKey')} >
               <option>Please choose an Option</option>
-              { this.options() }
+              { options(props.selectThese, props.columns, props.columnType, true)}
             </select>
           </div>)
 }
 
-const chartOptions = (props) => {
+const ChartOptions = (props) => {
   return (<div>
               <div className="col-md-12">
               <label>X axis</label>
-              <select onChange={this.handleChartChange.bind(this, 'xAxis')} required>
+              <select onChange={props.handleChartChange.bind(this, 'xAxis')} required>
                   <option>Please choose an Option</option>
-                 { this.options() }
+                  { options(props.selectThese, props.columns, props.columnType, false)}
               </select>
               </div>
 
               <div className="col-md-12">
                 <label>Y axis</label>
-                <select onChange={this.handleChartChange.bind(this, 'yAxis')} required>
+                <select onChange={props.handleChartChange.bind(this, 'yAxis')} required>
                     <option>Please choose an Option</option>
-                   { this.options() }
+                    { options(props.selectThese, props.columns, props.columnType, true)}
                 </select>
               </div>
 
@@ -119,26 +121,24 @@ const chartOptions = (props) => {
 
 const MyFormContainer = (props) => {
 
-      <div className="col-md-12">
+      return (<div className="col-md-12">
 
         <div className="box1 col-md-6">
-              <Button>
-              </Button>
               <Button id="saveFile" onClick={saveFile}>Save Graph</Button>
 
                 <form>
                   <Well>
                     <div className="col-md-12">
-                      { this.renderTables() }
+                     <RenderTables {...props} />
                     </div>
                     <div className="col-md-12">
-                      { this.state.currentTable && this.renderSelects()} 
+                      { props.currentTable && <RenderSelects {...props} /> }
                     </div>
                     <div className="col-md-12">
-                      { this.state.currentTable && this.renderWheres() }
+                      { props.currentTable && <RenderWheres {...props} /> }
                     </div>
                     <div className="col-md-12">
-                      { this.state.currentTable && this.renderOrderBy() }
+                      { props.currentTable && <RenderOrderBy {...props} /> }
                     </div>
                   </Well>
                 </form>
@@ -150,31 +150,31 @@ const MyFormContainer = (props) => {
               <Well>
                 <div className="col-md-12">
                   <label>Chart Type</label>
-                  <select name='choosenChart' onChange={this.handleChartChange.bind(this, 'choosenChart')} required>
-                   {this.state.chartTypes.map((val,i) => <option value={val} key={i}>{val}</option>)}
+                  <select name="choosenChart" onChange={props.handleChartChange.bind(this, 'choosenChart')} required>
+                   {props.chartTypes.map((val, i) => <option value={val} key={i}>{val}</option>)}
                   </select>
                 </div>
 
                 <div className="col-md-12">
                   <label>Chart Title</label>
-                  <input className="form-control" onChange={this.handleChartChange.bind(this, 'Title')} required/>
+                  <input className="form-control" onChange={props.handleChartChange.bind(this, 'Title')} required />
                 </div>
 
                 <div className="col-md-12">
                   <label>Height</label>
-                  <input className="form-control" onChange={this.handleChartChange.bind(this, 'height')} required/>
+                  <input className="form-control" onChange={props.handleChartChange.bind(this, 'height')} required />
                 </div>
 
                 <div className="col-md-12">
                   <label>Width</label>
-                  <input className="form-control" onChange={this.handleChartChange.bind(this, 'width')} required/>
+                  <input className="form-control" onChange={props.handleChartChange.bind(this, 'width')} required />
                 </div>
-                {  this.state.choosenChart === 'Pie' && this.pieOptions() } 
-                {  this.state.choosenChart !== 'Pie' && this.state.choosenChart !== 'Table' && this.chartOptions() }
+                {  props.choosenChart === 'Pie' && <PieOptions {...props} />}
+                {  props.choosenChart !== 'Pie' && props.choosenChart !== 'Table' && <ChartOptions {...props} /> }
               <div className="col-md-12">
-                    <Button 
-                      type="submit" 
-                      className="btn btn-success" onClick={this.makeGraph}>
+                    <Button
+                      type="submit"
+                      className="btn btn-success" onClick={props.makeGraph}>
                       Make my graph
                     </Button>
               </div>
@@ -182,18 +182,18 @@ const MyFormContainer = (props) => {
 
             </form>
           </div>
-        {
-          this.props.createdGraphs &&
-          this.props.createdGraphs
+          {
+          props.createdGraphs &&
+          props.createdGraphs
           .filter(graphInfo => {
-            return !(this.props.currentTable)
-                    ? graphInfo.database == DBName
-                    : (graphInfo.database == DBName && graphInfo.table == this.state.currentTable)
+            return !(props.currentTable)
+                    ? graphInfo.database == props.currentDatabase
+                    : (graphInfo.database == props.currentDatabase && graphInfo.table == props.currentTable)
           })
           .map((graphInfo, index) => <div key={index}>{newGraphMaker(graphInfo.settings)}</div>)
         }
 
-      </div>
+      </div>)
 }
 
 export default MyFormContainer

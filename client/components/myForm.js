@@ -1,11 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {Link} from 'react-router-dom'
-import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph, fetchQueryTable } from '../store'
+import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph, fetchQueryTable,fetchKeys  } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup, Button, Well} from 'react-bootstrap'
 import {saveFile} from '../../utils/saveFile'
 import {newGraphMaker} from '../../utils/graphUtility'
+import MyFormContainer from './MyFormContainer'
 
 class myForm extends React.Component {
 
@@ -37,7 +38,6 @@ class myForm extends React.Component {
     this.setState({currentDatabase: db})
     this.props.fetchDat({ database: db})
     this.props.loadCreatedGraphs()
-    if(this.props.tables) this.setState({currentTable: this.props.tables[0]})
   }
 
 
@@ -104,11 +104,18 @@ class myForm extends React.Component {
     const currentTable = evt.target.value
     this.setState({ currentTable: currentTable })
     this.props.grabTableData(this.state.currentDatabase, currentTable)
-    this.props.loadCreatedGraphs()
   }
 
   render () {
-    return <MyFormContainer />
+    return <div>
+          <MyFormContainer selectThese={this.state.selectThese} whereThese={this.state.whereThese} orderedBy={this.state.orderedBy}
+                            conditionals={this.state.conditionals} conditionalOperator={this.state.conditionalOperator} orderType={this.state.orderType}
+                            chartTypes={this.state.chartTypes} tables={this.props.tables} columns={this.props.columns} choosenChart={this.state.choosenChart}
+                            createdGraphs={this.props.createdGraphs} database={this.props.database} fields={this.props.fields} columnType={this.props.columnType}
+                            handleChange={this.handleChange} handleRemove={this.handleRemove} handleAdd={this.handleAdd} handleTableChange={this.handleTableChange}
+                            handleChartChange={this.handleChartChange} makeGraph={this.makeGraph} currentTable={this.state.currentTable} currentDatabase={this.state.currentDatabase}
+            />
+          </div>
   }
 }
 
@@ -119,7 +126,8 @@ const mapState = state => {
     createdGraphs: state.createdGraphs,
     database: state.queriedTable,
     fields: state.fields,
-    columnType: state.fields.map(val => val.dataTypeID)
+    columnType: state.fields.map(val => val.dataTypeID),
+    foreignKeys: state.foreignKeys
   })
 }
 
@@ -130,6 +138,7 @@ const mapDispatch = dispatch => {
     },
     grabTableData(database, table) {
       dispatch( fetchFields({ database, table}))
+      dispatch( fetchKeys({ database, table}))
     },
     loadCreatedGraphs(){
       dispatch(fetchGraphs())
