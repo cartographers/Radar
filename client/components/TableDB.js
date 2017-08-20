@@ -27,7 +27,7 @@ class TableDB extends Component {
       savedQuery,
     } = this.props
 
-    let fields = savedQuery[0]
+    let fields = savedQuery && savedQuery[0]
                   ? Object.keys(savedQuery[0])
                   : []
     return (
@@ -56,7 +56,7 @@ class TableDB extends Component {
                   const values = Object.values(row)
                   return (
                     <tr key={index}>
-                        { values.map( (val, index) => <td key={index}>{val}</td>)}
+                        { values.map( (val, index) => <td key={index}>{val && val.toString() }</td>)}
                     </tr>
                   )
                 })
