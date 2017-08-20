@@ -71,6 +71,7 @@ const RenderOrderBy = (props) =>  {
           {
             <select onChange={props.handleChange.bind(this, 1, 'orderedBy')}>
               <option>Please choose an Option</option>
+              { options(props.selectThese, props.columns, props.columnType, false)}
             </select>
           }
         </div>)

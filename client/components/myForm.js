@@ -82,14 +82,17 @@ class myForm extends React.Component {
   makeGraph = (evt) => {
     evt.preventDefault()
     let settings = {
-      whereThese: this.state.whereThese,
-      selectThese: this.state.selectThese,
+      whereThese: this.state.whereThese.map( val => {
+        val.col = `"${val.col}"`
+        return val
+      }),
+      selectThese: this.state.selectThese.map(val => `"${val}"`),
       Title: this.state.Title,
       width: this.state.width,
       height: this.state.height,
       xAxis: this.state.xAxis,
       yAxis: this.state.yAxis,
-      orderedBy: this.state.orderedBy,
+      orderedBy: [this.state.orderedBy[0], `"${this.state.orderedBy[1]}"`],
       currentTable: this.state.currentTable,
       currentDatabase : this.state.currentDatabase,
       AndOr: this.state.AndOr || 'AND',
