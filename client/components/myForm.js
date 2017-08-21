@@ -21,7 +21,7 @@ class myForm extends React.Component {
       orderType : ['None','Ascending', 'Descending'],
       chartTypes: ['Scatter', 'Area', 'Bar', 'Line', 'Pie', 'Table'],
       currentTable : '',
-      currentDatabase : '',
+      currentDatabase : '', //you are dead to me code
       AndOr: '',
       choosenChart: 'Scatter',
       Title: '',
@@ -30,6 +30,9 @@ class myForm extends React.Component {
       height: '',
       width: '',
       pieKey: '',
+    }
+    this.methods = {
+      handleChange: this.handleChange
     }
   }
 
