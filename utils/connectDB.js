@@ -76,12 +76,11 @@ const formatOrderBy = (orderOptions) => {
 	if (orderCondition === 'Ascending') orderCondition = 'ASC'
 	else if (orderCondition === 'Descending') orderCondition = 'DESC'
 	else return ''
-	if (!orderCol) return ''
+	if (!orderCol || orderCol == 'Please choose an Option') return ''
 	return 'ORDER BY ' + orderCol + ' ' + orderCondition
 }
 
 const queryData = (settings) => {
-	// const postgresUrl = 'postgres://localhost:' + settings.port + '/' + settings.database
 	const postgresUrl = 'postgres://localhost:5432/' + settings.currentDatabase
 	const client = new pg.Client(postgresUrl)
 	console.log('Query settings....', settings)

@@ -92,7 +92,7 @@ class myForm extends React.Component {
       height: this.state.height,
       xAxis: this.state.xAxis,
       yAxis: this.state.yAxis,
-      orderedBy: [this.state.orderedBy[0], `"${this.state.orderedBy[1]}"`],
+      orderedBy: [this.state.orderedBy[0], (this.state.orderedBy[1] ? `"${this.state.orderedBy[1]}"` : undefined)],
       currentTable: this.state.currentTable,
       currentDatabase : this.state.currentDatabase,
       AndOr: this.state.AndOr || 'AND',
