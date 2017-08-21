@@ -76,7 +76,7 @@ const formatOrderBy = (orderOptions) => {
 	if (orderCondition === 'Ascending') orderCondition = 'ASC'
 	else if (orderCondition === 'Descending') orderCondition = 'DESC'
 	else return ''
-	if (!orderCol) return ''
+	if (!orderCol || orderCol == 'Please choose an Option' ) return ''
 	return 'ORDER BY ' + orderCol + ' ' + orderCondition
 }
 
