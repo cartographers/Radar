@@ -97,7 +97,8 @@ class myForm extends React.Component {
       fields: this.props.fields,
       pieKey: this.state.pieKey
     }
-    this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, settings)  // second argument should be settings of graph
+    if (settings.choosenChart === 'Scatter') settings.orderedBy = 'ORDER BY ' + this.state.xAxis + ' ASC'
+    this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, settings)
   }
 
   handleTableChange = (evt) => {

@@ -63,9 +63,9 @@ const queryData = (settings) => {
 	let selectThese = settings.selectThese && settings.selectThese.join(', ') || '*'
 	whereThese = whereThese && whereThese.map(where => settings.currentTable + '.' + where.col + ' ' + where.is + ' ' + where.spec).join(' AND ')
 	whereThese = whereThese && whereThese.length ? 'WHERE ' + whereThese : ''
-	let orderType = settings.orderType
+	let orderedBy = settings.orderedBy
 
-	let querySearch = ['SELECT', selectThese, 'FROM', settings.currentTable, whereThese]
+	let querySearch = ['SELECT', selectThese, 'FROM', settings.currentTable, whereThese, orderedBy]
 
 	querySearch = querySearch.join(' ').trim()
 	console.log('QUERY SEARCH (connectDB):', querySearch)
