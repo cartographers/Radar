@@ -1,4 +1,5 @@
 import {loadFields} from '../../utils/connectDB'
+import {fetchKeys} from './foreignKeys'
 
 /**
  * ACTION TYPES
@@ -16,8 +17,9 @@ const getFields = fields => ({type: GET_FIELDS, fields})
  */
 export const fetchFields = (data) =>
   dispatch => {
-    const result = loadFields(data)
+    const result = fetchKeys(data)
     result
+    .then(() => loadFields(data))
     .then(response => dispatch(getFields(response)))
     .catch(err => console.log(err))
 }

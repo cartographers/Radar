@@ -1,0 +1,6 @@
+{
+	"extends": "fullstack",
+	"rules": {
+		"id-length": ["off"]
+	}	
+}

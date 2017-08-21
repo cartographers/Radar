@@ -11,8 +11,9 @@ class BarGraph extends Component {
       selectThese: this.props.selectThese,
       whereThese: this.props.whereThese,
       currentTable: this.props.table,
-      orderBy: this.props.orderBy,
-      fields: this.props.fields
+      orderedBy: this.props.orderedBy,
+      fields: this.props.fields,
+      AndOr: this.props.AndOr
     }
     // this.props.fetchQueriedData(queryInfo)
   }
@@ -30,19 +31,17 @@ class BarGraph extends Component {
       whereThese,
       savedQuery
     } = this.props
-    const graphData = savedQuery.map((row, index) => {
-      return {x: row[x], y: row[y]}
-    })
 
     return (
       <div className="col-md-6">
-          <BarChart width={width} height={height} data={graphData} label>
-            <XAxis dataKey="x" />
+        <div><h4>{title}</h4></div>
+          <BarChart width={width} height={height} data={savedQuery} label>
+            <XAxis dataKey={x} label />
             <YAxis />
             <CartesianGrid strokeDasharray="3 3" />
             <Tooltip />
             <Legend />
-            <Bar dataKey="y" fill="#82ca9d" label />
+            <Bar dataKey={y} fill="#82ca9d" label />
           </BarChart>
       </div>
     )
@@ -56,13 +55,14 @@ const mapState = (state, ownProps) => {
     height: ownProps.height,
     x: ownProps.x,
     y: ownProps.y,
-    orderBy: ownProps.orderedBy,
+    orderedBy: ownProps.orderedBy,
     whereThese: ownProps.whereThese,
     table: ownProps.table,
     database: ownProps.database,
     fields: state.fields,
     queriedTable: state.queriedTable,
-    savedQuery: ownProps.savedQuery
+    savedQuery: ownProps.savedQuery,
+    AndOr: ownProps.AndOr
   })
 }
 const mapDispatch = (dispatch) => {

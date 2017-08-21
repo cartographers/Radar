@@ -1,11 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {Link} from 'react-router-dom'
-import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph, fetchQueryTable } from '../store'
+import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph, fetchQueryTable, fetchKeys } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup, Button, Well} from 'react-bootstrap'
 import {saveFile} from '../../utils/saveFile'
 import {newGraphMaker} from '../../utils/graphUtility'
+import MyFormContainer from './MyFormContainer'
 
 class myForm extends React.Component {
 
@@ -13,15 +14,15 @@ class myForm extends React.Component {
     super()
     this.state = {
       selectThese: [],
-      whereThese: [],
+      whereThese: [], //objects of Nested Wheres???
       orderedBy: ['Descending', 0 ],
       conditionals : ['greater than', 'greater than or equal to', 'less than', 'less than or equal to','equal to', 'not', 'between', 'not between'],
       conditionalOperator: ['>', '>=', '<', '<=', '=', '!=', '[]', '![]'],
       orderType : ['None','Ascending', 'Descending'],
-      chartTypes: ['Scatter', 'Area', 'Bar', 'Line', 'Pie'],
+      chartTypes: ['Scatter', 'Area', 'Bar', 'Line', 'Pie', 'Table'],
       currentTable : '',
       currentDatabase : '',
-      AndOr: 'AND',
+      AndOr: '',
       choosenChart: 'Scatter',
       Title: '',
       xAxis: '',
@@ -37,7 +38,6 @@ class myForm extends React.Component {
     this.setState({currentDatabase: db})
     this.props.fetchDat({ database: db})
     this.props.loadCreatedGraphs()
-    if(this.props.tables) this.setState({currentTable: this.props.tables[0]})
   }
 
 
@@ -82,20 +82,24 @@ class myForm extends React.Component {
   makeGraph = (evt) => {
     evt.preventDefault()
     let settings = {
-      whereThese: this.state.whereThese,
-      selectThese: this.state.selectThese,
+      whereThese: this.state.whereThese.map( val => {
+        val.col = `"${val.col}"`
+        return val
+      }),
+      selectThese: this.state.selectThese.map(val => `"${val}"`),
       Title: this.state.Title,
       width: this.state.width,
       height: this.state.height,
       xAxis: this.state.xAxis,
       yAxis: this.state.yAxis,
-      orderedBy: this.state.orderedBy,
+      orderedBy: [this.state.orderedBy[0], (this.state.orderedBy[1] ? `"${this.state.orderedBy[1]}"` : undefined)],
       currentTable: this.state.currentTable,
       currentDatabase : this.state.currentDatabase,
-      AndOr: this.state.AndOr,
+      AndOr: this.state.AndOr || 'AND',
       choosenChart: this.state.choosenChart,
       fields: this.props.fields,
-      pieKey: this.state.pieKey
+      pieKey: this.state.pieKey,
+      foreignKeys: this.props.foreignKeys
     }
     if (settings.choosenChart === 'Scatter') settings.orderedBy = 'ORDER BY ' + this.state.xAxis + ' ASC'
     this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, settings)
@@ -104,189 +108,19 @@ class myForm extends React.Component {
   handleTableChange = (evt) => {
     const currentTable = evt.target.value
     this.setState({ currentTable: currentTable })
-    this.props.grabTableData(this.state.currentDatabase, currentTable)
-    this.props.loadCreatedGraphs()
-  }
-  renderTables = () => {
-      return <div>
-                <label>From</label>
-                  <select name="From" onChange={this.handleTableChange}>
-                    <option>Choose a Table</option>
-                    {this.props.tables && this.props.tables.map((table,i) => <option value={table} key={i}>{table}</option>)}
-                  </select>
-              </div>
-  }
-
-  renderSelects = () => {
-      return <div>
-                <label>Select</label>
-                { this.state.selectThese.map((sel, index) => {
-                    return  <div key={index}>
-                                <select key={index} onChange={this.handleChange.bind(this, index, 'selectThese')} value={this.state.selectThese[index]}>
-                                    {this.props.columns && this.props.columns.map((val,i) => <option value={val} key={i}>{val}</option>)}
-                                </select>
-                                <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'selectThese')}> - </button>
-                            </div>
-                    })
-                }
-                <button type="button" className="btn btn-primary" onClick={this.handleAdd.bind(this,'selectThese')} disabled={(this.state.selectThese.length) === (this.props.columns.length-1)}>+</button>
-            </div>
-  }
-
-  renderWheres = () => {
-    return  <div>
-              <label>Where</label>
-              { (this.state.whereThese.length > 1) && (<div>
-                      <input type="radio" className="form-check-input" name="AndOr" value="AND" onChange={this.handleChartChange.bind(this, 'AndOr')} checked/>
-                      And <br />
-                      <input type="radio" className="form-check-input" name="AndOr" value="OR" onChange={this.handleChartChange.bind(this, 'AndOr')} />
-                      Or <br />
-                    </div>)
-              }
-              {
-                this.state.whereThese.map((sel, index) => {
-                  return  <div key={index}>
-                            <select name="col" onChange={this.handleChange.bind(this, index, 'whereThese')} value={this.state.whereThese[index].col}>
-                              {this.props.columns && this.props.columns.map((val, i)  => <option value={val} key={i}>{val}</option>)}
-                            </select>
-                            <h4>is</h4>
-                              <select name="is" onChange={this.handleChange.bind(this, index, 'whereThese')} value={this.state.whereThese[index].literal}>
-                              {this.state.conditionals && this.state.conditionals.map((val, i) => <option value={i} key={i}>{val}</option>)}
-                              </select>
-                              <input  name="spec"
-                                      onChange={this.handleChange.bind(this, index, 'whereThese')}
-                                      value={this.state.whereThese[index].spec}/>
-                              <button type="button" className="btn btn-danger" onClick={this.handleRemove.bind(this, index, 'whereThese')}> - </button>
-                          </div>
-                })
-              }
-                <button type="button" className="btn btn-primary" onClick={this.handleAdd.bind(this, 'whereThese')} disabled={this.state.whereThese.length === 4}>+</button>
-            </div>
-  }
-
-  renderOrderBy = () =>  {
-    return <div className="form-group">
-            <label>Order by</label>
-            {
-              <select onChange={this.handleChange.bind(this, 0, 'orderedBy')}>
-               { this.state.orderType.map((val,i) => <option value={val} key={i}>{val}</option>) }
-              </select>
-            }
-            {
-              <select onChange={this.handleChange.bind(this, 1, 'orderedBy')}>
-                { this.options() }
-              </select>
-            }
-          </div>
-  }
-
-  options = () => {
-    return  this.state.selectThese.length
-            ? this.state.selectThese.map( (val, index) => <option value={val} key={index}>{val}</option>)
-            : (this.props.columns && this.props.columns.map( (val, index) => <option value={val} key={index}>{val}</option>) )
+    this.props.grabTableData(this.state.currentDatabase, currentTable, foreignKeys)
   }
 
   render () {
-    const DBName = this.props.match.params.dbName
-    return (
-      <div className="col-md-12">
-
-        <div className="box1 col-md-6">
-              <Button>
-                <Link to="/table">preview table</Link>
-              </Button>
-              <Button id="saveFile" onClick={saveFile}>Save Graph</Button>
-
-                <form>
-                  <Well>
-                    <div className="col-md-12">
-                      
-                      { this.renderTables() }
-                    </div>
-                    <div className="col-md-12">
-                      { this.state.currentTable && this.renderSelects()} 
-                    </div>
-                    <div className="col-md-12">
-                      { this.state.currentTable && this.renderWheres() }
-                    </div>
-                    <div className="col-md-12">
-                      { this.state.currentTable && this.renderOrderBy() }
-                    </div>
-                  </Well>
-                </form>
-        </div>
-
-        <div className="box1 col-md-6">
-
-            <form>
-              <Well>
-                <div className="col-md-12">
-                  <label>Chart Type</label>
-                  <select name='choosenChart' onChange={this.handleChartChange.bind(this, 'choosenChart')} required>
-                   {this.state.chartTypes.map((val,i) => <option value={val} key={i}>{val}</option>)}
-                  </select>
-                </div>
-
-                { this.state.choosenChart === 'Pie' && (<div className="col-md-12">
-                                            <label>Pie Key (only for pie charts)</label>
-                                            <select onChange={this.handleChartChange.bind(this, 'pieKey')} >
-                                              { this.options() }
-                                            </select>
-                                          </div>)
-                }
-                <div className="col-md-12">
-                  <label>Chart Title</label>
-                  <input className="form-control" onChange={this.handleChartChange.bind(this, 'Title')} required/>
-                </div>
-
-                <div className="col-md-12">
-                  <label>Height</label>
-                  <input className="form-control" onChange={this.handleChartChange.bind(this, 'height')} required/>
-                </div>
-
-                <div className="col-md-12">
-                  <label>Width</label>
-                  <input className="form-control" onChange={this.handleChartChange.bind(this, 'width')} required/>
-                </div>
-
-                <div className="col-md-12">
-                <label>X axis</label>
-                <select onChange={this.handleChartChange.bind(this, 'xAxis')} required>
-                   { this.options() }
-                </select>
-                </div>
-
-                <div className="col-md-12">
-                  <label>Y axis</label>
-                  <select onChange={this.handleChartChange.bind(this, 'yAxis')} required>
-                     { this.options() }
-                  </select>
-                </div>
-
-              <div className="col-md-12">
-                    <Button 
-                      type="submit" 
-                      className="btn btn-success" onClick={this.makeGraph}>
-                      Make my graph
-                    </Button>
-              </div>
-            </Well>
-
-            </form>
+    return <div>
+          <MyFormContainer selectThese={this.state.selectThese} whereThese={this.state.whereThese} orderedBy={this.state.orderedBy}
+                            conditionals={this.state.conditionals} conditionalOperator={this.state.conditionalOperator} orderType={this.state.orderType}
+                            chartTypes={this.state.chartTypes} tables={this.props.tables} columns={this.props.columns} choosenChart={this.state.choosenChart}
+                            createdGraphs={this.props.createdGraphs} database={this.props.database} fields={this.props.fields} columnType={this.props.columnType}
+                            handleChange={this.handleChange} handleRemove={this.handleRemove} handleAdd={this.handleAdd} handleTableChange={this.handleTableChange}
+                            handleChartChange={this.handleChartChange} makeGraph={this.makeGraph} currentTable={this.state.currentTable} currentDatabase={this.state.currentDatabase}
+            />
           </div>
-        {
-          this.props.createdGraphs &&
-          this.props.createdGraphs
-          .filter(graphInfo => {
-            return !(this.state.currentTable)
-                    ? graphInfo.database == DBName
-                    : (graphInfo.database == DBName && graphInfo.table == this.state.currentTable)
-          })
-          .map((graphInfo, index) => <div key={index}>{newGraphMaker(graphInfo.settings)}</div>)
-        }
-
-      </div>
-    )
   }
 }
 
@@ -296,7 +130,9 @@ const mapState = state => {
     columns: state.fields.map(val => val.name),
     createdGraphs: state.createdGraphs,
     database: state.queriedTable,
-    fields: state.fields
+    fields: state.fields,
+    columnType: state.fields.map(val => val.dataTypeID),
+    foreignKeys: state.foreignKeys
   })
 }
 
@@ -305,8 +141,9 @@ const mapDispatch = dispatch => {
     fetchDat (DBname) {
       dispatch( fetchTables(DBname) )
     },
-    grabTableData(database, table) {
-      dispatch( fetchFields({ database, table}))
+    grabTableData(database, table, foreignKeys) {
+      dispatch( fetchKeys({ database, table}))
+      dispatch( fetchFields({ database, table, foreignKeys}))
     },
     loadCreatedGraphs(){
       dispatch(fetchGraphs())
