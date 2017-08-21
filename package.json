@@ -13,7 +13,8 @@
     "start": "npm run build-client && electron . & webpack -w",
     "test": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/boilermaker-test' mocha ./**/*.spec.js --compilers js:babel-register",
     "test-client-watch": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/boilermaker-test' mocha -w ./client/**/*.spec.js --compilers js:babel-register",
-    "electron": "npm run build-client && electron . & webpack -w"
+    "electron": "npm run build-client && electron . & webpack -w",
+    "just-electron": "electron ."
   },
   "author": "",
   "license": "ISC",
