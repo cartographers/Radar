@@ -25,9 +25,9 @@ const loadTables = (settings) => {
 }
 
 const loadFields = (settings) => {
-	const postgresUrl = 'postgres://localhost:5432/' + settings.database
+	const postgresUrl = 'postgres://localhost:5432/' +  settings.database
 	const client = new pg.Client(postgresUrl)
-	let querySearch = ['SELECT * FROM', settings.table]
+	let querySearch = ['SELECT * FROM', `"${settings.table}"`]
 	querySearch = querySearch.join(' ').trim()
 
 	client.connect()
@@ -93,7 +93,7 @@ const queryData = (settings) => {
 	whereThese = whereThese && whereThese.length ? 'WHERE ' + whereThese : ''
 	let orderBy = formatOrderBy(settings.orderedBy)
 
-	let querySearch = ['SELECT', selectThese, 'FROM', settings.currentTable, whereThese, orderBy]
+	let querySearch = ['SELECT', selectThese, 'FROM', `"${settings.currentTable}"`, whereThese, orderBy]
 
 	querySearch = querySearch.join(' ').trim()
 	console.log('QUERY SEARCH (connectDB):', querySearch)
