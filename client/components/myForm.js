@@ -1,12 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {Link} from 'react-router-dom'
-import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph, fetchQueryTable, fetchKeys } from '../store'
+import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph, fetchQueryTable, fetchKeys, saveQueryGraph } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup, Button, Well} from 'react-bootstrap'
 import {saveFile} from '../../utils/saveFile'
 import {newGraphMaker} from '../../utils/graphUtility'
 import MyFormContainer from './MyFormContainer'
+import CustomQuery from './CustomQuery'
 
 class myForm extends React.Component {
 
@@ -30,6 +31,7 @@ class myForm extends React.Component {
       height: '',
       width: '',
       pieKey: '',
+      selectQuery: true
     }
   }
 
@@ -38,6 +40,8 @@ class myForm extends React.Component {
     this.setState({currentDatabase: db})
     this.props.fetchDat({ database: db})
     this.props.loadCreatedGraphs()
+    this.props.setCurrentDatabase(db)
+
   }
 
 
@@ -98,9 +102,13 @@ class myForm extends React.Component {
       AndOr: this.state.AndOr || 'AND',
       choosenChart: this.state.choosenChart,
       fields: this.props.fields,
-      pieKey: this.state.pieKey
+      pieKey: this.state.pieKey,
+      selectQuery: this.state.selectQuery,
+      savedQuery: this.props.database
     }
-    this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, settings)  // second argument should be settings of graph
+    this.state.selectQuery ? 
+    this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, settings)
+    : this.props.savingCustomQueryGraph(this.state.currentDatabase, this.state.currentTable, settings)
   }
 
   handleTableChange = (evt) => {
@@ -109,9 +117,16 @@ class myForm extends React.Component {
     this.props.grabTableData(this.state.currentDatabase, currentTable)
   }
 
+  changeQueryType = (event) => {
+    this.setState({ selectQuery: !this.state.selectQuery})
+  }
+
   render () {
     return <div>
-          <MyFormContainer selectThese={this.state.selectThese} whereThese={this.state.whereThese} orderedBy={this.state.orderedBy}
+          <Button className="btn btn-success" onClick={this.changeQueryType}>
+            {this.state.selectQuery ? 'SQL Form Query' : 'Select Query Options'}
+          </Button>
+          <MyFormContainer selectThese={this.state.selectThese} whereThese={this.state.whereThese} orderedBy={this.state.orderedBy} selectQuery={this.state.selectQuery}
                             conditionals={this.state.conditionals} conditionalOperator={this.state.conditionalOperator} orderType={this.state.orderType}
                             chartTypes={this.state.chartTypes} tables={this.props.tables} columns={this.props.columns} choosenChart={this.state.choosenChart}
                             createdGraphs={this.props.createdGraphs} database={this.props.database} fields={this.props.fields} columnType={this.props.columnType}
@@ -146,7 +161,7 @@ const mapDispatch = dispatch => {
     loadCreatedGraphs(){
       dispatch(fetchGraphs())
     },
-    savingGraph(currentDatabase, currentTable, settings){  // settings of graph applied to newSettings
+    savingGraph(currentDatabase, currentTable, settings){
       let newGraphInfo = {
         database: currentDatabase,
         table: currentTable,
@@ -160,6 +175,17 @@ const mapDispatch = dispatch => {
         fields
       }
       dispatch(fetchQueryTable(newSettings))
+    },
+    setCurrentDatabase(database){
+      dispatch(currentDatabase(database))
+    },
+    savingCustomQueryGraph (currentDatabase, currentTable, settings) {
+      let newGraphInfo = {
+        database: currentDatabase,
+        table: currentTable || 'users',
+        settings: settings
+      }
+      dispatch(saveQueryGraph(newGraphInfo))
     }
   })
 }

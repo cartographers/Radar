@@ -108,11 +108,27 @@ const queryData = (settings) => {
 	.catch(err => console.log(err))
 }
 
+const customQueryData = (settings) => {
+	console.log('Custom Query settings....', settings)
+	const postgresUrl = 'postgres://localhost:5432/' + settings.currentDatabase
+	const client = new pg.Client(postgresUrl)
+
+	let querySearch = settings.SQLquery
+	client.connect()
+
+	return client.query(querySearch)
+	.then(result => {
+		return result.rows
+	})
+	.catch(err => console.log(err))
+}
+
 
 module.exports = {
 	initDatabases,
 	queryData,
 	loadTables,
 	loadFields,
-	loadTableForeignKeys
+	loadTableForeignKeys,
+	customQueryData
 }
