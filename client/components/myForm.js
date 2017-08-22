@@ -1,11 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {Link} from 'react-router-dom'
-import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph, fetchQueryTable, fetchKeys } from '../store'
-import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
-import {FormControl, ControlLabel, FormGroup, Button, Well} from 'react-bootstrap'
-import {saveFile} from '../../utils/saveFile'
-import {newGraphMaker} from '../../utils/graphUtility'
+import { fetchFields, fetchTables, fetchGraphs, saveGraph, fetchKeys } from '../store'
+
 import MyFormContainer from './MyFormContainer'
 
 class myForm extends React.Component {
@@ -16,20 +12,26 @@ class myForm extends React.Component {
       selectThese: [],
       whereThese: [], //objects of Nested Wheres???
       orderedBy: ['Descending', 0 ],
-      conditionals : ['greater than', 'greater than or equal to', 'less than', 'less than or equal to','equal to', 'not', 'between', 'not between'],
+      conditionals: ['greater than', 'greater than or equal to', 'less than', 'less than or equal to', 'equal to', 'not', 'between', 'not between'],
       conditionalOperator: ['>', '>=', '<', '<=', '=', '!=', '[]', '![]'],
-      orderType : ['None','Ascending', 'Descending'],
+      orderType: ['Ascending', 'Descending'],
       chartTypes: ['Scatter', 'Area', 'Bar', 'Line', 'Pie', 'Table'],
-      currentTable : '',
-      currentDatabase : '',
+      currentTable: '',
+      currentDatabase: '', //JK YOU CAN STAY
       AndOr: '',
       choosenChart: 'Scatter',
       Title: '',
       xAxis: '',
       yAxis: '',
-      height: '',
-      width: '',
       pieKey: '',
+    }
+    this.methods = {
+      handleChange: this.handleChange.bind(this),
+      handleAdd: this.handleAdd.bind(this),
+      handleRemove: this.handleRemove.bind(this),
+      handleChartChange: this.handleChartChange.bind(this),
+      handleTableChange: this.handleTableChange.bind(this),
+      makeGraph: this.makeGraph.bind(this)
     }
   }
 
@@ -45,8 +47,8 @@ class myForm extends React.Component {
     const type = evt.target.name
     const value = evt.target.value
     let newVal = (fromWhere === 'whereThese') ? {} : value
-    if(fromWhere === 'whereThese'){
-      if(type === 'is'){
+    if (fromWhere === 'whereThese'){
+      if (type === 'is'){
         newVal[type] = this.state.conditionalOperator[value]
         newVal.literal = value
       }
@@ -68,12 +70,12 @@ class myForm extends React.Component {
     })
   }
 
-  handleAdd = (addTo, evt) => {
-    let newAdd = (addTo === 'selectThese') ? this.props.columns[0] : {col:this.props.columns[0], is: '>', spec: '' , literal:'greater than'}
+  handleAdd = (addTo) => {
+    let newAdd = (addTo === 'selectThese') ? this.props.columns[0] : {col: this.props.columns[0], is: '>', spec: '', literal: 'greater than'}
     this.setState( (prevState) => ({ [addTo]: [...prevState[addTo], newAdd] }))
   }
 
-  handleRemove = (index, fromWhere, evt) => {
+  handleRemove = (index, fromWhere) => {
     this.setState( (prevState) => ({
       [fromWhere]: [...prevState[fromWhere].slice(0, index), ...prevState[fromWhere].slice(index + 1)]
     }))
@@ -88,13 +90,11 @@ class myForm extends React.Component {
       }),
       selectThese: this.state.selectThese.map(val => `"${val}"`),
       Title: this.state.Title,
-      width: this.state.width,
-      height: this.state.height,
       xAxis: this.state.xAxis,
       yAxis: this.state.yAxis,
-      orderedBy: [this.state.orderedBy[0],(this.state.orderedBy[1] ? `"${this.state.orderedBy[1]}"` : '')],
+      orderedBy: [this.state.orderedBy[0], (this.state.orderedBy[1] ? `"${this.state.orderedBy[1]}"` : '')],
       currentTable: this.state.currentTable,
-      currentDatabase : this.state.currentDatabase,
+      currentDatabase: this.state.currentDatabase,
       AndOr: this.state.AndOr || 'AND',
       choosenChart: this.state.choosenChart,
       fields: this.props.fields,
@@ -110,15 +110,9 @@ class myForm extends React.Component {
   }
 
   render () {
-    return <div>
-          <MyFormContainer selectThese={this.state.selectThese} whereThese={this.state.whereThese} orderedBy={this.state.orderedBy}
-                            conditionals={this.state.conditionals} conditionalOperator={this.state.conditionalOperator} orderType={this.state.orderType}
-                            chartTypes={this.state.chartTypes} tables={this.props.tables} columns={this.props.columns} choosenChart={this.state.choosenChart}
-                            createdGraphs={this.props.createdGraphs} database={this.props.database} fields={this.props.fields} columnType={this.props.columnType}
-                            handleChange={this.handleChange} handleRemove={this.handleRemove} handleAdd={this.handleAdd} handleTableChange={this.handleTableChange}
-                            handleChartChange={this.handleChartChange} makeGraph={this.makeGraph} currentTable={this.state.currentTable} currentDatabase={this.state.currentDatabase}
-            />
-          </div>
+    return (<div>
+              <MyFormContainer {...this.state} {...this.props} {...this.methods} />
+            </div>)
   }
 }
 
@@ -153,13 +147,6 @@ const mapDispatch = dispatch => {
         settings: settings
       }
       dispatch(saveGraph(newGraphInfo))
-    },
-    queryDatabase(settings, fields){
-      const newSettings = {
-        ...settings,
-        fields
-      }
-      dispatch(fetchQueryTable(newSettings))
     }
   })
 }

@@ -1,76 +1,29 @@
-import {PieChart, Pie, Legend} from 'recharts'
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {fetchQueryTable} from '../store'
+import {PieChart, Pie, Tooltip, Legend} from 'recharts'
+import React from 'react'
 
-class PieGraph extends Component {
-
-  componentDidMount () {
-    const queryInfo = {
-      currentDatabase: this.props.database,
-      selectThese: this.props.selectThese,
-      whereThese: this.props.whereThese,
-      currentTable: this.props.table,
-      orderBy: this.props.orderBy,
-      fields: this.props.fields,
-      pieKey: this.props.pieKey
+const CustomTooltip  = (props) => {
+  if (!props.active) return
+  const queriedInfo = props.payload[0].payload.payload
+  console.log(props)
+  return (<div className="custom-tooltip">
+      { Object.entries(queriedInfo).map((val, index) => {
+        return (val[0] === 'payload' ) ? '' : <div key={index}>{val[0]} : {val[1] && val[1].toString()}</div>
+      })
     }
-    this.props.fetchQueriedData(queryInfo)
-  }
+    </div>)
+}
 
-  render() {
 
-    const {
-      queriedTable,
-      width,
-      height,
-      title,
-      orderBy,
-      whereThese,
-      savedQuery,
-      fields,
-      pieKey
-    } = this.props
-
-    const graphData = savedQuery.map(row => {
-      return row  // Tom, look at this thing! - by NG
-    })
-
+const PieGraph = (props) => {
+    const { savedQuery, pieKey } = props
     return (
       <div className="col-md-6">
-            <PieChart
-              width={800}
-              height={400}>
-
-              <Pie dataKey={pieKey} data={savedQuery} cx={200} cy={200} innerRadius={70} outerRadius={90} fill="#82ca9d" label />
-            </PieChart>
+        <PieChart width={500} height={500}>
+        <Pie dataKey={pieKey} data={savedQuery} cx={200} cy={200} innerRadius={70} outerRadius={90} fill="#82ca9d" label />
+        <Tooltip content={CustomTooltip} />
+        </PieChart>
       </div>
     )
-  }
 }
 
-const mapState = (state, ownProps) => {
-  return ({
-    title: ownProps.title,
-    width: ownProps.width,
-    height: ownProps.height,
-    orderBy: ownProps.orderedBy,
-    whereThese: ownProps.whereThese,
-    table: ownProps.table,
-    database: ownProps.database,
-    fields: state.fields,
-    queriedTable: state.queriedTable,
-    savedQuery: ownProps.savedQuery,
-    pieKey: ownProps.pieKey
-  })
-}
-
-const mapDispatch = (dispatch) => {
-  return ({
-    fetchQueriedData(queryInfo) {
-      dispatch(fetchQueryTable(queryInfo))
-    }
-  })
-}
-
-export default connect(mapState, mapDispatch)(PieGraph)
+export default PieGraph
