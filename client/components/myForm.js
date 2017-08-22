@@ -108,7 +108,7 @@ class myForm extends React.Component {
   handleTableChange = (evt) => {
     const currentTable = evt.target.value
     this.setState({ currentTable: currentTable })
-    this.props.grabTableData(this.state.currentDatabase, currentTable, foreignKeys)
+    this.props.grabTableData(this.state.currentDatabase, currentTable, this.props.foreignKeys)
   }
 
   render () {
