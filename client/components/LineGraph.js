@@ -7,8 +7,8 @@ const LineGraph = (props) => {
     return (
       <div className="col-md-6">
         <LineChart
-          width={250}
-          height={250}
+          width={500}
+          height={500}
           data={savedQuery}
           margin={{top: 5, right: 30, left: 20, bottom: 5}}>
 

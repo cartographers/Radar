@@ -21,7 +21,7 @@ const BarGraph = (props) => {
     return (
       <div className="col-md-6">
         <div><h4>{title}</h4></div>
-          <BarChart width={250} height={250} data={savedQuery} label>
+          <BarChart width={500} height={500} data={savedQuery} label>
             <XAxis dataKey={x} label />
             <YAxis />
             <CartesianGrid strokeDasharray="3 3" />

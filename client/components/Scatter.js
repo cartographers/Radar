@@ -7,8 +7,8 @@ const ScatterGraph = (props) => {
       <div className="col-md-6">
         <div><h4>{title}</h4></div>
           <ScatterChart
-            width={250}
-            height={250}
+            width={500}
+            height={500}
             margin={{top: 20, right: 20, bottom: 10, left: 10}}>
             <XAxis dataKey={x} name={x.toString()} />
             <YAxis dataKey={y} name={y.toString()} />
