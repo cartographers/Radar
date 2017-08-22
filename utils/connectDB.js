@@ -31,7 +31,7 @@ const loadFields = (settings) => {
 	querySearch = querySearch.join(' ').trim()
 
 	client.connect()
-
+	console.log(querySearch)
 	return client.query(querySearch)
 	.then(result => {
 		return result.fields
@@ -76,7 +76,7 @@ const formatOrderBy = (orderOptions) => {
 	if (orderCondition === 'Ascending') orderCondition = 'ASC'
 	else if (orderCondition === 'Descending') orderCondition = 'DESC'
 	else return ''
-	if (!orderCol || orderCol == 'Please choose an Option' ) return ''
+	if (!orderCol || orderCol == 'Make a choice' ) return ''
 	return 'ORDER BY ' + orderCol + ' ' + orderCondition
 }
 

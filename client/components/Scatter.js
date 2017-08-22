@@ -2,22 +2,13 @@ import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} fro
 import React from 'react'
 
 const ScatterGraph = (props) => {
-    const {
-      width,
-      height,
-      title,
-      x,
-      y,
-      savedQuery,
-    } = props
-
-
+    const { title, x, y, savedQuery} = props
     return (
       <div className="col-md-6">
         <div><h4>{title}</h4></div>
           <ScatterChart
-            width={width}
-            height={height}
+            width={250}
+            height={250}
             margin={{top: 20, right: 20, bottom: 10, left: 10}}>
             <XAxis dataKey={x} name={x.toString()} />
             <YAxis dataKey={y} name={y.toString()} />
@@ -29,6 +20,5 @@ const ScatterGraph = (props) => {
       </div>
     )
 }
-
 
 export default ScatterGraph
