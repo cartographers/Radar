@@ -1,5 +1,6 @@
 import {AreaGraph, BarGraph, LineGraph, PieGraph, Scatter, TableDB} from '../client/components'
 import React from 'react'
+const pg = require('pg')
 
 export const saveQueryData = (data) => {
   return data
@@ -20,6 +21,15 @@ export const newGraphMaker = (settings) => {
     const savedQuery = settings.savedQuery
     const pieKey = settings.pieKey
     const AndOr = settings.AndOr
+
+    
+    // create an aggregation function..
+    // which creates a connection with the client
+    // and calls the query method on the client
+    // passes a query for count ...eg COUNT (settings.chosenField) FROM (table) WHERE (settings.chosenField = a number)
+    // return a promise with the count
+    // and catch the error if there..
+  
 
     if (makeGraph === 'Area') return <AreaGraph title={title} AndOr={AndOr} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} savedQuery={savedQuery} />
     if (makeGraph === 'Line') {
