@@ -1,5 +1,7 @@
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
+import {CustomTooltip} from './customToolTips.js'
 import React from 'react'
+
 
 const LineGraph = (props) => {
     const { x, y, savedQuery } = props
@@ -16,7 +18,7 @@ const LineGraph = (props) => {
            <YAxis />
            <CartesianGrid strokeDasharray="3 3" />
            <Tooltip />
-           <Legend />
+           <Legend content={CustomTooltip} />
            <Line type="monotone" dataKey={y} stroke="#8884d8" activeDot={{r: 8}} label />
 
         </LineChart>

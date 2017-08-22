@@ -1,4 +1,5 @@
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
+import {CustomTooltip} from './customToolTips'
 import React from 'react'
 
 const ScatterGraph = (props) => {
@@ -13,7 +14,7 @@ const ScatterGraph = (props) => {
             <XAxis dataKey={x} name={x.toString()} />
             <YAxis dataKey={y} name={y.toString()} />
             <CartesianGrid strokeDasharray="3 3" />
-            <Tooltip cursor={{strokeDasharray: '3 3'}} />
+            <Tooltip content={CustomTooltip}  cursor={{strokeDasharray: '3 3'}} />
             <Legend />
             <Scatter name={title} data={savedQuery} fill="#8884d8" label />
           </ScatterChart>
