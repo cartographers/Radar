@@ -191,10 +191,18 @@ const MyFormContainer = (props) => {
                     ? graphInfo.database == props.currentDatabase
                     : (graphInfo.database == props.currentDatabase && graphInfo.table == props.currentTable)
           })
-          .map((graphInfo, index) => <div key={index}>{newGraphMaker(graphInfo.settings)}</div>)
+          .map((graphInfo, index) => {
+            return (
+            <div key={index} style={{border: 'solid grey 1px'}}>{newGraphMaker(graphInfo.settings)}
+            <button onClick={props.handleChartDelete.bind(this, graphInfo)}>
+            Delete
+            </button>
+            </div>
+          )})
         }
 
       </div>)
 }
+
 
 export default MyFormContainer

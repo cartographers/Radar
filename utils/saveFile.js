@@ -1,4 +1,4 @@
-const {dialog} = require('electron').remote
+const { dialog } = require('electron').remote
 const fs = require('fs')
 const remote = require('electron').remote
 const app = remote.app
@@ -27,9 +27,9 @@ function saveSettings(settings) {
         if (error) throw (error)
       })
     }
-  fs.writeFile(filePath, settings, (errors) => {
-    if (errors) console.log(errors)
-  })
+    fs.writeFile(filePath, settings, (errors) => {
+      if (errors) console.log(errors)
+    })
   })
 }
 
@@ -39,7 +39,8 @@ function openSettings() {
     fs.readFile(path, 'utf8', (err, data) => {
       if (err) reject(data)
       resolve(data)
-    })})
+    })
+  })
 }
 
-module.exports = {saveFile, saveSettings, openSettings}
+module.exports = { saveFile, saveSettings, openSettings }
