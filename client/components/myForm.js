@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {Link} from 'react-router-dom'
-import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph, fetchQueryTable, fetchKeys } from '../store'
+import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph, fetchQueryTable, fetchKeys, removeGraph } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup, Button, Well} from 'react-bootstrap'
-import {saveFile} from '../../utils/saveFile'
+import {saveSettings} from '../../utils/saveFile'
 import {newGraphMaker} from '../../utils/graphUtility'
 import MyFormContainer from './MyFormContainer'
 
@@ -29,7 +29,7 @@ class myForm extends React.Component {
       yAxis: '',
       height: '',
       width: '',
-      pieKey: '',
+      pieKey: ''
     }
   }
 
@@ -98,7 +98,8 @@ class myForm extends React.Component {
       AndOr: this.state.AndOr || 'AND',
       choosenChart: this.state.choosenChart,
       fields: this.props.fields,
-      pieKey: this.state.pieKey
+      pieKey: this.state.pieKey,
+      created: Date.now()
     }
     this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, settings)  // second argument should be settings of graph
   }
@@ -109,6 +110,10 @@ class myForm extends React.Component {
     this.props.grabTableData(this.state.currentDatabase, currentTable)
   }
 
+  handleChartDelete = (settings) => {
+    this.props.deleteGraph(settings)
+  }
+
   render () {
     return <div>
           <MyFormContainer selectThese={this.state.selectThese} whereThese={this.state.whereThese} orderedBy={this.state.orderedBy}
@@ -117,6 +122,7 @@ class myForm extends React.Component {
                             createdGraphs={this.props.createdGraphs} database={this.props.database} fields={this.props.fields} columnType={this.props.columnType}
                             handleChange={this.handleChange} handleRemove={this.handleRemove} handleAdd={this.handleAdd} handleTableChange={this.handleTableChange}
                             handleChartChange={this.handleChartChange} makeGraph={this.makeGraph} currentTable={this.state.currentTable} currentDatabase={this.state.currentDatabase}
+                            handleChartDelete={this.handleChartDelete}
             />
           </div>
   }
@@ -160,6 +166,9 @@ const mapDispatch = dispatch => {
         fields
       }
       dispatch(fetchQueryTable(newSettings))
+    },
+    deleteGraph(settings) {
+      dispatch(removeGraph(settings))
     }
   })
 }
