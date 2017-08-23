@@ -84,7 +84,7 @@ const queryData = (settings) => {
 	// const postgresUrl = 'postgres://localhost:' + settings.port + '/' + settings.database
 	const postgresUrl = 'postgres://localhost:5432/' + settings.currentDatabase
 	const client = new pg.Client(postgresUrl)
-	console.log('Query settings....', settings)
+
 	let whereThese = settings.whereThese && settings.whereThese.map(where => checkDataType(where, settings.fields))
 
 	let selectThese = settings.selectThese && settings.selectThese.join(', ') || '*'
@@ -109,15 +109,20 @@ const queryData = (settings) => {
 }
 
 const customQueryData = (settings) => {
-	console.log('Custom Query settings....', settings)
 	const postgresUrl = 'postgres://localhost:5432/' + settings.currentDatabase
 	const client = new pg.Client(postgresUrl)
 
-	let querySearch = settings.SQLquery
+	let querySearch = settings.SQLquery.toUpperCase().trimLeft()
+	if (querySearch.includes('DROP DATABASE')
+		|| querySearch.includes('DROP TABLE')
+		|| querySearch.includes('DELETE FROM')
+		) querySearch = ''
+
 	client.connect()
 
 	return client.query(querySearch)
 	.then(result => {
+		if (!result) return []
 		return result.rows
 	})
 	.catch(err => console.log(err))
