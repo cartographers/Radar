@@ -40,6 +40,21 @@ const RenderSelects = (props) => {
             </div>)
   }
 
+const RenderAggregate = (props) => {
+      return (<div className="col-md-12">
+                <label>Aggregates</label>
+                { props.aggregateSelects.map((sel, index) => {
+                    return  <div key={index}>
+                                <ChooseOne key={index + "agg"} name="agg" onChange={props.handleChange.bind(this, index, 'aggregateSelects')} value={props.aggregateSelects[index].agg} iterable={props.aggregateChoices} />
+                                <ChooseOne key={index + "col"} name="col" onChange={props.handleChange.bind(this, index, 'aggregateSelects')} value={props.aggregateSelects[index].col} iterable={props.columns.filter((val,i) => (props.columnType[i] === 23))} />
+                                <button type="button" className="btn btn-danger" onClick={props.handleRemove.bind(this, index, 'selectThese')}> - </button>
+                            </div>
+                    })
+                }
+                <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this,'aggregateSelects')} disabled={(props.aggregateSelects === 4)}>+</button>
+            </div>)
+  }
+
 const RenderOrAnd = (props) => {
   return (<div>
             <input type="radio" className="form-check-input" name="AndOr" value="AND" onChange={props.handleChartChange.bind(this, 'AndOr')} checked /> And <br />
@@ -122,6 +137,9 @@ const SelectQueryOptions = (props) => {
               </div>
               <div className="col-md-12">
                 { props.currentTable && <RenderOrderBy {...props} /> }
+              </div>
+              <div className="col-md-12">
+                { props.currentTable && <RenderAggregate {...props} /> }
               </div>
             </Well>
           </form>

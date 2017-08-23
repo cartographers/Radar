@@ -29,7 +29,9 @@ class myForm extends React.Component {
       xAxis: '',
       yAxis: '',
       pieKey: '',
-      selectQuery: true
+      selectQuery: true,
+      aggregateChoices: ['MIN', 'MAX', 'SUM', 'AVG', 'COUNT'],
+      aggregateSelects: []
     }
     this.methods = {
       handleChange: this.handleChange.bind(this),
@@ -56,8 +58,8 @@ class myForm extends React.Component {
   handleChange = (index, fromWhere, evt ) => {
     const type = evt.target.name
     const value = evt.target.value
-    let newVal = (fromWhere === 'whereThese') ? {} : value
-    if (fromWhere === 'whereThese'){
+    let newVal = (fromWhere === 'whereThese' || fromWhere === 'aggregateSelects') ? {} : value
+    if (fromWhere === 'whereThese' || fromWhere === 'aggregateSelects'){
       if (type === 'is'){
         newVal[type] = this.state.conditionalOperator[value]
         newVal.literal = value
@@ -67,7 +69,7 @@ class myForm extends React.Component {
 
     this.setState( (prevState) => ( { [fromWhere]: prevState[fromWhere].map( (val, i) => {
         if (index != i ) return val
-        if (fromWhere === 'whereThese'){
+        if (fromWhere === 'whereThese' || fromWhere === 'aggregateSelects'){
           return {...val, ...newVal}
         }
         return newVal
@@ -81,7 +83,8 @@ class myForm extends React.Component {
   }
 
   handleAdd = (addTo) => {
-    let newAdd = (addTo === 'selectThese') ? this.props.columns[0] : {col: this.props.columns[0], is: '>', spec: '', literal: 'greater than'}
+    let newAdd = (addTo === 'selectThese') ? this.props.columns[0] : {col: '' , is: '>', spec: '', literal: 'greater than'}
+    if (addTo === 'aggregateSelects') newAdd = {col: '', agg: ''}
     this.setState( (prevState) => ({ [addTo]: [...prevState[addTo], newAdd] }))
   }
 
@@ -111,6 +114,7 @@ class myForm extends React.Component {
       pieKey: this.state.pieKey,
       selectQuery: this.state.selectQuery,
       savedQuery: this.props.database,
+      aggregateSelects: aggregateSelects,
       created: Date.now()
     }
     this.state.selectQuery ? 

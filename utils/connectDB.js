@@ -93,12 +93,14 @@ const queryData = (settings) => {
 	let orderBy = formatOrderBy(settings.orderedBy)
 
 	let querySearch = ['SELECT', selectThese, 'FROM', `"${settings.currentTable}"`, whereThese, orderBy]
-  let aggregateSearch = ['SELECT', 'count(*), avg(sales)', 'FROM', `"${settings.currentTable}"`, whereThese].join(' ').trim()
-	querySearch = querySearch.join(' ').trim()
-	console.log('QUERY SEARCH (connectDB):', querySearch)
+
   console.log('AGGREGATE SEARCH (connectDB):', aggregateSearch)
 	client.connect()
 
+  let aggregateSearch = ['SELECT', 'count(*), avg(sales)', 'FROM', `"${settings.currentTable}"`, whereThese].join(' ').trim()
+  querySearch = querySearch.join(' ').trim()
+  console.log('QUERY SEARCH (connectDB):', querySearch)
+  
 	let queryPromise = client.query(querySearch)
   let aggregatePromise = client.query(aggregateSearch)
   return BlueBird.all([queryPromise, aggregatePromise]).spread( (queryInfo, aggregateInfo) => {
