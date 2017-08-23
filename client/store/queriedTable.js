@@ -1,4 +1,4 @@
-import {queryData} from '../../utils/connectDB'
+import {queryData, customQueryData} from '../../utils/connectDB'
 /**
  * ACTION TYPES
  */
@@ -23,6 +23,17 @@ export const fetchQueryTable = (queryInfo) =>
     })
     .catch(err => console.log(err))
 }
+
+export const fetchQueryTableCustom = (queryInfo) =>
+  dispatch => {
+    const result = customQueryData(queryInfo)
+    result
+    .then(response => {
+      if (!response) return console.log('Query results undefined.')
+      dispatch(queriedTable(response))
+    })
+    .catch(err => console.log(err))
+  }
 
 /**
  * REDUCER

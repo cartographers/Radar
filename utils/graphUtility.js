@@ -1,6 +1,5 @@
 import {AreaGraph, BarGraph, LineGraph, PieGraph, Scatter, TableDB} from '../client/components'
 import React from 'react'
-const pg = require('pg')
 
 export const saveQueryData = (data) => {
   return data
@@ -20,7 +19,9 @@ export const newGraphMaker = (settings) => {
     const y = settings.yAxis
     const savedQuery = settings.savedQuery
     const pieKey = settings.pieKey
-    const AndOr = settings.AndOr
+		const AndOr = settings.AndOr
+		const created = settings.created
+
 
     
     // create an aggregation function..
@@ -34,17 +35,17 @@ export const newGraphMaker = (settings) => {
     if (makeGraph === 'Area') return <AreaGraph title={title} AndOr={AndOr} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} savedQuery={savedQuery} />
     if (makeGraph === 'Line') {
         //  Check for unique x values
-        return <LineGraph title={title} AndOr={AndOr} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} savedQuery={savedQuery} />
+        return <LineGraph title={title} AndOr={AndOr} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} savedQuery={savedQuery} created={created} />
     }
     if (makeGraph === 'Bar') {
         // If x or y values do not meet correct data type, return error
-        return <BarGraph title={title} AndOr={AndOr} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} savedQuery={savedQuery} />
+        return <BarGraph title={title} AndOr={AndOr} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} savedQuery={savedQuery} created={created} />
     }
-  
-    if (makeGraph === 'Scatter') return <Scatter title={title} AndOr={AndOr} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} savedQuery={savedQuery} />
-    if (makeGraph === 'Pie') return <PieGraph pieKey={pieKey} title={title} AndOr={AndOr} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} whereThese={whereThese} savedQuery={savedQuery} />
+
+    if (makeGraph === 'Scatter') return <Scatter title={title} AndOr={AndOr} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese} savedQuery={savedQuery} created={created} />
+    if (makeGraph === 'Pie') return <PieGraph pieKey={pieKey} title={title} AndOr={AndOr} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} whereThese={whereThese} savedQuery={savedQuery} created={created} />
     if (makeGraph === 'Table') {
         // If x or y values do not meet correct data type, return error
-        return <TableDB title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} whereThese={whereThese} savedQuery={savedQuery} />
+        return <TableDB title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} whereThese={whereThese} savedQuery={savedQuery} created={created} />
     }
 }
