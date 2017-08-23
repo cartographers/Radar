@@ -207,7 +207,7 @@ const MyFormContainer = (props) => {
                     ? graphInfo.database == props.currentDatabase
                     : (graphInfo.database == props.currentDatabase && graphInfo.table == props.currentTable)
           })
-          .map((graphInfo, index) => <div key={index}>{newGraphMaker(graphInfo.settings)}</div>)
+          .map((graphInfo, index) => <div className="createdCharts" key={index}>{newGraphMaker(graphInfo.settings)}</div>)
         }
 
       </div>)
