@@ -114,7 +114,7 @@ class myForm extends React.Component {
       pieKey: this.state.pieKey,
       selectQuery: this.state.selectQuery,
       savedQuery: this.props.database,
-      aggregateSelects: aggregateSelects,
+      aggregateSelects: this.state.aggregateSelects,
       created: Date.now()
     }
     this.state.selectQuery ? 

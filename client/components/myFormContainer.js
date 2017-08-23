@@ -47,7 +47,7 @@ const RenderAggregate = (props) => {
                     return  <div key={index}>
                                 <ChooseOne key={index + "agg"} name="agg" onChange={props.handleChange.bind(this, index, 'aggregateSelects')} value={props.aggregateSelects[index].agg} iterable={props.aggregateChoices} />
                                 <ChooseOne key={index + "col"} name="col" onChange={props.handleChange.bind(this, index, 'aggregateSelects')} value={props.aggregateSelects[index].col} iterable={props.columns.filter((val,i) => (props.columnType[i] === 23))} />
-                                <button type="button" className="btn btn-danger" onClick={props.handleRemove.bind(this, index, 'selectThese')}> - </button>
+                                <button type="button" className="btn btn-danger" onClick={props.handleRemove.bind(this, index, 'aggregateSelects')}> - </button>
                             </div>
                     })
                 }
