@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {fetchDatabases} from '../store'
 import {Jumbotron, Button, Image, Collapse, Well} from'react-bootstrap'
+import logo from '../../public/logo.png'
 
 
 class Home extends Component {
@@ -41,7 +42,7 @@ class Home extends Component {
             <div className="row">
               <div className="col-lg-12">
                 <Jumbotron style={{height: 15  + 'em'}}>
-                  <Image src="http://via.placeholder.com/50x50" circle
+                  <Image src={logo} circle
                          style={{float: 'left', marginRight: '0.5' + 'em'}}/>
                   <h1 style={{display: 'inline-block'}}>Radar</h1>
                   <p>A Postgres.app utility application that will help you visualize your data</p>
