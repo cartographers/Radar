@@ -38,7 +38,8 @@ class myForm extends React.Component {
       handleChartChange: this.handleChartChange.bind(this),
       handleTableChange: this.handleTableChange.bind(this),
       makeGraph: this.makeGraph.bind(this),
-      changeQueryType: this.changeQueryType.bind(this)
+      changeQueryType: this.changeQueryType.bind(this),
+      handleChartDelete: this.handleChartDelete.bind(this)
     }
   }
 
