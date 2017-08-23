@@ -181,6 +181,7 @@ const MyFormContainer = (props) => {
             </Well>
             </form>
           </div>
+          <div className="createdCharts" style={{border: 'solid grey 1px'}}>
           {
           props.createdGraphs &&
           props.createdGraphs
@@ -198,6 +199,7 @@ const MyFormContainer = (props) => {
             </div>
           )})
         }
+        </div>
 
       </div>)
 }
