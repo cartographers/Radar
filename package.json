@@ -1,5 +1,5 @@
 {
-  "name": "regres-radar",
+  "name": "radar",
   "version": "1.0.0",
   "description": "Capstone by NG, SM, MH, DB",
   "engines": {
@@ -13,7 +13,9 @@
     "start": "npm run build-client && electron . & webpack -w",
     "test": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/boilermaker-test' mocha ./**/*.spec.js --compilers js:babel-register",
     "test-client-watch": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/boilermaker-test' mocha -w ./client/**/*.spec.js --compilers js:babel-register",
-    "electron": "npm run build-client && electron . & webpack -w"
+    "electron": "npm run build-client && electron . & webpack -w",
+    "just-electron": "electron .",
+    "pack-electron": "electron-packager . --overwrite --platform=darwin --arch=x64 --prune=true --out=release-builds"
   },
   "author": "",
   "license": "ISC",
@@ -59,6 +61,7 @@
     "chai": "^4.1.0",
     "css-loader": "^0.26.1",
     "devtron": "^1.4.0",
+    "electron-packager": "^8.7.2",
     "enzyme": "^2.9.1",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.7.0",

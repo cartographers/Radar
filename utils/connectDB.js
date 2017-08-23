@@ -1,27 +1,26 @@
 const pg = require('pg')
+import BlueBird from 'bluebird'
+
 
 const initDatabases = () => {
   const client = new pg.Client()
   client.connect()
   return client.query('SELECT datname FROM pg_database WHERE datistemplate = false')
-  .then(result => result.rows)
-  .catch(err => console.log(err))
+    .then(result => result.rows)
+    .catch(err => console.log(err))
 }
 
 const loadTables = (settings) => {
-	const postgresUrl = 'postgres://localhost:5432/' + settings.database
-	const client = new pg.Client(postgresUrl)
-
-	let querySearch = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema = 'public'"
-
-	client.connect()
-
-	return client.query(querySearch)
-	.then(result => {
-		const tables = result.rows.map(table => table.table_name)
-		return tables
-	})
-	.catch(err => console.log(err))
+  const postgresUrl = 'postgres://localhost:5432/' + settings.database
+  const client = new pg.Client(postgresUrl)
+  let querySearch = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema = 'public'"
+  client.connect()
+  return client.query(querySearch)
+    .then(result => {
+      const tables = result.rows.map(table => table.table_name)
+      return tables
+    })
+    .catch(err => console.log(err))
 }
 
 const loadTableForeignKeys = (settings) => {
@@ -37,6 +36,7 @@ const loadTableForeignKeys = (settings) => {
 	return client.query(querySearch)
 	.then(result => result.rows)
 	.catch(err => console.log(err))
+
 }
 
 const joinTables = (settings) => {
@@ -55,8 +55,7 @@ const loadFields = (settings) => {
 	const client = new pg.Client(postgresUrl)
 
 	const jointTables = joinTables(settings)
-
-	let querySearch = ['SELECT * FROM', settings.table, jointTables]
+	let querySearch = ['SELECT * FROM', `"${settings.table}"`, jointTables]
 	querySearch = querySearch.join(' ').trim()
 
 	client.connect()
@@ -69,17 +68,17 @@ const loadFields = (settings) => {
 }
 
 const checkDataType = (whereSpec, fields) => {
-	let newWhereSpec = whereSpec
-	fields.forEach(field => {
-		if (field.name === whereSpec.col){
-			if (field.dataTypeID === 23) newWhereSpec.spec = Number(whereSpec.spec)
-			if (field.dataTypeID === 1043 || field.dataTypeID === 983071) {
-				if (whereSpec.spec.charAt(0) === "'"  && whereSpec.spec.charAt(whereSpec.spec.length - 1) === "'") newWhereSpec.spec = whereSpec.spec
-				else newWhereSpec.spec = "'" + whereSpec.spec + "'"
-			}
-		}
-	})
-	return newWhereSpec
+  let newWhereSpec = whereSpec
+  fields.forEach(field => {
+    if (field.name === whereSpec.col) {
+      if (field.dataTypeID === 23) newWhereSpec.spec = Number(whereSpec.spec)
+      if (field.dataTypeID === 1043 || field.dataTypeID === 983071) {
+        if (whereSpec.spec.charAt(0) === "'" && whereSpec.spec.charAt(whereSpec.spec.length - 1) === "'") newWhereSpec.spec = whereSpec.spec
+        else newWhereSpec.spec = "'" + whereSpec.spec + "'"
+      }
+    }
+  })
+  return newWhereSpec
 }
 
 const formatOrderBy = (orderOptions) => {
@@ -88,7 +87,7 @@ const formatOrderBy = (orderOptions) => {
 	if (orderCondition === 'Ascending') orderCondition = 'ASC'
 	else if (orderCondition === 'Descending') orderCondition = 'DESC'
 	else return ''
-	if (!orderCol) return ''
+	if (!orderCol || orderCol == 'Make a choice' ) return ''
 	return 'ORDER BY ' + orderCol + ' ' + orderCondition
 }
 
@@ -96,8 +95,10 @@ const queryData = (settings) => {
 	// const postgresUrl = 'postgres://localhost:' + settings.port + '/' + settings.database
 	const postgresUrl = 'postgres://localhost:5432/' + settings.currentDatabase
 	const client = new pg.Client(postgresUrl)
+
 	console.log('Query settings....', settings)
 	const jointTables = joinTables(settings)
+
 	let whereThese = settings.whereThese && settings.whereThese.map(where => checkDataType(where, settings.fields))
 
 	let selectThese = settings.selectThese && settings.selectThese.join(', ') || '*'
@@ -107,17 +108,37 @@ const queryData = (settings) => {
 
 	let orderBy = formatOrderBy(settings.orderedBy)
 
-	let querySearch = ['SELECT', selectThese, 'FROM', settings.currentTable, jointTables, whereThese, orderBy]
+  let aggregateSelects = settings.aggregateSelects && settings.aggregateSelects.map(val => `${val.agg}(${val.col}) ${val.agg}_${val.col}`).join(', ')
+	let querySearch = ['SELECT', selectThese, 'FROM', `"${settings.currentTable}"`, jointTables, whereThese, orderBy]
+  let aggregateSearch = ['SELECT', aggregateSelects, 'FROM', `"${settings.currentTable}"`, whereThese].join(' ').trim()
 
 	querySearch = querySearch.join(' ').trim()
-	console.log('QUERY SEARCH (connectDB):', querySearch)
+
+	client.connect()
+
+	let queryPromise = client.query(querySearch)
+  let aggregatePromise = client.query(aggregateSearch)
+  return BlueBird.all([queryPromise, aggregatePromise]).spread( (queryInfo, aggregateInfo) => {
+    return [queryInfo.rows, aggregateInfo.rows]
+  }).catch(console.log)
+}
+
+const customQueryData = (settings) => {
+	const postgresUrl = 'postgres://localhost:5432/' + settings.currentDatabase
+	const client = new pg.Client(postgresUrl)
+
+	let querySearch = settings.SQLquery.toUpperCase().trimLeft()
+	if (querySearch.includes('DROP DATABASE')
+		|| querySearch.includes('DROP TABLE')
+		|| querySearch.includes('DELETE FROM')
+		) querySearch = ''
 
 	client.connect()
 
 	return client.query(querySearch)
 	.then(result => {
+		if (!result) return []
 		return result.rows
-
 	})
 	.catch(err => console.log(err))
 }
@@ -129,5 +150,7 @@ module.exports = {
 	loadTables,
 	loadFields,
 	loadTableForeignKeys,
-	joinTables
+	joinTables,
+	customQueryData
+
 }

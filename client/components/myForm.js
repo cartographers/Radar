@@ -1,12 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {Link} from 'react-router-dom'
-import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph, fetchQueryTable, fetchKeys } from '../store'
+import { fetchUsers, fetchDatabase, searchDatabase, fetchFields, fetchDatabases,fetchTables, currentDatabase, fetchGraphs, saveGraph, fetchQueryTable, fetchKeys, removeGraph, saveQueryGraph } from '../store'
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {FormControl, ControlLabel, FormGroup, Button, Well} from 'react-bootstrap'
-import {saveFile} from '../../utils/saveFile'
+import {saveSettings} from '../../utils/saveFile'
 import {newGraphMaker} from '../../utils/graphUtility'
 import MyFormContainer from './MyFormContainer'
+import CustomQuery from './CustomQuery'
 
 class myForm extends React.Component {
 
@@ -16,20 +17,31 @@ class myForm extends React.Component {
       selectThese: [],
       whereThese: [], //objects of Nested Wheres???
       orderedBy: ['Descending', 0 ],
-      conditionals : ['greater than', 'greater than or equal to', 'less than', 'less than or equal to','equal to', 'not', 'between', 'not between'],
+      conditionals: ['greater than', 'greater than or equal to', 'less than', 'less than or equal to', 'equal to', 'not', 'between', 'not between'],
       conditionalOperator: ['>', '>=', '<', '<=', '=', '!=', '[]', '![]'],
-      orderType : ['None','Ascending', 'Descending'],
+      orderType: ['Ascending', 'Descending'],
       chartTypes: ['Scatter', 'Area', 'Bar', 'Line', 'Pie', 'Table'],
-      currentTable : '',
-      currentDatabase : '',
+      currentTable: '',
+      currentDatabase: '', //JK YOU CAN STAY
       AndOr: '',
       choosenChart: 'Scatter',
       Title: '',
       xAxis: '',
       yAxis: '',
-      height: '',
-      width: '',
       pieKey: '',
+      selectQuery: true,
+      aggregateChoices: ['MIN', 'MAX', 'SUM', 'AVG', 'COUNT'],
+      aggregateSelects: []
+    }
+    this.methods = {
+      handleChange: this.handleChange.bind(this),
+      handleAdd: this.handleAdd.bind(this),
+      handleRemove: this.handleRemove.bind(this),
+      handleChartChange: this.handleChartChange.bind(this),
+      handleTableChange: this.handleTableChange.bind(this),
+      makeGraph: this.makeGraph.bind(this),
+      changeQueryType: this.changeQueryType.bind(this),
+      handleChartDelete: this.handleChartDelete.bind(this)
     }
   }
 
@@ -38,15 +50,17 @@ class myForm extends React.Component {
     this.setState({currentDatabase: db})
     this.props.fetchDat({ database: db})
     this.props.loadCreatedGraphs()
+    this.props.setCurrentDatabase(db)
+
   }
 
 
   handleChange = (index, fromWhere, evt ) => {
     const type = evt.target.name
     const value = evt.target.value
-    let newVal = (fromWhere === 'whereThese') ? {} : value
-    if(fromWhere === 'whereThese'){
-      if(type === 'is'){
+    let newVal = (fromWhere === 'whereThese' || fromWhere === 'aggregateSelects') ? {} : value
+    if (fromWhere === 'whereThese' || fromWhere === 'aggregateSelects'){
+      if (type === 'is'){
         newVal[type] = this.state.conditionalOperator[value]
         newVal.literal = value
       }
@@ -55,7 +69,7 @@ class myForm extends React.Component {
 
     this.setState( (prevState) => ( { [fromWhere]: prevState[fromWhere].map( (val, i) => {
         if (index != i ) return val
-        if (fromWhere === 'whereThese'){
+        if (fromWhere === 'whereThese' || fromWhere === 'aggregateSelects'){
           return {...val, ...newVal}
         }
         return newVal
@@ -68,12 +82,13 @@ class myForm extends React.Component {
     })
   }
 
-  handleAdd = (addTo, evt) => {
-    let newAdd = (addTo === 'selectThese') ? this.props.columns[0] : {col:this.props.columns[0], is: '>', spec: '' , literal:'greater than'}
+  handleAdd = (addTo) => {
+    let newAdd = (addTo === 'selectThese') ? this.props.columns[0] : {col: '' , is: '>', spec: '', literal: 'greater than'}
+    if (addTo === 'aggregateSelects') newAdd = {col: '', agg: ''}
     this.setState( (prevState) => ({ [addTo]: [...prevState[addTo], newAdd] }))
   }
 
-  handleRemove = (index, fromWhere, evt) => {
+  handleRemove = (index, fromWhere) => {
     this.setState( (prevState) => ({
       [fromWhere]: [...prevState[fromWhere].slice(0, index), ...prevState[fromWhere].slice(index + 1)]
     }))
@@ -88,21 +103,24 @@ class myForm extends React.Component {
       }),
       selectThese: this.state.selectThese.map(val => `"${val}"`),
       Title: this.state.Title,
-      width: this.state.width,
-      height: this.state.height,
       xAxis: this.state.xAxis,
       yAxis: this.state.yAxis,
-      orderedBy: [this.state.orderedBy[0], (this.state.orderedBy[1] ? `"${this.state.orderedBy[1]}"` : undefined)],
+      orderedBy: [this.state.orderedBy[0], (this.state.orderedBy[1] ? `"${this.state.orderedBy[1]}"` : '')],
       currentTable: this.state.currentTable,
-      currentDatabase : this.state.currentDatabase,
+      currentDatabase: this.state.currentDatabase,
       AndOr: this.state.AndOr || 'AND',
       choosenChart: this.state.choosenChart,
       fields: this.props.fields,
       pieKey: this.state.pieKey,
-      foreignKeys: this.props.foreignKeys
+      foreignKeys: this.props.foreignKeys,
+      selectQuery: this.state.selectQuery,
+      savedQuery: this.props.database,
+      aggregateSelects: this.state.aggregateSelects,
+      created: Date.now()
     }
-    if (settings.choosenChart === 'Scatter') settings.orderedBy = 'ORDER BY ' + this.state.xAxis + ' ASC'
+    this.state.selectQuery ? 
     this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, settings)
+    : this.props.savingCustomQueryGraph(this.state.currentDatabase, this.state.currentTable, settings)
   }
 
   handleTableChange = (evt) => {
@@ -111,16 +129,22 @@ class myForm extends React.Component {
     this.props.grabTableData(this.state.currentDatabase, currentTable, this.props.foreignKeys)
   }
 
+  changeQueryType = (event) => {
+    this.setState({ selectQuery: !this.state.selectQuery})
+  }
+
+  handleChartDelete = (settings) => {
+    this.props.deleteGraph(settings)
+  }
+
   render () {
-    return <div>
-          <MyFormContainer selectThese={this.state.selectThese} whereThese={this.state.whereThese} orderedBy={this.state.orderedBy}
-                            conditionals={this.state.conditionals} conditionalOperator={this.state.conditionalOperator} orderType={this.state.orderType}
-                            chartTypes={this.state.chartTypes} tables={this.props.tables} columns={this.props.columns} choosenChart={this.state.choosenChart}
-                            createdGraphs={this.props.createdGraphs} database={this.props.database} fields={this.props.fields} columnType={this.props.columnType}
-                            handleChange={this.handleChange} handleRemove={this.handleRemove} handleAdd={this.handleAdd} handleTableChange={this.handleTableChange}
-                            handleChartChange={this.handleChartChange} makeGraph={this.makeGraph} currentTable={this.state.currentTable} currentDatabase={this.state.currentDatabase}
-            />
-          </div>
+    return (<div>
+              <Button className="btn btn-success" onClick={this.changeQueryType}>
+                {this.state.selectQuery ? 'SQL Form Query' : 'Select Query Options'}
+              </Button>
+              <MyFormContainer {...this.state} {...this.props} {...this.methods} />
+            </div>)
+
   }
 }
 
@@ -148,7 +172,7 @@ const mapDispatch = dispatch => {
     loadCreatedGraphs(){
       dispatch(fetchGraphs())
     },
-    savingGraph(currentDatabase, currentTable, settings){  // settings of graph applied to newSettings
+    savingGraph(currentDatabase, currentTable, settings){
       let newGraphInfo = {
         database: currentDatabase,
         table: currentTable,
@@ -162,6 +186,20 @@ const mapDispatch = dispatch => {
         fields
       }
       dispatch(fetchQueryTable(newSettings))
+    },
+    setCurrentDatabase(database){
+      dispatch(currentDatabase(database))
+    },
+    savingCustomQueryGraph (currentDatabase, currentTable, settings) {
+      let newGraphInfo = {
+        database: currentDatabase,
+        table: currentTable || 'users',
+        settings: settings
+      }
+      dispatch(saveQueryGraph(newGraphInfo))
+    },
+    deleteGraph(settings) {
+      dispatch(removeGraph(settings))
     }
   })
 }
