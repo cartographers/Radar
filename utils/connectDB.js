@@ -1,6 +1,10 @@
 const pg = require('pg')
 import BlueBird from 'bluebird'
 
+const addQuotes = (str) => {
+  str = str.replace(/\'/g, '"')
+  return /\"[A-Za-z1-9_]+\"/.test(str) ? str : '"' + str + '"'
+}
 
 const initDatabases = () => {
   const client = new pg.Client()
@@ -71,7 +75,7 @@ const checkDataType = (whereSpec, fields) => {
   let newWhereSpec = whereSpec
   fields.forEach(field => {
     if (field.name === whereSpec.col) {
-      if (field.dataTypeID === 23) newWhereSpec.spec = Number(whereSpec.spec)
+      if (field.dataTypeID === 23 || field.dataTypeID === 21 || field.dataTypeID === 1700) newWhereSpec.spec = Number(whereSpec.spec)
       if (field.dataTypeID === 1043 || field.dataTypeID === 983071) {
         if (whereSpec.spec.charAt(0) === "'" && whereSpec.spec.charAt(whereSpec.spec.length - 1) === "'") newWhereSpec.spec = whereSpec.spec
         else newWhereSpec.spec = "'" + whereSpec.spec + "'"
@@ -103,7 +107,13 @@ const queryData = (settings) => {
 
 	let selectThese = settings.selectThese && settings.selectThese.join(', ') || '*'
 	let whereConditional = ' ' + settings.AndOr + ' '
-	whereThese = whereThese && whereThese.map(where => settings.currentTable + '.' + where.col + ' ' + where.is + ' ' + where.spec).join(whereConditional)
+	whereThese = whereThese && whereThese.map(where => {
+		//if (where.col.charAt(0) !== '"' && where.col.charAt(where.col.length - 1) !== '"') where.col = '"' + where.col + '"'
+		where.col = addQuotes(where.col)
+
+    let joinedWhere = settings.currentTable + '.' + where.col + ' ' + where.is + ' ' + where.spec
+		return joinedWhere
+		}).join(whereConditional)
 	whereThese = whereThese && whereThese.length ? 'WHERE ' + whereThese : ''
 
 	let orderBy = formatOrderBy(settings.orderedBy)
@@ -113,7 +123,7 @@ const queryData = (settings) => {
   let aggregateSearch = ['SELECT', aggregateSelects, 'FROM', `"${settings.currentTable}"`, whereThese].join(' ').trim()
 
 	querySearch = querySearch.join(' ').trim()
-
+	console.log('Querying for....', querySearch)
 	client.connect()
 
 	let queryPromise = client.query(querySearch)

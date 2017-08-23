@@ -97,10 +97,7 @@ class myForm extends React.Component {
   makeGraph = (evt) => {
     evt.preventDefault()
     let settings = {
-      whereThese: this.state.whereThese.map( val => {
-        val.col = `"${val.col}"`
-        return val
-      }),
+      whereThese: this.state.whereThese,
       selectThese: this.state.selectThese.map(val => `"${val}"`),
       Title: this.state.Title,
       xAxis: this.state.xAxis,
@@ -126,6 +123,16 @@ class myForm extends React.Component {
   handleTableChange = (evt) => {
     const currentTable = evt.target.value
     this.setState({ currentTable: currentTable })
+    this.setState({
+      selectThese: [],
+      whereThese: [],
+      orderedBy: ['Descending', 0 ],
+      AndOr: '',
+      xAxis: '',
+      yAxis: '',
+      pieKey: '',
+      aggregateSelects: []
+    })
     this.props.grabTableData(this.state.currentDatabase, currentTable, this.props.foreignKeys)
   }
 

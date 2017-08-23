@@ -13,7 +13,7 @@ const ChooseOne = (props) => {
 
 const options = (selectThese, columns, columnType, onChange, filtered) => {
     let mapThis = selectThese.length ? selectThese : columns
-    if (filtered) mapThis = mapThis.filter((val) => (columnType[columns.indexOf(val)] === 23))
+    if (filtered) mapThis = mapThis.filter((val) => (columnType[columns.indexOf(val)] === 23 || columnType[columns.indexOf(val)] === 21 || columnType[columns.indexOf(val)] === 1700))
     return <ChooseOne onChange={onChange} iterable={mapThis} />
 }
 
@@ -36,7 +36,7 @@ const RenderSelects = (props) => {
                             </div>
                     })
                 }
-                <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this,'selectThese')} disabled={(props.selectThese.length) === (props.columns.length-1)}>+</button>
+                <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this, 'selectThese')} disabled={(props.selectThese.length) === (props.columns.length-1)}>+</button>
             </div>)
   }
 
@@ -46,12 +46,12 @@ const RenderAggregate = (props) => {
                 { props.aggregateSelects.map((sel, index) => {
                     return  <div key={index}>
                                 <ChooseOne key={index + "agg"} name="agg" onChange={props.handleChange.bind(this, index, 'aggregateSelects')} value={props.aggregateSelects[index].agg} iterable={props.aggregateChoices} />
-                                <ChooseOne key={index + "col"} name="col" onChange={props.handleChange.bind(this, index, 'aggregateSelects')} value={props.aggregateSelects[index].col} iterable={props.columns.filter((val,i) => (props.columnType[i] === 23))} />
+                                <ChooseOne key={index + "col"} name="col" onChange={props.handleChange.bind(this, index, 'aggregateSelects')} value={props.aggregateSelects[index].col} iterable={props.columns.filter((val, i) => (props.columnType[i] === 23 || props.columnType[i] === 21 || props.columnType[i] === 1700))} />
                                 <button type="button" className="btn btn-danger" onClick={props.handleRemove.bind(this, index, 'aggregateSelects')}> - </button>
                             </div>
                     })
                 }
-                <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this,'aggregateSelects')} disabled={(props.aggregateSelects === 4)}>+</button>
+                <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this, 'aggregateSelects')} disabled={(props.aggregateSelects === 4)}>+</button>
             </div>)
   }
 

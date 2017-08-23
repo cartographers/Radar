@@ -43,6 +43,7 @@ export const saveGraph = (settings) =>
     result
     .then(response => {
       let newSettings = {...settings}
+      if (!response) return console.log('Query result undefined.')
       newSettings.settings.savedQuery = response[0]
       newSettings.settings.aggregateInformation = response[1]
       return newSettings
