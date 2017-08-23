@@ -4,10 +4,11 @@ import React from 'react'
 
 
 const LineGraph = (props) => {
-    const { x, y, savedQuery } = props
+    const { Title, aggregateInformation, xAxis, yAxis, savedQuery } = props
 
     return (
       <div className="col-md-6">
+        <div><h4>{Title}</h4></div>
         <LineChart
           width={500}
           height={500}

@@ -1,4 +1,6 @@
 const pg = require('pg')
+import BlueBird from 'bluebird'
+
 
 const initDatabases = () => {
   const client = new pg.Client()
@@ -94,18 +96,18 @@ const queryData = (settings) => {
 	let orderBy = formatOrderBy(settings.orderedBy)
 
 	let querySearch = ['SELECT', selectThese, 'FROM', `"${settings.currentTable}"`, whereThese, orderBy]
-
+  let aggregateSearch = ['SELECT', 'count(*), avg(sales)', 'FROM', `"${settings.currentTable}"`, whereThese].join(' ').trim()
 	querySearch = querySearch.join(' ').trim()
 	console.log('QUERY SEARCH (connectDB):', querySearch)
-
+  console.log('AGGREGATE SEARCH (connectDB):', aggregateSearch)
 	client.connect()
 
-	return client.query(querySearch)
-	.then(result => {
-		return result.rows
-
-	})
-	.catch(err => console.log(err))
+	let queryPromise = client.query(querySearch)
+  let aggregatePromise = client.query(aggregateSearch)
+  
+  return BlueBird.all([queryPromise, aggregatePromise]).spread( (queryInfo, aggregateInfo) => {
+    return [queryInfo.rows, aggregateInfo.rows]
+  }).catch(console.log)
 }
 
 
