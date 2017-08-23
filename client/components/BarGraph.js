@@ -1,14 +1,12 @@
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import React from 'react'
 import {CustomTooltip} from './customToolTips.js'
-import {TableDB} from './TableDB'
+import TableDB from './TableDB'
 
 
 const BarGraph = (props) => {
 
     const { Title, xAxis, yAxis, savedQuery, aggregateInformation } = props
-    console.log(aggregateInformation[0])
-    let vals = Object.entries(aggregateInformation[0])
     return (
       <div className="col-md-6">
         <div><h4>{Title}</h4></div>
@@ -20,9 +18,7 @@ const BarGraph = (props) => {
             <Legend />
             <Bar dataKey={yAxis} fill="#82ca9d" label />
           </BarChart>
-          { vals.map((arr, i) => {
-            return <div key={i}>{arr[0]}: {arr[1]}</div>
-          })}
+          { aggregateInformation && <TableDB Title={Title + ' aggregate Info'} savedQuery={aggregateInformation} />}
       </div>
     )
 }

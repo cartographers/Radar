@@ -33,15 +33,13 @@ const RenderWheres = (props) => {
   return  <div>
             <label>Where</label>
             { (props.whereThese.length > 1) && (<div>
-                    <input type="radio" className="form-check-input" name="AndOr" value="AND" onChange={props.handleChartChange.bind(this, 'AndOr')} checked/>
-                    And <br />
-                    <input type="radio" className="form-check-input" name="AndOr" value="OR" onChange={props.handleChartChange.bind(this, 'AndOr')} />
-                    Or <br />
+                    <input type="radio" className="form-check-input" name="AndOr" value="AND" onChange={props.handleChartChange.bind(this, 'AndOr')} checked /> And <br />
+                    <input type="radio" className="form-check-input" name="AndOr" value="OR" onChange={props.handleChartChange.bind(this, 'AndOr')} />Or <br />
                   </div>)
             }
             {
               props.whereThese.map((sel, index) => {
-                return  <div key={index}>
+                return  (<div key={index}>
                           <select name="col" onChange={props.handleChange.bind(this, index, 'whereThese')} value={props.whereThese[index].col}>
                             {props.columns && props.columns.map((val, i)  => <option value={val} key={i}>{val}</option>)}
                           </select>
@@ -53,7 +51,7 @@ const RenderWheres = (props) => {
                                     onChange={props.handleChange.bind(this, index, 'whereThese')}
                                     value={props.whereThese[index].spec}/>
                             <button type="button" className="btn btn-danger" onClick={props.handleRemove.bind(this, index, 'whereThese')}> - </button>
-                        </div>
+                          </div>)
               })
             }
               <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this, 'whereThese')} disabled={props.whereThese.length === 4}>+</button>

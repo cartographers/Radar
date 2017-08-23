@@ -3,13 +3,13 @@ import {Table, thead, tr, th, tbody, td} from 'react-bootstrap'
 
 
 const TableDB = (props)  => {
-    const { savedQuery, aggregateInformation } = props
+    const { savedQuery, aggregateInformation, Title } = props
     if(!savedQuery) return <div>No matching Query</div>
     const fields = savedQuery && savedQuery[0] ? Object.keys(savedQuery[0]) : []
     return (
       <div>
         <div>
-          <h4>Table</h4>
+          <h4>{Title}</h4>
         </div>
         <div>
           <Table>
@@ -39,6 +39,7 @@ const TableDB = (props)  => {
               }
             </tbody>
           </Table>
+          { aggregateInformation && <TableDB Title={Title + ' aggregate Info'} savedQuery={aggregateInformation} />}
         </div>
       </div>
     )

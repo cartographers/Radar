@@ -1,9 +1,10 @@
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {CustomTooltip} from './customToolTips'
+import TableDB from './TableDB'
 import React from 'react'
 
 const ScatterGraph = (props) => {
-    const { Title, xAxis, yAxis, savedQuery} = props
+    const { Title, xAxis, yAxis, savedQuery, aggregateInformation } = props
     return (
       <div className="col-md-6">
         <div><h4>{Title}</h4></div>
@@ -18,6 +19,7 @@ const ScatterGraph = (props) => {
             <Legend />
             <Scatter name={Title} data={savedQuery} fill="#8884d8" label />
           </ScatterChart>
+          { aggregateInformation && <TableDB Title={Title + ' aggregate Info'} savedQuery={aggregateInformation} />}
       </div>
     )
 }
