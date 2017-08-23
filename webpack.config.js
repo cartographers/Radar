@@ -24,6 +24,10 @@ module.exports = {
       {
         test: /\.svg$|\.ttf?|\.woff$|\.woff2|\.eof|\.eot/,
         loader: 'file-loader'
+      },
+      {
+        test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
+        loader: 'url-loader'
       }
     ]
   }
