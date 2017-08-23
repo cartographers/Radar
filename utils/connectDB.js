@@ -91,7 +91,7 @@ const queryData = (settings) => {
 	whereThese = whereThese && whereThese.map(where => settings.currentTable + '.' + where.col + ' ' + where.is + ' ' + where.spec).join(whereConditional)
 	whereThese = whereThese && whereThese.length ? 'WHERE ' + whereThese : ''
 	let orderBy = formatOrderBy(settings.orderedBy)
-  let aggregateSelects = settings.aggregateSelects && settings.aggregateSelects.map(val => `${val.agg}(${val.col})`).join(', ')
+  let aggregateSelects = settings.aggregateSelects && settings.aggregateSelects.map(val => `${val.agg}(${val.col}) ${val.agg}_${val.col}`).join(', ')
 	let querySearch = ['SELECT', selectThese, 'FROM', `"${settings.currentTable}"`, whereThese, orderBy]
   let aggregateSearch = ['SELECT', aggregateSelects , 'FROM', `"${settings.currentTable}"`, whereThese].join(' ').trim()
 	querySearch = querySearch.join(' ').trim()
