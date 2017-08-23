@@ -1,17 +1,9 @@
 body {
   font-family: sans-serif;
-
-  a {
-    text-decoration: none;
-  }
+  background-color: #355c7d;
 
   label {
     display: block;
-  }
-
-  nav a {
-    display: inline-block;
-    margin: 1em;
   }
 
   form div {
@@ -19,14 +11,29 @@ body {
     display: inline-block;
   }
 }
+
+#app {
+  background-color: #355c7d
+}
+
+.navbar {
+  text-align: center;
+  background-color: black;
+}
+
+.createdCharts {
+  background-color: white;
+}
+
+.container {
+  background-color: #355c7d;
+}
+
 .dbList {
   padding-left: 10%;
 }
 .badge {
   padding-left: 1%;
-}
-.box {
-  width: 20%;
 }
 
 .chart div {
@@ -48,3 +55,26 @@ body {
   padding: 100px;
   height: 500px
 }
+
+
+
+.oneColor {
+  background-color: #355c7d
+}
+
+.twoColor {
+  background-color: #6c5b7b
+}
+
+.threeColor {
+  background-color: #c06c84
+}
+
+.fourColor {
+  background-color: #f67280
+}
+
+.fiveColor {
+  background-color: #f8b195
+}
+

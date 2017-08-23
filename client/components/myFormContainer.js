@@ -2,6 +2,7 @@ import React from 'react'
 import {FormControl, ControlLabel, FormGroup, Button, Well} from 'react-bootstrap'
 import {newGraphMaker} from '../../utils/graphUtility'
 import {saveFile} from '../../utils/saveFile'
+import CustomQuery from './CustomQuery'
 
 const RenderTables = (props) => {
     return <div>
@@ -120,30 +121,45 @@ const ChartOptions = (props) => {
           </div>)
 }
 
+const SelectQueryOptions = (props) => {
+  return (
+      <div className="box1 col-md-6">
+        <Button id="saveFile" onClick={saveFile}>Save Graph</Button>
+          <form>
+            <Well>
+              <div className="col-md-12">
+               <RenderTables {...props} />
+              </div>
+              <div className="col-md-12">
+                { props.currentTable && <RenderSelects {...props} /> }
+              </div>
+              <div className="col-md-12">
+                { props.currentTable && <RenderWheres {...props} /> }
+              </div>
+              <div className="col-md-12">
+                { props.currentTable && <RenderOrderBy {...props} /> }
+              </div>
+            </Well>
+          </form>
+      </div>
+    )
+}
+
+const CustomSQLQuery = (props) => {
+  return (
+    <div className="box1 col-md-6">
+      <Well>
+        <CustomQuery {...props} />
+      </Well>
+    </div>
+  )
+}
+
 const MyFormContainer = (props) => {
 
       return (<div className="col-md-12">
 
-        <div className="box1 col-md-6">
-              <Button id="saveFile" onClick={saveFile}>Save Graph</Button>
-
-                <form>
-                  <Well>
-                    <div className="col-md-12">
-                     <RenderTables {...props} />
-                    </div>
-                    <div className="col-md-12">
-                      { props.currentTable && <RenderSelects {...props} /> }
-                    </div>
-                    <div className="col-md-12">
-                      { props.currentTable && <RenderWheres {...props} /> }
-                    </div>
-                    <div className="col-md-12">
-                      { props.currentTable && <RenderOrderBy {...props} /> }
-                    </div>
-                  </Well>
-                </form>
-        </div>
+        {props.selectQuery ? <SelectQueryOptions {...props} /> : <CustomSQLQuery {...props}  />}
 
         <div className="box1 col-md-6">
 
@@ -193,7 +209,7 @@ const MyFormContainer = (props) => {
           })
           .map((graphInfo, index) => {
             return (
-            <div key={index} style={{border: 'solid grey 1px'}}>{newGraphMaker(graphInfo.settings)}
+            <div className="createdCharts" key={index} style={{border: 'solid grey 1px'}}>{newGraphMaker(graphInfo.settings)}
             <button onClick={props.handleChartDelete.bind(this, graphInfo)}>
             Delete
             </button>
