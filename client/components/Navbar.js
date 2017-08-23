@@ -8,11 +8,7 @@ class Navbar extends React.Component {
 
     return (
       <nav className="navbar navbar-default">
-        <div className="container">
-          <div className="navbar-left">
             <Link to="/home"><h4>ReGres/Radar</h4></Link>
-          </div>
-        </div>
       </nav>
     )
   }

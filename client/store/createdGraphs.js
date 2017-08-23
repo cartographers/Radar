@@ -1,5 +1,5 @@
 import {fetchQueryTable} from './queriedTable'
-import {queryData} from '../../utils/connectDB'
+import {queryData, customQueryData} from '../../utils/connectDB'
 import {saveSettings, openSettings} from '../../utils/saveFile'
 /**
  * ACTION TYPES
@@ -29,6 +29,14 @@ export const fetchGraphs = () =>
       .catch(err => (err))
   }
 
+export const saveQueryGraph = (settings) => 
+  (dispatch, getState) => {
+    dispatch(addGraph(settings))
+    const updatedGraphs = getState().createdGraphs
+    saveSettings(JSON.stringify(updatedGraphs))
+  }
+
+
 export const saveGraph = (settings) =>
   (dispatch, getState) => {
     const result = queryData(settings.settings)
@@ -48,8 +56,10 @@ export const saveGraph = (settings) =>
 }
 
 export const removeGraph = (settings) =>
-  dispatch => {
+  (dispatch, getState) => {
     dispatch(deleteGraph(settings))
+    const updatedGraphs = getState().createdGraphs
+    saveSettings(JSON.stringify(updatedGraphs))
 }
 
 /**
@@ -63,7 +73,7 @@ export default function (state = [], action) {
     case ADD_GRAPH:
       return [...state, action.graph]
     case DELETE_GRAPH:
-      return state.filter(graph => graph.key !== action.graph.key)
+      return state.filter(graph => graph !== action.graph)
     default:
       return state
   }

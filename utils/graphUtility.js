@@ -16,7 +16,6 @@ export const newGraphMaker = (settings) => {
         // If x or y values do not meet correct data type, return error
         return <BarGraph {...settings} />
     }
-  
     if (makeGraph === 'Scatter') return <Scatter {...settings} />
     if (makeGraph === 'Pie') return <PieGraph {...settings} />
     if (makeGraph === 'Table') {

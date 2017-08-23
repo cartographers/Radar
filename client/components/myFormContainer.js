@@ -2,6 +2,7 @@ import React from 'react'
 import {FormControl, ControlLabel, FormGroup, Button, Well} from 'react-bootstrap'
 import {newGraphMaker} from '../../utils/graphUtility'
 import {saveFile} from '../../utils/saveFile'
+import CustomQuery from './CustomQuery'
 
 const ChooseOne = (props) => {
   return (<select name={props.name} onChange={props.onChange} value={props.value}>
@@ -104,21 +105,44 @@ const ChartInput = (props) => {
 }
 
 
+const SelectQueryOptions = (props) => {
+  return (
+      <div className="box1 col-md-6">
+        <Button id="saveFile" onClick={saveFile}>Save Graph</Button>
+          <form>
+            <Well>
+              <div className="col-md-12">
+               <RenderTables {...props} />
+              </div>
+              <div className="col-md-12">
+                { props.currentTable && <RenderSelects {...props} /> }
+              </div>
+              <div className="col-md-12">
+                { props.currentTable && <RenderWheres {...props} /> }
+              </div>
+              <div className="col-md-12">
+                { props.currentTable && <RenderOrderBy {...props} /> }
+              </div>
+            </Well>
+          </form>
+      </div>
+    )
+}
+
+const CustomSQLQuery = (props) => {
+  return (
+    <div className="box1 col-md-6">
+      <Well>
+        <CustomQuery {...props} />
+      </Well>
+    </div>
+  )
+}
+
 const MyFormContainer = (props) => {
 
       return (<div className="col-md-12">
-
-        <div className="box1 col-md-6">
-              <Button id="saveFile" onClick={saveFile}>Save Graph</Button>
-                <form>
-                  <Well>
-                    <RenderTables {...props} />
-                    { props.currentTable && <RenderSelects {...props} /> }
-                    { props.currentTable && <RenderWheres {...props} /> }
-                    { props.currentTable && <RenderOrderBy {...props} /> }
-                  </Well>
-                </form>
-        </div>
+        {props.selectQuery ? <SelectQueryOptions {...props} /> : <CustomSQLQuery {...props}  />}
 
         <div className="box1 col-md-6">
 
@@ -147,10 +171,18 @@ const MyFormContainer = (props) => {
                     ? graphInfo.database == props.currentDatabase
                     : (graphInfo.database == props.currentDatabase && graphInfo.table == props.currentTable)
           })
-          .map((graphInfo, index) => <div key={index}>{newGraphMaker(graphInfo.settings)}</div>)
+          .map((graphInfo, index) => {
+            return (
+            <div className="createdCharts" key={index} style={{border: 'solid grey 1px'}}>{newGraphMaker(graphInfo.settings)}
+            <button onClick={props.handleChartDelete.bind(this, graphInfo)}>
+            Delete
+            </button>
+            </div>
+          )})
         }
 
       </div>)
 }
+
 
 export default MyFormContainer

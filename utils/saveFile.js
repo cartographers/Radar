@@ -1,8 +1,11 @@
-const {dialog} = require('electron').remote
+const { dialog } = require('electron').remote
 const fs = require('fs')
+const remote = require('electron').remote
+const app = remote.app
+
+const userPath = app.getPath('documents')
 
 function saveFile() {
-
   dialog.showSaveDialog({
     filters: [
       { name: 'text', extensions: ['txt'] }
@@ -16,27 +19,28 @@ function saveFile() {
 }
 
 function saveSettings(settings) {
-  const filePath = process.env.HOME + '/Documents/capstoneSettings/settings.txt'
-  const filedir = process.env.HOME + '/Documents/capstoneSettings/'
-  fs.open(filedir, 'r', (err) => {
+  const filePath = userPath + '/capstoneSettings/settings.txt'
+  const fileDir = userPath + '/capstoneSettings/'
+  fs.open(fileDir, 'r', (err) => {
     if (err) {
-      fs.mkdirSync(filedir, (error) => {
+      fs.mkdirSync(fileDir, (error) => {
         if (error) throw (error)
       })
     }
-  fs.writeFile(filePath, settings, (errors) => {
-    if (errors) console.log(errors)
-  })
+    fs.writeFile(filePath, settings, (errors) => {
+      if (errors) console.log(errors)
+    })
   })
 }
 
 function openSettings() {
-  const path = process.env.HOME + '/Documents/capstoneSettings/settings.txt'
+  const path = userPath + '/capstoneSettings/settings.txt'
   return new Promise((resolve, reject) => {
     fs.readFile(path, 'utf8', (err, data) => {
       if (err) reject(data)
       resolve(data)
-    })})
+    })
+  })
 }
 
-module.exports = {saveFile, saveSettings, openSettings}
+module.exports = { saveFile, saveSettings, openSettings }
