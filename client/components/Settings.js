@@ -1,21 +1,25 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {Button} from 'react-bootstrap'
-import { updatePort, setPort } from '../store'
+import { editPort, fetchPort } from '../store'
 
 class Settings extends React.Component {
+
+  componentDidMount(){
+    this.props.grabPort(this.props.port)
+  }
 
   render (){
     return (
         <div className="container">
-          <form onSubmit={(event) => this.props.changePort(this.props.currentDatabase, event)}>
+          <form onSubmit={this.props.changePort}>
             <div className="row">
               <h4>Port Number: </h4>
               <input
                 type="text"
-                placeholder="Enter SQL query"
+                placeholder="Postgres Port #"
                 devaultValue="5432"
-                name="customQuery"
+                name="port"
               />
             </div>
             <div className="row">
@@ -23,7 +27,7 @@ class Settings extends React.Component {
                 style={{display: 'block'}}
                 type="submit"
                 className="btn btn-success" >
-                Query Database
+                Change Port
               </Button>
             </div>
           </form>
@@ -34,20 +38,18 @@ class Settings extends React.Component {
 
 const mapState = (state) => {
   return {
+    port: state.portSetting
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    changePort (currentDatabase, event) {
+    grabPort(){
+      dispatch(fetchPort())
+    },
+    changePort (event) {
       event.preventDefault()
-      const SQLquery = event.target.customQuery.value
-      let newSettings = {
-        currentDatabase: currentDatabase,
-        SQLquery: SQLquery,
-        settings: {}
-      }
-      dispatch(fetchQueryTableCustom(newSettings))
+      dispatch(editPort(event.target.port.value))
     }
   }
 }

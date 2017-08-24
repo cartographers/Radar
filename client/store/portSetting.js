@@ -28,7 +28,7 @@ export const editPort = (port) =>
  * REDUCER
  */
 
-export default function (state = '', action) {
+export default function (state = '5432', action) {
   switch (action.type) {
     case SET_PORT:
       return action.port
