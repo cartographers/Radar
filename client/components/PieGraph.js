@@ -7,11 +7,10 @@ const PieGraph = (props) => {
     const { title, savedQuery, pieKey, aggregateInformation, fill, width, height } = props
     return (
       <div className="col-md-6">
-        <h4>{title}</h4>
         <PieChart width={width} height={height}>
-        <Pie dataKey={pieKey} data={savedQuery} cx={200} cy={200} innerRadius={0} outerRadius={90} fill={fill} name={title} label />
-        <Tooltip content={CustomPieTooltip} />
-        <Legend />
+            <Pie dataKey={pieKey} data={savedQuery} cx={200} cy={200} innerRadius={0} outerRadius={90} fill={fill} name={title} />
+            <Tooltip content={CustomPieTooltip} />
+            <Legend />
         </PieChart>
         { aggregateInformation && <TableDB Title={title + ' aggregate Info'} savedQuery={aggregateInformation} />}
       </div>

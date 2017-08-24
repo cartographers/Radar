@@ -6,6 +6,7 @@ export const saveQueryData = (data) => {
 }
 
 export const newGraphMaker = (settings) => {
+  console.log(settings)
 
   const makeGraph = settings.choosenChart
   settings.title = settings.Title
@@ -24,7 +25,7 @@ export const newGraphMaker = (settings) => {
   const strokeGrid = color2
   const fill = color1
   
-  if (makeGraph === 'Area') return <AreaGraph {...settings} strokeGrid={strokeGrid} stroke={stroke}  />
+  if (makeGraph === 'Area') return <AreaGraph {...settings} strokeGrid={strokeGrid} stroke={stroke} />
   if (makeGraph === 'Line') return <LineGraph {...settings} strokeGrid={strokeGrid} stroke={stroke} fill={fill} />
   if (makeGraph === 'Bar') return <BarGraph {...settings}  strokeGrid={strokeGrid} fill={fill} />
   if (makeGraph === 'Scatter') return <Scatter {...settings} strokeGrid={strokeGrid} stroke={stroke} />

@@ -4,7 +4,7 @@ import TableDB from './TableDB'
 import React from 'react'
 
 const LineGraph = (props) => {
-  const { title, aggregateInformation, x, y, savedQuery, fill, stroke, strokeGrid } = props
+  const { title, aggregateInformation, x, y, savedQuery, fill, stroke, strokeGrid, width, height } = props
 
   return (
     <div className="col-md-6">
