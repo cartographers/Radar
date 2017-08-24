@@ -212,10 +212,10 @@ const MyFormContainer = (props) => {
             })
             .map((graphInfo, index) => {
               return (
-                <div className="col-md-6">
+                <div key={index} className="col-md-6">
                     <div onClick={props.handleChartDelete.bind(this, graphInfo)} className="glyphicon glyphicon-remove-sign"
                          style={{float: 'left', color:'#E84A5F'}}> </div>
-                    <div key={index}>
+                    <div>
                       {newGraphMaker(graphInfo.settings)}
                     </div>
                 </div>

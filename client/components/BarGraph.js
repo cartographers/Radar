@@ -1,4 +1,4 @@
-import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
+import {BarChart, Bar, XAxis, YAxis, Tooltip, Legend} from 'recharts'
 import React from 'react'
 import {CustomTooltip} from './customToolTips.js'
 import TableDB from './TableDB'
