@@ -97,10 +97,7 @@ class myForm extends React.Component {
   makeGraph = (evt) => {
     evt.preventDefault()
     let settings = {
-      whereThese: this.state.whereThese.map( val => {
-        val.col = `"${val.col}"`
-        return val
-      }),
+      whereThese: this.state.whereThese,
       selectThese: this.state.selectThese.map(val => `"${val}"`),
       Title: this.state.Title,
       xAxis: this.state.xAxis,
@@ -112,6 +109,7 @@ class myForm extends React.Component {
       choosenChart: this.state.choosenChart,
       fields: this.props.fields,
       pieKey: this.state.pieKey,
+      foreignKeys: this.props.foreignKeys,
       selectQuery: this.state.selectQuery,
       savedQuery: this.props.database,
       aggregateSelects: this.state.aggregateSelects,
@@ -125,7 +123,17 @@ class myForm extends React.Component {
   handleTableChange = (evt) => {
     const currentTable = evt.target.value
     this.setState({ currentTable: currentTable })
-    this.props.grabTableData(this.state.currentDatabase, currentTable)
+    this.setState({
+      selectThese: [],
+      whereThese: [],
+      orderedBy: ['Descending', 0 ],
+      AndOr: '',
+      xAxis: '',
+      yAxis: '',
+      pieKey: '',
+      aggregateSelects: []
+    })
+    this.props.grabTableData(this.state.currentDatabase, currentTable, this.props.foreignKeys)
   }
 
   changeQueryType = (event) => {
@@ -164,9 +172,9 @@ const mapDispatch = dispatch => {
     fetchDat (DBname) {
       dispatch( fetchTables(DBname) )
     },
-    grabTableData(database, table) {
-      dispatch( fetchFields({ database, table}))
+    grabTableData(database, table, foreignKeys) {
       dispatch( fetchKeys({ database, table}))
+      dispatch( fetchFields({ database, table, foreignKeys}))
     },
     loadCreatedGraphs(){
       dispatch(fetchGraphs())
