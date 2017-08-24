@@ -1,65 +1,25 @@
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {fetchQueryTable} from '../store'
+import React from 'react'
+import {CustomTooltip} from './customToolTips.js'
+import TableDB from './TableDB'
 
-class BarGraph extends Component {
-
-  render () {
-
-    const {
-      strokeGrid,
-      width,
-      height,
-      title,
-      x,
-      y,
-      fill,
-      savedQuery
-    } = this.props
-
+const BarGraph = (props) => {
+    const { title, x, y, savedQuery, aggregateInformation, fill, width, height } = props
     return (
       <div className="col-md-6">
-          <BarChart
-            width={width}
-            height={height}
-            data={savedQuery} label>
-            <XAxis dataKey={x} label minTickGap={10} />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey={y} fill={fill} name={title}/>
-          </BarChart>
+        <BarChart
+          width={width}
+          height={height}
+          data={savedQuery} >
+          <XAxis dataKey={x} minTickGap={10} />
+          <YAxis />
+          <Tooltip content={CustomTooltip} />
+          <Legend />
+          <Bar dataKey={y} fill={fill} name={title}/>
+        </BarChart>
+        { aggregateInformation && <TableDB Title={title + ' aggregate Info'} savedQuery={aggregateInformation} />}
       </div>
     )
-  }
 }
 
-const mapState = (state, ownProps) => {
-  return ({
-    title: ownProps.title,
-    width: ownProps.width,
-    height: ownProps.height,
-    x: ownProps.x,
-    y: ownProps.y,
-    orderedBy: ownProps.orderedBy,
-    whereThese: ownProps.whereThese,
-    table: ownProps.table,
-    database: ownProps.database,
-    fields: state.fields,
-    queriedTable: state.queriedTable,
-    savedQuery: ownProps.savedQuery,
-    AndOr: ownProps.AndOr,
-    fill: ownProps.fill,
-    strokeGrid: ownProps.strokeGrid
-  })
-}
-const mapDispatch = (dispatch) => {
-  return ({
-    fetchQueriedData(queryInfo) {
-      dispatch(fetchQueryTable(queryInfo))
-    }
-  })
-}
-export default connect(mapState, mapDispatch)(BarGraph)
-
+export default BarGraph

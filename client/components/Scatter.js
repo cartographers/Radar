@@ -1,78 +1,26 @@
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {fetchQueryTable} from '../store'
+import {CustomTooltip} from './customToolTips'
+import TableDB from './TableDB'
+import React from 'react'
 
-class ScatterGraph extends Component {
-
-  componentDidMount () {
-    const queryInfo = {
-      currentDatabase: this.props.database,
-      selectThese: this.props.selectThese,
-      whereThese: this.props.whereThese,
-      currentTable: this.props.table,
-      orderBy: this.props.orderBy,
-      fields: this.props.fields
-    }
-    // this.props.fetchQueriedData(queryInfo)
-  }
-
-  render () {
-
-    const {
-      title,
-      x,
-      y,
-      strokeGrid,
-      width,
-      height,
-      fill,
-      savedQuery
-    } = this.props
-    const graphData = savedQuery.map((row, index) => {
-      return {x: row[x], y: row[y]}
-    })
-
+const ScatterGraph = (props) => {
+    const { title, x, y, savedQuery, aggregateInformation, fill } = props
     return (
       <div className="col-md-6">
           <ScatterChart
             width={width}
-            height={height}>
-
-            <XAxis dataKey="x" name={x} />
-            <YAxis dataKey="y" name={y} />
-            <Tooltip />
+            height={height}
+            margin={{top: 20, right: 20, bottom: 10, left: 10}}>
+            <XAxis dataKey={x} name={x.toString()} />
+            <YAxis dataKey={y} name={y.toString()} />
+            <Tooltip content={CustomTooltip}  cursor={{strokeDasharray: '3 3'}} />
             <Legend />
-            <Scatter name={title} data={graphData} fill={fill} label />
+            <Scatter name={title} data={savedQuery} fill={fill} label />
           </ScatterChart>
+          { aggregateInformation && <TableDB Title={title + ' aggregate Info'} savedQuery={aggregateInformation} />}
       </div>
     )
   }
 }
 
-const mapState = (state, ownProps) => {
-  return ({
-    title: ownProps.title,
-    x: ownProps.x,
-    y: ownProps.y,
-    orderBy: ownProps.orderedBy,
-    whereThese: ownProps.whereThese,
-    table: ownProps.table,
-    database: ownProps.database,
-    fields: state.fields,
-    queriedTable: state.queriedTable,
-    savedQuery: ownProps.savedQuery,
-    strokeGrid: ownProps.strokeGrid,
-    fill: ownProps.fill
-  })
-}
-
-const mapDispatch = (dispatch) => {
-  return ({
-    fetchQueriedData(queryInfo) {
-      dispatch(fetchQueryTable(queryInfo))
-    }
-  })
-}
-
-export default connect(mapState, mapDispatch)(ScatterGraph)
+export default ScatterGraph

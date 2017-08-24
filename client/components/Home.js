@@ -7,6 +7,7 @@ import logo from '../../public/70685-radar-chart.png'
 import infographic from '../../public/db-logo.png'
 
 
+
 class Home extends Component {
   
   constructor () {

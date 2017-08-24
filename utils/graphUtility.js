@@ -6,21 +6,14 @@ export const saveQueryData = (data) => {
 }
 
 export const newGraphMaker = (settings) => {
+
   const makeGraph = settings.choosenChart
-  const title = settings.Title
-  const width = 400
-  const height = 350
-  const selectThese = settings.selectThese
-  const whereThese = settings.whereThese
-  const orderedBy = settings.orderedBy
-  const database = settings.currentDatabase
-  const table = settings.currentTable
-  const x = settings.xAxis
-  const y = settings.yAxis
-  const savedQuery = settings.savedQuery
-  const pieKey = settings.pieKey
-  const AndOr = settings.AndOr
-  const created = settings.created
+  settings.title = settings.Title
+  settings.width = 400
+  settings.height = 350
+  settings.x = settings.xAxis
+  settings.y = settings.yAxis
+
   const color1 =  '#E84A5F'
   const color2 = '#FECEA8'
   const color3 = '#99B898'
@@ -31,36 +24,10 @@ export const newGraphMaker = (settings) => {
   const strokeGrid = color2
   const fill = color1
   
-  
-  if (makeGraph === 'Area') return <AreaGraph strokeGrid={strokeGrid} stroke={stroke} title={title} AndOr={AndOr} width={width} height={height}
-                                              selectThese={selectThese} orderedBy={orderedBy} database={database}
-                                              table={table} x={x} y={y} whereThese={whereThese} savedQuery={savedQuery}
-                                              created={created}/>
-  if (makeGraph === 'Line') {
-    //  Check for unique x values
-    return <LineGraph strokeGrid={strokeGrid} stroke={stroke} title={title} AndOr={AndOr} width={width} height={height}
-                      selectThese={selectThese} orderedBy={orderedBy} database={database} table={table} x={x} y={y}
-                      whereThese={whereThese} savedQuery={savedQuery} created={created}/>
-  }
-  if (makeGraph === 'Bar') {
-    // If x or y values do not meet correct data type, return error
-    return <BarGraph strokeGrid={strokeGrid} fill={fill} title={title} AndOr={AndOr} width={width} height={height} selectThese={selectThese}
-                     orderedBy={orderedBy} database={database} table={table} x={x} y={y} whereThese={whereThese}
-                     savedQuery={savedQuery} created={created}/>
-  }
-  
-  if (makeGraph === 'Scatter') return <Scatter strokeGrid={strokeGrid} fill={fill} title={title} AndOr={AndOr} width={width} height={height}
-                                               selectThese={selectThese} orderedBy={orderedBy} database={database}
-                                               table={table} x={x} y={y} whereThese={whereThese} savedQuery={savedQuery}
-                                               created={created}/>
-  if (makeGraph === 'Pie') return <PieGraph pieKey={pieKey} title={title} AndOr={AndOr} width={width} height={height}
-                                            selectThese={selectThese} orderedBy={orderedBy} database={database}
-                                            table={table} whereThese={whereThese} savedQuery={savedQuery}
-                                            created={created}/>
-  if (makeGraph === 'Table') {
-    // If x or y values do not meet correct data type, return error
-    return <TableDB title={title} width={width} height={height} selectThese={selectThese} orderedBy={orderedBy}
-                    database={database} table={table} whereThese={whereThese} savedQuery={savedQuery}
-                    created={created}/>
-  }
+  if (makeGraph === 'Area') return <AreaGraph {...settings} strokeGrid={strokeGrid} stroke={stroke}  />
+  if (makeGraph === 'Line') return <LineGraph {...settings} strokeGrid={strokeGrid} stroke={stroke} fill={fill} />
+  if (makeGraph === 'Bar') return <BarGraph {...settings}  strokeGrid={strokeGrid} fill={fill} />
+  if (makeGraph === 'Scatter') return <Scatter {...settings} strokeGrid={strokeGrid} stroke={stroke} />
+  if (makeGraph === 'Pie') return <PieGraph {...settings} fill={fill}/>
+  if (makeGraph === 'Table') return <TableDB {...settings} />
 }

@@ -19,7 +19,7 @@ export const fetchTables = (settings) =>
     const result = loadTables(settings)
     result
     .then(response => {
-      if(response.length) dispatch( fetchFields({ database: settings.database, table: response[0]}))
+      if (response.length) dispatch( fetchFields({ database: settings.database, table: response[0]}))
       return dispatch(getTables(response))
     })
     .catch(err => console.log(err))

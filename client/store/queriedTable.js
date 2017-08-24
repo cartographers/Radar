@@ -29,6 +29,7 @@ export const fetchQueryTableCustom = (queryInfo) =>
     const result = customQueryData(queryInfo)
     result
     .then(response => {
+      if (!response) return console.log('Query results undefined.')
       dispatch(queriedTable(response))
     })
     .catch(err => console.log(err))
