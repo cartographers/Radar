@@ -7,10 +7,9 @@ class CustomQuery extends React.Component {
 
   render (){
     return (
-        <div className="container">
+        <div>
           <form onSubmit={(event) => this.props.querySQLform(this.props.currentDatabase, event)}>
-            <div className="row">
-              <h4>Custom Query: </h4>
+            <div>
               <textarea
                 type="text"
                 rows="3" cols="60"
@@ -18,9 +17,9 @@ class CustomQuery extends React.Component {
                 name="customQuery"
               />
             </div>
-            <div className="row">
+            <div className="col-md-12" style={{}}>
               <Button
-                style={{display: 'block'}}
+                style={{display: 'block', float: 'right'}}
                 type="submit"
                 className="btn btn-success" >
                 Query Database

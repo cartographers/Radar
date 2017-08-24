@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {fetchQueryTable} from '../store'
 
 class LineGraph extends Component {
-  componentDidMount () {
+  componentDidMount() {
     const queryInfo = {
       currentDatabase: this.props.database,
       selectThese: this.props.selectThese,
@@ -14,39 +14,37 @@ class LineGraph extends Component {
       fields: this.props.fields
     }
   }
-
-  render () {
+  
+  render() {
     const {
-      queriedTable,
       width,
       height,
       title,
       x,
       y,
-      orderBy,
-      whereThese,
-      savedQuery
+      strokeGrid,
+      savedQuery,
+      stroke,
+      fill
     } = this.props
-
-    const graphData = savedQuery.map((row, index) => {
+    
+    const graphData = savedQuery.map((row) => {
       return {x: row[x], y: row[y]}
     })
-
+    
     return (
       <div className="col-md-6">
         <LineChart
           width={width}
           height={height}
-          data={graphData}
-          margin={{top: 5, right: 30, left: 20, bottom: 5}}>
-
-           <XAxis dataKey="x" />
-           <YAxis />
-           <CartesianGrid strokeDasharray="3 3" />
-           <Tooltip />
-           <Legend />
-           <Line type="monotone" dataKey="y" stroke="#8884d8" activeDot={{r: 8}} label />
-
+          data={graphData}>
+          
+          <XAxis dataKey='x' />
+          <YAxis dataKey='y' />
+          <Tooltip/>
+          <Legend/>
+          <Line type="monotone" dataKey="y" stroke={stroke} fill={fill} activeDot={{r: 5}} name={title}/>
+        
         </LineChart>
       </div>
     )
@@ -66,7 +64,10 @@ const mapState = (state, ownProps) => {
     database: ownProps.database,
     fields: state.fields,
     queriedTable: state.queriedTable,
-    savedQuery: ownProps.savedQuery
+    savedQuery: ownProps.savedQuery,
+    stroke: ownProps.stroke,
+    strokeGrid: ownProps.strokeGrid,
+    fill: ownProps.fill
   })
 }
 

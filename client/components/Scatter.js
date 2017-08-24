@@ -20,14 +20,13 @@ class ScatterGraph extends Component {
   render () {
 
     const {
-      queriedTable,
-      width,
-      height,
       title,
       x,
       y,
-      orderBy,
-      whereThese,
+      strokeGrid,
+      width,
+      height,
+      fill,
       savedQuery
     } = this.props
     const graphData = savedQuery.map((row, index) => {
@@ -38,15 +37,13 @@ class ScatterGraph extends Component {
       <div className="col-md-6">
           <ScatterChart
             width={width}
-            height={height}
-            margin={{top: 20, right: 20, bottom: 10, left: 10}}>
+            height={height}>
 
             <XAxis dataKey="x" name={x} />
             <YAxis dataKey="y" name={y} />
-            <CartesianGrid strokeDasharray="3 3" />
-            <Tooltip cursor={{strokeDasharray: '3 3'}} />
+            <Tooltip />
             <Legend />
-            <Scatter name={title} data={graphData} fill="#8884d8" label />
+            <Scatter name={title} data={graphData} fill={fill} label />
           </ScatterChart>
       </div>
     )
@@ -56,8 +53,6 @@ class ScatterGraph extends Component {
 const mapState = (state, ownProps) => {
   return ({
     title: ownProps.title,
-    width: ownProps.width,
-    height: ownProps.height,
     x: ownProps.x,
     y: ownProps.y,
     orderBy: ownProps.orderedBy,
@@ -66,7 +61,9 @@ const mapState = (state, ownProps) => {
     database: ownProps.database,
     fields: state.fields,
     queriedTable: state.queriedTable,
-    savedQuery: ownProps.savedQuery
+    savedQuery: ownProps.savedQuery,
+    strokeGrid: ownProps.strokeGrid,
+    fill: ownProps.fill
   })
 }
 

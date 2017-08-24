@@ -28,10 +28,8 @@ class myForm extends React.Component {
       Title: '',
       xAxis: '',
       yAxis: '',
-      height: '',
-      width: '',
       pieKey: '',
-      selectQuery: true
+      selectQuery: true,
     }
   }
 
@@ -92,8 +90,6 @@ class myForm extends React.Component {
       }),
       selectThese: this.state.selectThese.map(val => `"${val}"`),
       Title: this.state.Title,
-      width: this.state.width,
-      height: this.state.height,
       xAxis: this.state.xAxis,
       yAxis: this.state.yAxis,
       orderedBy: [this.state.orderedBy[0],(this.state.orderedBy[1] ? `"${this.state.orderedBy[1]}"` : '')],
@@ -107,7 +103,7 @@ class myForm extends React.Component {
       savedQuery: this.props.database,
       created: Date.now()
     }
-    this.state.selectQuery ? 
+    this.state.selectQuery ?
     this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, settings)
     : this.props.savingCustomQueryGraph(this.state.currentDatabase, this.state.currentTable, settings)
   }

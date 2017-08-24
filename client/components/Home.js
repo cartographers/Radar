@@ -3,7 +3,8 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {fetchDatabases} from '../store'
 import {Jumbotron, Button, Image, Collapse, Well} from'react-bootstrap'
-import logo from '../../public/logo.png'
+import logo from '../../public/70685-radar-chart.png'
+import infographic from '../../public/db-logo.png'
 
 
 class Home extends Component {
@@ -27,6 +28,11 @@ class Home extends Component {
           <div className="dbList" key={database.datname}>
             <Link to={`/form/${database.datname}`} className="links">
               <div className="col-md-4" style={{textAlign: 'left'}}>
+                <div>
+                <Image src={infographic} circle style={{width: 20 + '%', height: 20 + '%'}}/>
+                </div>
+              </div>
+              <div>
                 {database.datname}
               </div>
             </Link>
@@ -41,9 +47,9 @@ class Home extends Component {
           <div className="row">
             <div className="row">
               <div className="col-lg-12">
-                <Jumbotron style={{height: 15  + 'em'}}>
+                <Jumbotron style={{height: 7  + 'em', fontSize: 2 + 'em', marginTop: 0 + 'em'}}>
                   <Image src={logo} circle
-                         style={{float: 'left', marginRight: '0.5' + 'em'}}/>
+                         style={{float: 'left', marginRight: '0.5' + 'em', width: 5 + 'em', height: 5 + 'em'}}/>
                   <h1 style={{display: 'inline-block'}}>Radar</h1>
                   <p>A Postgres.app utility application that will help you visualize your data</p>
                 </Jumbotron>
@@ -54,7 +60,7 @@ class Home extends Component {
                     {this.state.open ? 'hide databases' : 'render databases'}
                   </Button>
                 </div>
-                {this.state.open ? listDatabases(): ''}
+                {this.state.open ? listDatabases() : ''}
               </div>
             </div>
           </div>

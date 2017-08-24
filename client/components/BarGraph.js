@@ -5,43 +5,30 @@ import {fetchQueryTable} from '../store'
 
 class BarGraph extends Component {
 
-  componentDidMount () {
-    const queryInfo = {
-      currentDatabase: this.props.database,
-      selectThese: this.props.selectThese,
-      whereThese: this.props.whereThese,
-      currentTable: this.props.table,
-      orderedBy: this.props.orderedBy,
-      fields: this.props.fields,
-      AndOr: this.props.AndOr
-    }
-    // this.props.fetchQueriedData(queryInfo)
-  }
-
   render () {
 
     const {
-      queriedTable,
+      strokeGrid,
       width,
       height,
       title,
       x,
       y,
-      orderBy,
-      whereThese,
+      fill,
       savedQuery
     } = this.props
 
     return (
       <div className="col-md-6">
-        <div><h4>{title}</h4></div>
-          <BarChart width={width} height={height} data={savedQuery} label>
-            <XAxis dataKey={x} label />
+          <BarChart
+            width={width}
+            height={height}
+            data={savedQuery} label>
+            <XAxis dataKey={x} label minTickGap={10} />
             <YAxis />
-            <CartesianGrid strokeDasharray="3 3" />
             <Tooltip />
             <Legend />
-            <Bar dataKey={y} fill="#82ca9d" label />
+            <Bar dataKey={y} fill={fill} name={title}/>
           </BarChart>
       </div>
     )
@@ -62,7 +49,9 @@ const mapState = (state, ownProps) => {
     fields: state.fields,
     queriedTable: state.queriedTable,
     savedQuery: ownProps.savedQuery,
-    AndOr: ownProps.AndOr
+    AndOr: ownProps.AndOr,
+    fill: ownProps.fill,
+    strokeGrid: ownProps.strokeGrid
   })
 }
 const mapDispatch = (dispatch) => {

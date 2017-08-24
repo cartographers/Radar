@@ -11,43 +11,24 @@ import {
 } from 'recharts'
 
 class AreaGraph extends Component {
-
-  componentDidMount () {
-    const queryInfo = {
-      currentDatabase: this.props.database,
-      selectThese: this.props.selectThese,
-      whereThese: this.props.whereThese,
-      currentTable: this.props.table,
-      orderBy: this.props.orderBy,
-      fields: this.props.fields
-    }
-    // this.props.fetchQueriedData(queryInfo)
-  }
-
   render () {
 
     const {
-      queriedTable,
       width,
       height,
       title,
       x,
       y,
-      orderBy,
-      whereThese,
       savedQuery
     } = this.props
-    const graphData = savedQuery.map((row, index) => {
-      return {x: row[x], y: row[y]}
-    })
 
     return (
       <div className="col-md-6">
+        <h4>{title}</h4>
         <AreaChart
           width={width}
           height={height}
-          data={graphData}
-          margin={{top: 10, right: 30, left: 0, bottom: 0}}>
+          data={savedQuery}>
 
             <XAxis dataKey="x" />
             <YAxis />
@@ -65,8 +46,6 @@ class AreaGraph extends Component {
 const mapState = (state, ownProps) => {
   return ({
     title: ownProps.title,
-    width: ownProps.width,
-    height: ownProps.height,
     x: ownProps.x,
     y: ownProps.y,
     orderBy: ownProps.orderedBy,
@@ -75,7 +54,9 @@ const mapState = (state, ownProps) => {
     database: ownProps.database,
     fields: state.fields,
     queriedTable: state.queriedTable,
-    savedQuery: ownProps.savedQuery
+    savedQuery: ownProps.savedQuery,
+    height: ownProps.height,
+    width: ownProps.width
   })
 }
 

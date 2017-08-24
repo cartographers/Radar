@@ -19,8 +19,6 @@ class TableDB extends Component {
  render() {
     const {
       queriedTable,
-      width,
-      height,
       title,
       orderBy,
       whereThese,
@@ -31,11 +29,11 @@ class TableDB extends Component {
                   ? Object.keys(savedQuery[0])
                   : []
     return (
-      <div>
-        <div>
-          <h4>Table</h4>
+      <div className="col-lg-12 col-md-12">
+        <div className="col-lg-12">
+          <h4>{title}</h4>
         </div>
-        <div>
+        <div className="col-lg-12">
           <Table>
             <thead>
             <tr>
@@ -72,8 +70,6 @@ class TableDB extends Component {
 const mapState = (state, ownProps) => {
   return ({
     title: ownProps.title,
-    width: ownProps.width,
-    height: ownProps.height,
     orderBy: ownProps.orderedBy,
     whereThese: ownProps.whereThese,
     table: ownProps.table,

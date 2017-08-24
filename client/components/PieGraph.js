@@ -21,28 +21,22 @@ class PieGraph extends Component {
   render() {
 
     const {
-      queriedTable,
       width,
       height,
       title,
-      orderBy,
-      whereThese,
       savedQuery,
-      fields,
-      pieKey
+      pieKey,
+      fill
     } = this.props
-
-    const graphData = savedQuery.map(row => {
-      return row  // Tom, look at this thing! - by NG
-    })
 
     return (
       <div className="col-md-6">
+        <h4>{title}</h4>
             <PieChart
-              width={800}
-              height={400}>
-
-              <Pie dataKey={pieKey} data={savedQuery} cx={200} cy={200} innerRadius={70} outerRadius={90} fill="#82ca9d" label />
+              width={width}
+              height={height}>
+              
+              <Pie name={title} dataKey={pieKey} data={savedQuery} cx={200} cy={200} innerRadius={70} outerRadius={90} fill={fill} />
             </PieChart>
       </div>
     )
@@ -61,7 +55,8 @@ const mapState = (state, ownProps) => {
     fields: state.fields,
     queriedTable: state.queriedTable,
     savedQuery: ownProps.savedQuery,
-    pieKey: ownProps.pieKey
+    pieKey: ownProps.pieKey,
+    fill: ownProps.fill
   })
 }
 
