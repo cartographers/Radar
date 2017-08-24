@@ -2,7 +2,8 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import { fetchDatabases } from '../store'
-import {Badge} from 'react-bootstrap'
+import {Badge, Image} from 'react-bootstrap'
+import logo from '../../public/logo.png'
 
 
 class Home extends Component {
@@ -21,6 +22,7 @@ class Home extends Component {
           <div className="row">
             <div className="row">
               <div className="col-lg-12">
+                <Image src={logo}/>
                 <h4>
                   Postgres Databases
                   <Badge> {databases.length} </Badge>

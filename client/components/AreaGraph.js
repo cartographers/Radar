@@ -1,90 +1,31 @@
-import React, {Component} from 'react'
-import {fetchQueryTable} from '../store'
-import {connect} from 'react-redux'
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip
-} from 'recharts'
+import React from 'react'
+import {CustomTooltip} from './customToolTips.js'
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip} from 'recharts'
+import TableDB from './TableDB'
 
-class AreaGraph extends Component {
 
-  componentDidMount () {
-    const queryInfo = {
-      currentDatabase: this.props.database,
-      selectThese: this.props.selectThese,
-      whereThese: this.props.whereThese,
-      currentTable: this.props.table,
-      orderBy: this.props.orderBy,
-      fields: this.props.fields
-    }
-    // this.props.fetchQueriedData(queryInfo)
-  }
-
-  render () {
-
-    const {
-      queriedTable,
-      width,
-      height,
-      title,
-      x,
-      y,
-      orderBy,
-      whereThese,
-      savedQuery
-    } = this.props
-    const graphData = savedQuery.map((row, index) => {
-      return {x: row[x], y: row[y]}
-    })
+const AreaGraphs = (props) => {
+    const { Title, xAxis, yAxis, savedQuery, aggregateInformation } = props
 
     return (
       <div className="col-md-6">
+      <div><h4>{Title}</h4></div>
         <AreaChart
-          width={width}
-          height={height}
-          data={graphData}
+          width={250}
+          height={250}
+          data={savedQuery}
           margin={{top: 10, right: 30, left: 0, bottom: 0}}>
-
-            <XAxis dataKey="x" />
+            <XAxis dataKey={xAxis} />
             <YAxis />
             <CartesianGrid strokeDasharray="3 3" />
-            <Tooltip />
-
-            <Area type="monotone" dataKey="y" stroke="#8884d8" fill="#8884d8" label />
-
+            <Tooltip content={CustomTooltip} />
+            <Area type="monotone" dataKey={yAxis} stroke="#8884d8" fill="#8884d8" label />
         </AreaChart>
+        { aggregateInformation && <TableDB Title={Title + ' aggregate Info'} savedQuery={aggregateInformation} />}
       </div>
     )
-  }
+
 }
 
-const mapState = (state, ownProps) => {
-  return ({
-    title: ownProps.title,
-    width: ownProps.width,
-    height: ownProps.height,
-    x: ownProps.x,
-    y: ownProps.y,
-    orderBy: ownProps.orderedBy,
-    whereThese: ownProps.whereThese,
-    table: ownProps.table,
-    database: ownProps.database,
-    fields: state.fields,
-    queriedTable: state.queriedTable,
-    savedQuery: ownProps.savedQuery
-  })
-}
 
-const mapDispatch = (dispatch) => {
-  return ({
-    fetchQueriedData(queryInfo) {
-      dispatch(fetchQueryTable(queryInfo))
-    }
-  })
-}
-
-export default connect(mapState, mapDispatch)(AreaGraph)
+export default AreaGraphs

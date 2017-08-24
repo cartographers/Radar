@@ -1,39 +1,15 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Table, thead, tr, th, tbody, td} from 'react-bootstrap'
-import {connect} from 'react-redux'
-import {fetchQueryTable} from '../store'
 
-class TableDB extends Component {
 
-  componentDidMount () {
-    const queryInfo = {
-      currentDatabase: this.props.database,
-      selectThese: this.props.selectThese,
-      whereThese: this.props.whereThese,
-      currentTable: this.props.table,
-      orderBy: this.props.orderBy,
-      fields: this.props.fields
-    }
-  }
-
- render() {
-    const {
-      queriedTable,
-      width,
-      height,
-      title,
-      orderBy,
-      whereThese,
-      savedQuery,
-    } = this.props
-
-    let fields = savedQuery && savedQuery[0]
-                  ? Object.keys(savedQuery[0])
-                  : []
+const TableDB = (props)  => {
+    const { savedQuery, aggregateInformation, Title } = props
+    if(!savedQuery) return <div>No matching Query</div>
+    const fields = savedQuery && savedQuery[0] ? Object.keys(savedQuery[0]) : []
     return (
       <div>
         <div>
-          <h4>Table</h4>
+          <h4>{Title}</h4>
         </div>
         <div>
           <Table>
@@ -63,32 +39,11 @@ class TableDB extends Component {
               }
             </tbody>
           </Table>
+          { aggregateInformation && <TableDB Title={Title + ' aggregate Info'} savedQuery={aggregateInformation} />}
         </div>
       </div>
     )
-  }
 }
 
-const mapState = (state, ownProps) => {
-  return ({
-    title: ownProps.title,
-    width: ownProps.width,
-    height: ownProps.height,
-    orderBy: ownProps.orderedBy,
-    whereThese: ownProps.whereThese,
-    table: ownProps.table,
-    database: ownProps.database,
-    queriedTable: state.queriedTable,
-    savedQuery: ownProps.savedQuery
-  })
-}
 
-const mapDispatch = (dispatch) => {
-  return ({
-    fetchQueriedData(queryInfo) {
-      dispatch(fetchQueryTable(queryInfo))
-    }
-  })
-}
-
-export default connect(mapState, mapDispatch)(TableDB)
+export default TableDB
