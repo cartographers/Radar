@@ -115,7 +115,7 @@ class myForm extends React.Component {
       aggregateSelects: this.state.aggregateSelects,
       created: Date.now()
     }
-    this.state.selectQuery ? 
+    this.state.selectQuery ?
     this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, settings)
     : this.props.savingCustomQueryGraph(this.state.currentDatabase, this.state.currentTable, settings)
   }

@@ -1,6 +1,8 @@
 body {
   font-family: sans-serif;
-  background-color: #355c7d;
+  background-color: #2A363B;
+  color: #A9A9A9;
+
 
   label {
     display: block;
@@ -10,15 +12,21 @@ body {
     margin: 1em;
     display: inline-block;
   }
+
+}
+
+.links {
+  color: whitesmoke;
 }
 
 #app {
-  background-color: #355c7d
+  background-color: #2A363B;
 }
 
 .navbar {
   text-align: center;
-  background-color: black;
+  background-color: #2A363B;
+  border: 0 none;
 }
 
 .createdCharts {
@@ -26,11 +34,14 @@ body {
 }
 
 .container {
-  background-color: #355c7d;
+  background-color: #2A363B;
 }
 
 .dbList {
+  font-size: 200%;
+  margin-top: 1%;
   padding-left: 10%;
+  text-align: center;
 }
 .badge {
   padding-left: 1%;
@@ -45,36 +56,10 @@ body {
   color: white;
 }
 
-.center {
-  position: absolute;
-  padding-left: 10%;
-  margin: 0%;
-}
 
 .pieChart {
   padding: 100px;
   height: 500px
 }
 
-
-
-.oneColor {
-  background-color: #355c7d
-}
-
-.twoColor {
-  background-color: #6c5b7b
-}
-
-.threeColor {
-  background-color: #c06c84
-}
-
-.fourColor {
-  background-color: #f67280
-}
-
-.fiveColor {
-  background-color: #f8b195
-}
 
