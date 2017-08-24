@@ -63,7 +63,7 @@ const RenderOrAnd = (props) => {
 }
 
 const RenderWheres = (props) => {
-  return  <div className="col-md-12">
+  return  (<div className="col-md-12">
             <label>Where</label>
             { (props.whereThese.length > 1) && <RenderOrAnd {...props} /> }
             {
@@ -78,7 +78,7 @@ const RenderWheres = (props) => {
               })
             }
               <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this, 'whereThese')} disabled={props.whereThese.length === 4}>+</button>
-          </div>
+          </div>)
 }
 
 const RenderOrderBy = (props) =>  {
