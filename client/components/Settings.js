@@ -18,7 +18,7 @@ class Settings extends React.Component {
               <input
                 type="text"
                 placeholder="Postgres Port #"
-                devaultValue="5432"
+                defaultValue="5432"
                 name="port"
               />
             </div>

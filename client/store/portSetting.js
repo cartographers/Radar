@@ -8,16 +8,16 @@ export const UPDATE_PORT = 'UPDATE_PORT'
 /**
  * ACTION CREATORS
  */
-const setPort = port => ({type: SET_PORT, port})
+const setPort = () => ({type: SET_PORT})
 const updatePort = port => ({type: UPDATE_PORT, port})
 
 /**
  * THUNK CREATORS
  */
 
-export const fetchPort = (port) =>
+export const fetchPort = () =>
   dispatch => {
-    dispatch(setPort(port))
+    dispatch(setPort())
 }
 
 export const editPort = (port) =>
@@ -31,7 +31,7 @@ export const editPort = (port) =>
 export default function (state = '5432', action) {
   switch (action.type) {
     case SET_PORT:
-      return action.port
+      return state
     case UPDATE_PORT:
       return action.port
     default:

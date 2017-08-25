@@ -14,7 +14,9 @@ class Navbar extends React.Component {
           <Image src={logo} circle style={{float: 'left', marginRight: '0.5' + 'em', height: 2 + 'em', width: 2 + 'em'}}/>
           <Link to="/home" className="links">Radar</Link>
         </div>
-        
+        <div className="navbar-brand navbar navbar-right">
+          <Link to="/settings">Settings</Link>
+        </div>
       </nav>
     )
   }
