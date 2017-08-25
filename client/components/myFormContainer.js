@@ -138,7 +138,7 @@ const SelectQueryOptions = (props) => {
       <div>
           <form>
             <Well style={{backgroundColor: '#2A363B'}}>
-              <div className="col-md-12">
+              <div className="2">
                <RenderTables {...props} />
               </div>
               <div className="col-md-12">
@@ -161,19 +161,21 @@ const SelectQueryOptions = (props) => {
 
 const CustomSQLQuery = (props) => {
   return (
-    <div className="col-md-12">
+    <div>
+      <Well style={{backgroundColor: '#2A363B', marginTop: 1 + 'em'}}>
         <CustomQuery {...props} />
+      </Well>
     </div>
   )
 }
 
 const MyFormContainer = (props) => {
   return (
-    <div className="container">
+    <div>
       
       <div className="col-md-12">
         
-        <div className="col-md-6">
+        <div className="col-md-6 selectQuery">
           {props.selectQuery ? <SelectQueryOptions {...props} /> : <CustomSQLQuery {...props}  />}
         </div>
         
@@ -200,8 +202,9 @@ const MyFormContainer = (props) => {
           </form>
         </div>
       </div>
+      
       {/*saved graphs*/}
-      <div className="col-md-12">
+      <div className="col-md-12" style={{margin: 0, padding: 0}}>
         {
           props.createdGraphs &&
           props.createdGraphs
@@ -212,10 +215,11 @@ const MyFormContainer = (props) => {
             })
             .map((graphInfo, index) => {
               return (
-                <div className="col-md-6">
+                <div key={index} className="col-md-6">
                     <div onClick={props.handleChartDelete.bind(this, graphInfo)} className="glyphicon glyphicon-remove-sign"
-                         style={{float: 'left', color:'#E84A5F'}}> </div>
-                    <div key={index}>
+                         style={{float: 'left', color:'#E84A5F', margin: 0, padding: 0}}>
+                    </div>
+                    <div>
                       {newGraphMaker(graphInfo.settings)}
                     </div>
                 </div>
