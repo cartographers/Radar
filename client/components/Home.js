@@ -1,22 +1,21 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {fetchDatabases} from '../store'
-import {Jumbotron, Button, Image, Collapse, Well} from'react-bootstrap'
+import {fetchDatabases, fetchGraphs} from '../store'
+import {Jumbotron, Button, Image, Collapse, Well} from 'react-bootstrap'
 import logo from '../../public/70685-radar-chart.png'
-import infographic from '../../public/db-logo.png'
-
 
 
 class Home extends Component {
   
-  constructor () {
+  constructor() {
     super()
     this.state = {}
   }
   
   componentDidMount() {
     this.props.loadDatabases()
+    this.props.loadGraphs()
   }
   
   render() {
@@ -28,12 +27,8 @@ class Home extends Component {
         return (
           <div className="dbList" key={database.datname}>
             <Link to={`/form/${database.datname}`} className="links">
-              <div className="col-md-4" style={{textAlign: 'left'}}>
-                <div>
-                <Image src={infographic} circle style={{width: 20 + '%', height: 20 + '%'}}/>
-                </div>
-              </div>
-              <div>
+              <div className="col-md-4 glyphicon glyphicon-flash"
+                   style={{textAlign: 'left', paddingBottom: '0.5' + 'em'}}>
                 {database.datname}
               </div>
             </Link>
@@ -47,21 +42,20 @@ class Home extends Component {
         <div className="row">
           <div className="row">
             <div className="row">
-              <div className="col-lg-12">
-                <Jumbotron style={{height: 7  + 'em', fontSize: 2 + 'em', marginTop: 0 + 'em'}}>
-                  <Image src={logo} circle
-                         style={{float: 'left', marginRight: '0.5' + 'em', width: 5 + 'em', height: 5 + 'em'}}/>
-                  <h1 style={{display: 'inline-block'}}>Radar</h1>
-                  <p>A Postgres.app utility application that will help you visualize your data</p>
-                </Jumbotron>
-              </div>
-              <div className="col-lg-12">
-                <div className="well" style={wellStyles}>
-                  <Button style={{backgroundColor: '#E84A5F', color: 'white'}} bsSize="large" block onClick={() => this.setState({open: !this.state.open})}>
-                    {this.state.open ? 'hide databases' : 'render databases'}
-                  </Button>
+              <div className="col-md-12">
+                <div className="col-md-12">
+                  <div className="statcard p-3">
+                    <h3 className="statcard-number">{this.props.databases.length}</h3>
+                    <span className="statcard-desc">total databases</span>
+                  </div>
+                  <div className="statcard p-3 text-xs-center">
+                    <h3 className="statcard-number">{this.props.graphs.length}</h3>
+                    <span className="statcard-desc">total graphs created</span>
+                  </div>
                 </div>
-                {this.state.open ? listDatabases() : ''}
+                <div className="col-md-12">
+                  {listDatabases()}
+                </div>
               </div>
             </div>
           </div>
@@ -73,7 +67,8 @@ class Home extends Component {
 
 const mapState = (state) => {
   return {
-    databases: state.databases
+    databases: state.databases,
+    graphs: state.createdGraphs
   }
 }
 
@@ -81,6 +76,9 @@ const mapDispatch = dispatch => {
   return {
     loadDatabases() {
       dispatch(fetchDatabases())
+    },
+    loadGraphs() {
+      dispatch(fetchGraphs())
     }
   }
 }

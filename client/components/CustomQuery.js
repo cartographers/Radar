@@ -17,9 +17,9 @@ class CustomQuery extends React.Component {
                 name="customQuery"
               />
             </div>
-            <div className="col-md-12" style={{}}>
+            <div className="col-md-12" style={{marginTop: 1 + 'em'}}>
               <Button
-                style={{display: 'block', float: 'right'}}
+                style={{display: 'block', float: 'right', marginTop: 1 + 'em'}}
                 type="submit"
                 className="btn btn-success" >
                 Query Database
