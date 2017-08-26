@@ -226,11 +226,20 @@ body {
   }
 }
 
-.modal-database {
-
+.modal-container {
+  position: relative;
+}
+.modal-container .modal, .modal-container .modal-backdrop {
+  position: absolute;
 }
 
+.scrolling.undetached.dimmable.dimmed > .dimmer {
+    overflow: scroll !important;
+}
 
+.scrolling.undetached.dimmable.dimmed{
+    overflow: hidden !important;
+}
 
 
 
