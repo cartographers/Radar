@@ -56,7 +56,7 @@ class HomeDatabase extends Component {
         return (
             <div className="cover-container">
 
-                <div className="inner cover">
+                <div className="inner cover home">
                     <h1 className="cover-heading">Radar</h1>
                     <p className="lead">Postgres thangs and chicken wangs</p>
                     <div className="lead">
