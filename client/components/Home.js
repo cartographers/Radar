@@ -1,68 +1,85 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import { fetchDatabases } from '../store'
-import {Badge, Image} from 'react-bootstrap'
-import logo from '../../public/logo.png'
+import {fetchDatabases, fetchGraphs} from '../store'
+import {Jumbotron, Button, Image, Collapse, Well} from 'react-bootstrap'
+import logo from '../../public/70685-radar-chart.png'
 
 
 class Home extends Component {
 
-  componentDidMount() {
-    this.props.loadDatabases()
-  }
+    constructor() {
+        super()
+        this.state = {}
+    }
 
-  render() {
+    componentDidMount() {
+        this.props.loadDatabases()
+        this.props.loadGraphs()
+    }
 
-    const {databases} = this.props
+    render() {
 
-    return (
-      <div className="container">
-        <div className="row">
-          <div className="row">
-            <div className="row">
-              <div className="col-lg-12">
-                <Image src={logo}/>
-                <h4>
-                  Postgres Databases
-                  <Badge> {databases.length} </Badge>
-                </h4>
-              </div>
-              <div className="col-lg-12">
-                  {
-                    databases && databases.map(database => {
-                      return (
-                        <div className="dbList" key={database.datname}>
-                          <Link to={`/form/${database.datname}`}>
-                            <div className="col-md-4" style={{textAlign: 'left'}}>
-                              { database.datname }
+        const {databases} = this.props
+        const listDatabases = () => {
+            return databases && databases.map(database => {
+                return (
+                    <div className="dbList" key={database.datname}>
+                        <Link to={`/form/${database.datname}`} className="links">
+                            <div className="col-md-4 glyphicon glyphicon-flash"
+                                 style={{textAlign: 'left', paddingBottom: '0.5' + 'em'}}>
+                                {database.datname}
                             </div>
-                          </Link>
+                        </Link>
+                    </div>
+                )
+            })
+        }
+
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="row">
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="col-md-12">
+                                    <div className="statcard p-3">
+                                        <h3 className="statcard-number">{this.props.databases.length}</h3>
+                                        <span className="statcard-desc">total databases</span>
+                                    </div>
+                                    <div className="statcard p-3 text-xs-center">
+                                        <h3 className="statcard-number">{this.props.graphs.length}</h3>
+                                        <span className="statcard-desc">total graphs created</span>
+                                    </div>
+                                </div>
+                                <div className="col-md-12">
+                                    {listDatabases()}
+                                </div>
+                            </div>
                         </div>
-                      )
-                    })
-                  }
-              </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
+        )
+    }
 }
 
 const mapState = (state) => {
-  return {
-    databases: state.databases,
-  }
+    return {
+        databases: state.databases,
+        graphs: state.createdGraphs
+    }
 }
 
 const mapDispatch = dispatch => {
-  return {
-    loadDatabases() {
-      dispatch(fetchDatabases())
+    return {
+        loadDatabases() {
+            dispatch(fetchDatabases())
+        },
+        loadGraphs() {
+            dispatch(fetchGraphs())
+        }
     }
-  }
 }
 export default connect(mapState, mapDispatch)(Home)
 

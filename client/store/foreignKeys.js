@@ -19,7 +19,7 @@ export const fetchKeys = (data) =>
     const result = loadTableForeignKeys(data)
     result
     .then(response => {
-      return dispatch(getKeys(response.rows))
+      return dispatch(getKeys(response))
     })
     .catch(err => console.log(err))
 }

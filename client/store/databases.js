@@ -18,9 +18,9 @@ export const fetchDatabases = () =>
   dispatch => {
     const result = initDatabases()
     result
-    .then(response => dispatch(getDatabases(response)))
-    .catch(err => console.log(err))
-}
+      .then(response => dispatch(getDatabases(response)))
+      .catch(err => console.log(err))
+  }
 
 /**
  * REDUCER

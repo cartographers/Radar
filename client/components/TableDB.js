@@ -1,18 +1,15 @@
 import React from 'react'
 import {Table, thead, tr, th, tbody, td} from 'react-bootstrap'
 
-
 const TableDB = (props)  => {
-    const { savedQuery, aggregateInformation, Title } = props
+    const { savedQuery, aggregateInformation, title, width, height } = props
     if(!savedQuery) return <div>No matching Query</div>
     const fields = savedQuery && savedQuery[0] ? Object.keys(savedQuery[0]) : []
     return (
-      <div>
+      <div className="col-md-12">
+        <h4>{title}</h4>
         <div>
-          <h4>{Title}</h4>
-        </div>
-        <div>
-          <Table>
+          <Table condensed hover>
             <thead>
             <tr>
               {
@@ -39,11 +36,10 @@ const TableDB = (props)  => {
               }
             </tbody>
           </Table>
-          { aggregateInformation && <TableDB Title={Title + ' aggregate Info'} savedQuery={aggregateInformation} />}
+          { aggregateInformation && <TableDB Title={title + ' aggregate Info'} savedQuery={aggregateInformation} />}
         </div>
       </div>
     )
 }
-
 
 export default TableDB

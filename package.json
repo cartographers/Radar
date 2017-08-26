@@ -24,7 +24,6 @@
     "bluebird": "^3.5.0",
     "body-parser": "^1.16.1",
     "bootstrap": "^3.3.7",
-    "connect-session-sequelize": "^4.1.0",
     "d3": "^4.10.0",
     "electron": "^1.7.5",
     "eslint": "^4.4.1",
@@ -47,7 +46,9 @@
     "recharts": "^1.0.0-alpha.3",
     "redux": "^3.6.0",
     "redux-logger": "^2.8.1",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "sequelize": "^4.7.5",
+    "url-loader": "^0.5.9"
   },
   "devDependencies": {
     "axios-mock-adapter": "^1.9.0",

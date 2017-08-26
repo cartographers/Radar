@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {Router} from 'react-router'
 import {Route, Switch} from 'react-router-dom'
 import history from './history'
-import {Main, Login, Signup, UserHome, Display, PieGraph, myForm, Scatter, Home, LineGraph, BarGraph, TableDB, AreaGraph, CustomQuery} from './components'
+import {Main, Login, Signup, UserHome, Display, PieGraph, myForm, Scatter, Home, LineGraph, BarGraph, TableDB, AreaGraph, CustomQuery, HomeDatabase} from './components'
 
 /**
  * COMPONENT
@@ -16,8 +16,7 @@ class Routes extends Component {
 
     return (
       <Router history={history}>
-        <Main>
-          <div className="container">
+          <div className="site-wrapper-inner">
             <Switch>
               {/* Routes placed here are available to all visitors */}
               <Route path="/login" component={Login} />
@@ -26,16 +25,15 @@ class Routes extends Component {
               <Route exact path="/pie" component={PieGraph} />
               <Route path="/form/:dbName" component={myForm} />
               <Route exact path="/scatter" component={Scatter} />
-              <Route exact path="/home" component={Home} />
+              <Route exact path="/home" component={HomeDatabase} />
               <Route exact path="/bar" component={BarGraph} />
               <Route exact path="/table" component={TableDB} />
               <Route exact path="/line" component={LineGraph} />
               <Route exact path="/area" component={AreaGraph} />
               <Route path="/customquery/:dbName" component={CustomQuery} />
-              <Route component={Home} />
+              <Route component={HomeDatabase} />
             </Switch>
           </div>
-        </Main>
       </Router>
     )
   }
