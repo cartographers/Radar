@@ -137,7 +137,7 @@ const SelectQueryOptions = (props) => {
   return (
       <div>
           <form>
-            <Well style={{backgroundColor: '#2A363B'}}>
+            <Well>
               <div className="2">
                <RenderTables {...props} />
               </div>
@@ -162,7 +162,7 @@ const SelectQueryOptions = (props) => {
 const CustomSQLQuery = (props) => {
   return (
     <div>
-      <Well style={{backgroundColor: '#2A363B', marginTop: 1 + 'em'}}>
+      <Well style={{marginTop: 1 + 'em'}}>
         <CustomQuery {...props} />
       </Well>
     </div>
@@ -172,17 +172,17 @@ const CustomSQLQuery = (props) => {
 const MyFormContainer = (props) => {
   return (
     <div>
-      
+
       <div className="col-md-12">
-        
+
         <div className="col-md-6 selectQuery">
           {props.selectQuery ? <SelectQueryOptions {...props} /> : <CustomSQLQuery {...props}  />}
         </div>
-        
+
         {/*make graph form on the right */}
         <div className="col-md-6">
           <form>
-            <Well style={{backgroundColor: '#2A363B'}}>
+            <Well>
               <div className="col-md-12">
                 <label>Chart Type</label>
                 <ChooseOne name="choosenChart" onChange={props.handleChartChange.bind(this, 'choosenChart')} iterable={props.chartTypes} />
@@ -198,11 +198,11 @@ const MyFormContainer = (props) => {
                 </Button>
               </div>
             </Well>
-          
+
           </form>
         </div>
       </div>
-      
+
       {/*saved graphs*/}
       <div className="col-md-12" style={{margin: 0, padding: 0}}>
         {
@@ -227,7 +227,7 @@ const MyFormContainer = (props) => {
             })
         }
       </div>
-    
+
     </div>
   )
 }
