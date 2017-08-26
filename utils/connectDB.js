@@ -117,13 +117,15 @@ const queryData = (settings) => {
 
 	let whereThese = settings.whereThese && settings.whereThese.map(where => checkDataType(where, settings.fields))
 
-	let selectThese = settings.selectThese && settings.selectThese.join(', ') || '*'
+	let selectThese = settings.selectThese && settings.selectThese.map(val => {
+		return val.split(' ').map(a => addQuotes(a)).join('.')
+	}).join(', ') || '*'
 	let whereConditional = ' ' + settings.AndOr + ' '
 	whereThese = whereThese && whereThese.map(where => {
-
-		where.col = addQuotes(where.col)
-
-    let joinedWhere = settings.currentTable + '.' + where.col + ' ' + where.is + ' ' + where.spec
+		[tab, col]  = where.col.split(' ')
+		tab = addQuotes(tab)
+		col = addQuotes(col)
+    let joinedWhere = tab + '.' + col + ' ' + where.is + ' ' + where.spec
 		return joinedWhere
 		}).join(whereConditional)
 	whereThese = whereThese && whereThese.length ? 'WHERE ' + whereThese : ''
