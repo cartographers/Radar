@@ -1,6 +1,6 @@
 import React from 'react'
 import {CustomTooltip} from './customToolTips.js'
-import {AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip} from 'recharts'
+import {AreaChart, Area, XAxis, YAxis, Tooltip} from 'recharts'
 import TableDB from './TableDB'
 
 const AreaGraphs = (props) => {
@@ -11,12 +11,12 @@ const AreaGraphs = (props) => {
         width={width}
         height={height}
         data={savedQuery}>
-        <XAxis dataKey={x} name={x}/>
-        <YAxis datakey={y} name={y}/>
-        <Tooltip content={CustomTooltip}/>
-        <Area type="monotone" dataKey={y} stroke={stroke} fill={fill} name={title}/>
+        <XAxis dataKey={x} name={x} />
+        <YAxis datakey={y} name={y} />
+        <Tooltip content={CustomTooltip} />
+        <Area type="monotone" dataKey={y} stroke={stroke} fill={fill} name={title} />
       </AreaChart>
-      {aggregateInformation && <TableDB Title={title + ' aggregate Info'} savedQuery={aggregateInformation}/>}
+      {aggregateInformation && <TableDB Title={title + ' aggregate Info'} savedQuery={aggregateInformation} />}
     </div>
   )
 }
