@@ -172,9 +172,9 @@ class myForm extends React.Component {
                     <h4><Link to="/home"> Home </Link> > Dashboard > {this.state.currentDatabase} </h4>
                 </div>
                 <div className="col-md-12">
-                    <Button className="btn btn-success" onClick={this.changeQueryType}>
+                    <button type="button" className="btn btn-primary" onClick={this.changeQueryType} style={{margin: 1 + 'px', padding: 1 + 'px'}}>
                         {this.state.selectQuery ? 'SQL Form Query' : 'Select Query Options'}
-                    </Button>
+                    </button>
                 </div>
                 <div className="col-md-12">
                     <MyFormContainer {...this.state} {...this.props} {...this.methods} />

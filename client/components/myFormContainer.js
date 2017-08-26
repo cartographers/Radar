@@ -33,46 +33,58 @@ const RenderTables = (props) => {
 const RenderSelects = (props) => {
     return (
         <div>
-            <label>Select</label>
-            {props.selectThese.map((sel, index) => {
-                return <div key={index}>
-                    <ChooseOne key={index} onChange={props.handleChange.bind(this, index, 'selectThese')}
-                               value={props.selectThese[index]} iterable={props.columns}/>
-                    <button type="button" className="btn btn-danger"
-                            onClick={props.handleRemove.bind(this, index, 'selectThese')}> -
-                    </button>
-                </div>
-            })
-            }
-            <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this, 'selectThese')}
-                    disabled={(props.selectThese.length) === (props.columns.length - 1)}>+
-            </button>
+            <div>
+                <label>Select</label>
+                {props.selectThese.map((sel, index) => {
+                    return <div key={index}>
+                        <ChooseOne key={index} onChange={props.handleChange.bind(this, index, 'selectThese')}
+                                   value={props.selectThese[index]} iterable={props.columns}/>
+                        <div onClick={props.handleRemove.bind(this, index, 'selectThese')}
+                             className="glyphicon glyphicon-remove-sign"
+                             style={{float: 'left', color: '#E84A5F', margin: 1 + 'px', padding: 0}}>
+                        </div>
+                    </div>
+                })
+                }
+            </div>
+            <div style={{float: 'left'}}>
+                <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this, 'selectThese')}
+                        disabled={(props.selectThese.length) === (props.columns.length - 1)}>+
+                </button>
+            </div>
         </div>
     )
 }
 
 const RenderAggregate = (props) => {
-    return (<div>
-        <label>Aggregates</label>
-        {props.aggregateSelects.map((sel, index) => {
-            return <div key={index}>
-                <ChooseOne key={index + "agg"} name="agg"
-                           onChange={props.handleChange.bind(this, index, 'aggregateSelects')}
-                           value={props.aggregateSelects[index].agg} iterable={props.aggregateChoices}/>
-                <ChooseOne key={index + "col"} name="col"
-                           onChange={props.handleChange.bind(this, index, 'aggregateSelects')}
-                           value={props.aggregateSelects[index].col}
-                           iterable={props.columns.filter((val, i) => (props.columnType[i] === 23 || props.columnType[i] === 21 || props.columnType[i] === 1700))}/>
-                <button type="button" className="btn btn-danger"
-                        onClick={props.handleRemove.bind(this, index, 'aggregateSelects')}> -
+    return (
+        <div>
+            <div>
+                <label>Aggregates</label>
+                {props.aggregateSelects.map((sel, index) => {
+                    return <div key={index}>
+                        <ChooseOne key={index + "agg"} name="agg"
+                                   onChange={props.handleChange.bind(this, index, 'aggregateSelects')}
+                                   value={props.aggregateSelects[index].agg} iterable={props.aggregateChoices}/>
+                        <ChooseOne key={index + "col"} name="col"
+                                   onChange={props.handleChange.bind(this, index, 'aggregateSelects')}
+                                   value={props.aggregateSelects[index].col}
+                                   iterable={props.columns.filter((val, i) => (props.columnType[i] === 23 || props.columnType[i] === 21 || props.columnType[i] === 1700))}/>
+                        <div onClick={props.handleRemove.bind(this, index, 'aggregateSelects')}
+                             className="glyphicon glyphicon-remove-sign"
+                             style={{float: 'left', color: '#E84A5F', margin: 1 + 'px', padding: 0}}>
+                        </div>
+                    </div>
+                })
+                }
+            </div>
+            <div style={{float: 'left'}}>
+                <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this, 'aggregateSelects')}
+                        disabled={(props.aggregateSelects.length) === 4}>+
                 </button>
             </div>
-        })
-        }
-        <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this, 'aggregateSelects')}
-                disabled={(props.aggregateSelects === 4)}>+
-        </button>
-    </div>)
+        </div>
+    )
 }
 
 const RenderOrAnd = (props) => {
@@ -87,28 +99,35 @@ const RenderOrAnd = (props) => {
 const RenderWheres = (props) => {
     return (
         <div>
-            <label>Where</label>
-            {(props.whereThese.length > 1) && <RenderOrAnd {...props} />}
-            {
-                props.whereThese.map((sel, index) => {
-                    return <div key={index}>
-                        <ChooseOne name="col" onChange={props.handleChange.bind(this, index, 'whereThese')}
-                                   value={props.whereThese[index].col} iterable={props.columns}/>
-                        <h4>is</h4>
-                        <ChooseOne name="is" onChange={props.handleChange.bind(this, index, 'whereThese')}
-                                   value={props.whereThese[index].literal} iterable={props.conditionals}
-                                   indxVal={true}/>
-                        <input name="spec" onChange={props.handleChange.bind(this, index, 'whereThese')}
-                               value={props.whereThese[index].spec}/>
-                        <button type="button" className="btn btn-danger"
-                                onClick={props.handleRemove.bind(this, index, 'whereThese')}> -
-                        </button>
-                    </div>
-                })
-            }
-            <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this, 'whereThese')}
-                    disabled={props.whereThese.length === 4}>+
-            </button>
+            <div>
+                <label>Where</label>
+                <div>
+                    {(props.whereThese.length > 1) && <RenderOrAnd {...props} />}
+                </div>
+                {
+                    props.whereThese.map((sel, index) => {
+                        return <div key={index}>
+                            <ChooseOne name="col" onChange={props.handleChange.bind(this, index, 'whereThese')}
+                                       value={props.whereThese[index].col} iterable={props.columns}/>
+                            <h4>is</h4>
+                            <ChooseOne name="is" onChange={props.handleChange.bind(this, index, 'whereThese')}
+                                       value={props.whereThese[index].literal} iterable={props.conditionals}
+                                       indxVal={true}/>
+                            <input name="spec" onChange={props.handleChange.bind(this, index, 'whereThese')}
+                                   value={props.whereThese[index].spec}/>
+                            <div onClick={props.handleRemove.bind(this, index, 'whereThese')}
+                                 className="glyphicon glyphicon-remove-sign"
+                                 style={{float: 'left', color: '#E84A5F', margin: 1 + 'px', padding: 0}}>
+                            </div>
+                        </div>
+                    })
+                }
+            </div>
+            <div style={{float: 'left'}}>
+                <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this, 'whereThese')}
+                        disabled={(props.whereThese.length) === 4}>+
+                </button>
+            </div>
         </div>
     )
 }
@@ -126,7 +145,7 @@ const RenderOrderBy = (props) => {
 
 const PieOptions = (props) => {
     return (
-        <div className="col-md-12">
+        <div>
             <label>Pie Key (only for pie charts)</label>
             {options(props.selectThese, props.columns, props.columnType, props.handleChartChange.bind(this, 'pieKey'), true)}
         </div>
@@ -136,12 +155,12 @@ const PieOptions = (props) => {
 const ChartOptions = (props) => {
     return (
         <div>
-            <div className="col-md-12">
+            <div>
                 <label>X axis</label>
                 {options(props.selectThese, props.columns, props.columnType, props.handleChartChange.bind(this, 'xAxis'), false)}
             </div>
 
-            <div className="col-md-12">
+            <div>
                 <label>Y axis</label>
                 {options(props.selectThese, props.columns, props.columnType, props.handleChartChange.bind(this, 'yAxis'), true)}
             </div>
@@ -150,7 +169,7 @@ const ChartOptions = (props) => {
 }
 
 const ChartInput = (props) => {
-    return (<div className="col-md-12">
+    return (<div>
         <label>{props.chartElement}</label>
         <input className="form-control" onChange={props.handleChartChange.bind(this, props.chartElement)} required/>
     </div>)
@@ -161,7 +180,7 @@ const SelectQueryOptions = (props) => {
     return (
         <div>
             <form>
-                <div className="2">
+                <div className="col-md-12">
                     <RenderTables {...props} />
                 </div>
                 <div className="col-md-12">
@@ -191,7 +210,7 @@ const CustomSQLQuery = (props) => {
 
 const MyFormContainer = (props) => {
     return (
-        <div className="col-md-12">
+        <div>
 
             <div className="col-md-12">
 
@@ -218,6 +237,7 @@ const MyFormContainer = (props) => {
                             <ChartOptions {...props} />}
                             <div className="col-md-12">
                                 <Button
+                                    bsSize="small"
                                     type="submit"
                                     className="btn btn-success" onClick={props.makeGraph}>
                                     Make my graph
