@@ -116,10 +116,11 @@ const queryData = (settings) => {
 	const jointTables = joinTables(settings)
 
 	let whereThese = settings.whereThese && settings.whereThese.map(where => checkDataType(where, settings.fields))
-
-	let selectThese = settings.selectThese && settings.selectThese.map(val => {
-		return val.split(' ').map(a => addQuotes(a)).join('.')
-	}).join(', ') || '*'
+	let selectThese = settings.selectThese.length ? settings.selectThese : settings.fields.map(val => val.tableName + ' ' + val.name)
+	selectThese = selectThese.map(val => {
+		let [table, column] = val.split(' ')
+		return addQuotes(table) + '.' + addQuotes(column) + 'AS' + addQuotes(val)
+	}).join(', ') 
 	let whereConditional = ' ' + settings.AndOr + ' '
 	whereThese = whereThese && whereThese.map(where => {
 		[tab, col]  = where.col.split(' ')
