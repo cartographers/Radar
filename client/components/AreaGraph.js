@@ -11,7 +11,7 @@ const AreaGraphs = (props) => {
         width={width}
         height={height}
         data={savedQuery}>
-        <XAxis dataKey={x} name={x}/>
+        <XAxis dataKey="x" name={x}/>
         <YAxis datakey={y} name={y}/>
         <Tooltip content={CustomTooltip}/>
         <Area type="monotone" dataKey={y} stroke={stroke} fill={fill} name={title}/>

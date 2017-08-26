@@ -2,6 +2,7 @@ body {
   font-family: sans-serif;
   background-color: #EBECED;
   color: #3E3E3B;
+
   margin: 0;
   padding: 0;
 
@@ -14,6 +15,14 @@ body {
     display: inline-block;
   }
 
+}
+
+select {
+  color: #0000cc;
+}
+
+label {
+  color: white;
 }
 
 .links {
@@ -54,5 +63,6 @@ body {
   margin: 0 auto;
   padding: 0 auto;
 }
+
 
 

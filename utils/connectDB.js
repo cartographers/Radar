@@ -108,7 +108,7 @@ const queryData = (settings) => {
 	let selectThese = settings.selectThese && settings.selectThese.join(', ') || '*'
 	let whereConditional = ' ' + settings.AndOr + ' '
 	whereThese = whereThese && whereThese.map(where => {
-		//if (where.col.charAt(0) !== '"' && where.col.charAt(where.col.length - 1) !== '"') where.col = '"' + where.col + '"'
+
 		where.col = addQuotes(where.col)
 
     let joinedWhere = settings.currentTable + '.' + where.col + ' ' + where.is + ' ' + where.spec
