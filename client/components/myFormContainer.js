@@ -79,7 +79,8 @@ const RenderAggregate = (props) => {
                 }
             </div>
             <div style={{float: 'left'}}>
-                <button type="button" className="btn-xs btn-primary" onClick={props.handleAdd.bind(this, 'aggregateSelects')}
+                <button type="button" className="btn-xs btn-primary"
+                        onClick={props.handleAdd.bind(this, 'aggregateSelects')}
                         disabled={(props.aggregateSelects.length) === 4}>+
                 </button>
             </div>
@@ -177,28 +178,28 @@ const ChartInput = (props) => {
 
 
 const SelectQueryOptions = (props) => {
-  return (
-      <div>
-          <form>
-            <Well>
-              <div className="col-md-12">
-               <RenderTables {...props} />
-              </div>
-              <div className="col-md-12">
-                { props.currentTable && <RenderSelects {...props} /> }
-              </div>
-              <div className="col-md-12">
-                { props.currentTable && <RenderWheres {...props} /> }
-              </div>
-              <div className="col-md-12">
-                { props.currentTable && <RenderOrderBy {...props} /> }
-              </div>
-              <div className="col-md-12">
-                { props.currentTable && <RenderAggregate {...props} /> }
-              </div>
-            </Well>
-          </form>
-      </div>
+    return (
+        <div>
+            <form>
+                <Well>
+                    <div className="col-md-12">
+                        <RenderTables {...props} />
+                    </div>
+                    <div className="col-md-12">
+                        {props.currentTable && <RenderSelects {...props} />}
+                    </div>
+                    <div className="col-md-12">
+                        {props.currentTable && <RenderWheres {...props} />}
+                    </div>
+                    <div className="col-md-12">
+                        {props.currentTable && <RenderOrderBy {...props} />}
+                    </div>
+                    <div className="col-md-12">
+                        {props.currentTable && <RenderAggregate {...props} />}
+                    </div>
+                </Well>
+            </form>
+        </div>
     )
 }
 
@@ -224,33 +225,32 @@ const MyFormContainer = (props) => {
                 {/*make graph form on the right */}
                 <div className="col-md-6 box-form">
                     <form>
-                      <Well>
-                        <div>
-                            <div className="col-md-12">
-                                <label>Chart Type</label>
-                                <ChooseOne name="choosenChart"
-                                           onChange={props.handleChartChange.bind(this, 'choosenChart')}
-                                           iterable={props.chartTypes}/>
+                        <Well>
+                            <div>
+                                <div className="col-md-12">
+                                    <label>Chart Type</label>
+                                    <ChooseOne name="choosenChart"
+                                               onChange={props.handleChartChange.bind(this, 'choosenChart')}
+                                               iterable={props.chartTypes}/>
+                                </div>
+                                <div className="col-md-12">
+                                    <ChartInput {...props} chartElement="Title"/>
+                                </div>
+                                {props.choosenChart === 'Pie' && <PieOptions {...props} />}
+                                {props.choosenChart !== 'Pie' && props.choosenChart !== 'Table' &&
+                                <ChartOptions {...props} />}
+                                <div className="col-md-12">
+                                    <Button
+                                        bsSize="small"
+                                        type="submit"
+                                        className="btn btn-success" onClick={props.makeGraph}>
+                                        Make my graph
+                                    </Button>
+                                </div>
                             </div>
-                            <div className="col-md-12">
-                                <ChartInput {...props} chartElement="Title"/>
-                            </div>
-                            {props.choosenChart === 'Pie' && <PieOptions {...props} />}
-                            {props.choosenChart !== 'Pie' && props.choosenChart !== 'Table' &&
-                            <ChartOptions {...props} />}
-                            <div className="col-md-12">
-                                <Button
-                                    bsSize="small"
-                                    type="submit"
-                                    className="btn btn-success" onClick={props.makeGraph}>
-                                    Make my graph
-                                </Button>
-                            </div>
-                        </div>
-                      </Well>
+                        </Well>
                     </form>
                 </div>
-
             </div>
 
             {/*saved graphs*/}
