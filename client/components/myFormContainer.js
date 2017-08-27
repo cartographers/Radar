@@ -217,13 +217,14 @@ const MyFormContainer = (props) => {
             <div className="col-md-12">
 
                 {/*query form on the left*/}
-                <div className="col-md-6 box-form" style={{backgroundColor: '#2A363B', margin: 0, padding: 0}}>
+                <div className="col-md-6 box-form">
                     {props.selectQuery ? <SelectQueryOptions {...props} /> : <CustomSQLQuery {...props}  />}
                 </div>
 
                 {/*make graph form on the right */}
-                <div className="col-md-6 box-form" style={{backgroundColor: '#2A363B', margin: 0, padding: 0}}>
+                <div className="col-md-6 box-form">
                     <form>
+                      <Well>
                         <div>
                             <div className="col-md-12">
                                 <label>Chart Type</label>
@@ -246,6 +247,7 @@ const MyFormContainer = (props) => {
                                 </Button>
                             </div>
                         </div>
+                      </Well>
                     </form>
                 </div>
 
