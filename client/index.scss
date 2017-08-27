@@ -1,14 +1,11 @@
-body {
-  font-family: sans-serif;
-  background-color: #EBECED;
-  color: #3E3E3B;
+@import './mixins';
 
+body {
+
+  // color: #3E3E3B;
   margin: 0;
   padding: 0;
-
-  label {
-    display: block;
-  }
+  @include main-background();
 
   form div {
     margin: 1em;
@@ -18,21 +15,37 @@ body {
 }
 
 select {
-  color: #0000cc;
+  border-color: white;
+  border-width: 1px;
+  border-radius: 5px;
+  border: 1px solid white;
+  font: Helvetica;
+  background-color: rgba(0,0,0,.20);
+  color: white;
+  padding: 6px 12px;
+  width: 10em;
+  text-align: center;
+  // -webkit-appearance:none;
+
 }
 
 label {
   color: white;
+  font-weight: 400;
+  display: inline;
+  padding-right: 5px;
+  font-size: 18px;
 }
 
 .links {
-  color: #3E3E3B;
+  color: white;
 }
 
 #app {
-  background-color: #2C3539;
   margin: 0;
   padding: 0;
+  @include main-background();
+
 }
 
 .dbList {
@@ -75,12 +88,18 @@ a:hover {
 html,
 body {
   height: 100%;
-  background-color: #2C3539;
+  @include main-background();
+
 }
 body {
   color: #fff;
   text-align: left;
   text-shadow: 0 1px 3px rgba(0,0,0,.5);
+  @include main-background();
+  font: Helvetica 16px;
+  background-color: #EBECED;
+  font-weight: 400;
+
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
@@ -212,9 +231,19 @@ body {
 
 .modal-container {
   position: relative;
+  background: transparent;
 }
 .modal-container .modal, .modal-container .modal-backdrop {
   position: absolute;
+}
+
+.modal-backdrop {
+  position: fixed;
+  height: 100%;
+}
+
+.modal-content {
+  background-color: rgba(0,0,0,0.7);
 }
 
 .scrolling.undetached.dimmable.dimmed > .dimmer {
@@ -231,13 +260,35 @@ body {
   box-shadow: 7px 7px 5px black;
 }
 
-.box-form {
-  padding: 1%;
-  margin: 0.3%;
-  box-shadow: 7px 7px 5px black;
+// .box-form {
+//   padding: 1%;
+//   margin: 0.3%;
+//   box-shadow: 7px 7px 5px black;
+// }
+
+
+.well {
+  background-color: rgba(0,0,0,0.7);
+  background: url('../public/img/blur-bg-blurred.jpg');
 }
 
+.recharts-surface {
+  box-shadow: 0 5px 5px 0 rgba(0,0,0,.25);
+}
 
+.col-md-12 {
+  margin: 0;
+  text-align: left
+}
 
+.form-control {
+  display: inline;
+}
 
+.graphdiv {
+  background-color: rgba(0,0,0,0.7);
+}
 
+.custom-tooltip {
+  background-color: rgba(0,0,0,0.7);
+}

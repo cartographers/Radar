@@ -48,7 +48,7 @@ const RenderSelects = (props) => {
                 }
             </div>
             <div style={{float: 'left'}}>
-                <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this, 'selectThese')}
+                <button type="button" className="btn-xs btn-primary" onClick={props.handleAdd.bind(this, 'selectThese')}
                         disabled={(props.selectThese.length) === (props.columns.length - 1)}>+
                 </button>
             </div>
@@ -79,7 +79,7 @@ const RenderAggregate = (props) => {
                 }
             </div>
             <div style={{float: 'left'}}>
-                <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this, 'aggregateSelects')}
+                <button type="button" className="btn-xs btn-primary" onClick={props.handleAdd.bind(this, 'aggregateSelects')}
                         disabled={(props.aggregateSelects.length) === 4}>+
                 </button>
             </div>
@@ -124,7 +124,7 @@ const RenderWheres = (props) => {
                 }
             </div>
             <div style={{float: 'left'}}>
-                <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this, 'whereThese')}
+                <button type="button" className="btn-xs btn-primary" onClick={props.handleAdd.bind(this, 'whereThese')}
                         disabled={(props.whereThese.length) === 4}>+
                 </button>
             </div>
@@ -177,26 +177,28 @@ const ChartInput = (props) => {
 
 
 const SelectQueryOptions = (props) => {
-    return (
-        <div>
-            <form>
-                <div className="col-md-12">
-                    <RenderTables {...props} />
-                </div>
-                <div className="col-md-12">
-                    {props.currentTable && <RenderSelects {...props} />}
-                </div>
-                <div className="col-md-12">
-                    {props.currentTable && <RenderWheres {...props} />}
-                </div>
-                <div className="col-md-12">
-                    {props.currentTable && <RenderOrderBy {...props} />}
-                </div>
-                <div className="col-md-12">
-                    {props.currentTable && <RenderAggregate {...props} />}
-                </div>
-            </form>
-        </div>
+  return (
+      <div>
+          <form>
+            <Well>
+              <div className="col-md-12">
+               <RenderTables {...props} />
+              </div>
+              <div className="col-md-12">
+                { props.currentTable && <RenderSelects {...props} /> }
+              </div>
+              <div className="col-md-12">
+                { props.currentTable && <RenderWheres {...props} /> }
+              </div>
+              <div className="col-md-12">
+                { props.currentTable && <RenderOrderBy {...props} /> }
+              </div>
+              <div className="col-md-12">
+                { props.currentTable && <RenderAggregate {...props} /> }
+              </div>
+            </Well>
+          </form>
+      </div>
     )
 }
 
@@ -215,13 +217,14 @@ const MyFormContainer = (props) => {
             <div className="col-md-12">
 
                 {/*query form on the left*/}
-                <div className="col-md-6 box-form" style={{backgroundColor: '#2A363B', margin: 0, padding: 0}}>
+                <div className="col-md-6 box-form">
                     {props.selectQuery ? <SelectQueryOptions {...props} /> : <CustomSQLQuery {...props}  />}
                 </div>
 
                 {/*make graph form on the right */}
-                <div className="col-md-6 box-form" style={{backgroundColor: '#2A363B', margin: 0, padding: 0}}>
+                <div className="col-md-6 box-form">
                     <form>
+                      <Well>
                         <div>
                             <div className="col-md-12">
                                 <label>Chart Type</label>
@@ -244,6 +247,7 @@ const MyFormContainer = (props) => {
                                 </Button>
                             </div>
                         </div>
+                      </Well>
                     </form>
                 </div>
 
@@ -261,7 +265,7 @@ const MyFormContainer = (props) => {
                         })
                         .map((graphInfo, index) => {
                             return (
-                                <div key={index} className="col-md-4 box" style={{width: 32 + '%'}}>
+                                <div key={index} className="col-md-4 box graphdiv" style={{width: 32 + '%'}}>
                                     <div onClick={props.handleChartDelete.bind(this, graphInfo)}
                                          className="glyphicon glyphicon-remove-sign"
                                          style={{float: 'left', color: '#E84A5F', margin: 0, padding: 0}}>
