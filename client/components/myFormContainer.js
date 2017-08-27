@@ -218,7 +218,6 @@ const SelectQueryOptions = (props) => {
                             <ChartOptions {...props} />}
                             <div className="col-md-12">
                                 <button
-                                    bsSize="small"
                                     type="submit"
                                     className="btn btn-primary btn-xs"
                                     onClick={props.makeGraph}>
@@ -267,7 +266,6 @@ const CustomSQLQuery = (props) => {
                             <ChartOptions {...props} />}
                             <div className="col-md-12">
                                 <button
-                                    bsSize="small"
                                     type="submit"
                                     className="btn btn-primary btn-xs"
                                     onClick={props.makeGraph}>
