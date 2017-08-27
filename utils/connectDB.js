@@ -86,9 +86,9 @@ const loadFields = (settings) => {
 const checkDataType = (whereSpec, fields) => {
   let newWhereSpec = whereSpec
   fields.forEach(field => {
-    if (field.name === whereSpec.col) {
+    if ((field.tableName + ' ' + field.name) === whereSpec.col) {
       if (field.dataTypeID === 23 || field.dataTypeID === 21 || field.dataTypeID === 1700) newWhereSpec.spec = Number(whereSpec.spec)
-      if (field.dataTypeID === 1043 || field.dataTypeID === 983071) {
+      else {
         if (whereSpec.spec.charAt(0) === "'" && whereSpec.spec.charAt(whereSpec.spec.length - 1) === "'") newWhereSpec.spec = whereSpec.spec
         else newWhereSpec.spec = "'" + whereSpec.spec + "'"
       }
