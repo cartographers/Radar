@@ -5,7 +5,7 @@ import {saveFile} from '../../utils/saveFile'
 import CustomQuery from './CustomQuery'
 
 const ChooseOne = (props) => {
-  return (<select name={props.name} onChange={props.onChange} value={props.value}>
+  return (<select name={props.name} onChange={props.onChange} value={props.value} className="selectpicker">
             <option>Make a choice</option>
             {props.iterable && props.iterable.map((val, i) => <option value={props.indxVal ? i : val} key={i}>{val.charAt(0).toUpperCase() + val.slice(1)}</option>)}
           </select>)
@@ -35,11 +35,11 @@ const RenderSelects = (props) => {
       { props.selectThese.map((sel, index) => {
           return  <div key={index}>
                       <ChooseOne key={index} onChange={props.handleChange.bind(this, index, 'selectThese')} value={props.selectThese[index]} iterable={props.columns} />
-                      <button type="button" className="btn btn-danger" onClick={props.handleRemove.bind(this, index, 'selectThese')}> - </button>
+                      <button type="button" className="btn-xs btn-danger" onClick={props.handleRemove.bind(this, index, 'selectThese')}> - </button>
                   </div>
           })
       }
-      <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this, 'selectThese')} disabled={(props.selectThese.length) === (props.columns.length-1)}>+</button>
+      <button type="button" className="btn-xs btn-primary" onClick={props.handleAdd.bind(this, 'selectThese')} disabled={(props.selectThese.length) === (props.columns.length-1)}>+</button>
     </div>
   )
 }
@@ -51,11 +51,11 @@ const RenderAggregate = (props) => {
                     return  <div key={index}>
                                 <ChooseOne key={index + "agg"} name="agg" onChange={props.handleChange.bind(this, index, 'aggregateSelects')} value={props.aggregateSelects[index].agg} iterable={props.aggregateChoices} />
                                 <ChooseOne key={index + "col"} name="col" onChange={props.handleChange.bind(this, index, 'aggregateSelects')} value={props.aggregateSelects[index].col} iterable={props.columns.filter((val, i) => (props.columnType[i] === 23 || props.columnType[i] === 21 || props.columnType[i] === 1700))} />
-                                <button type="button" className="btn btn-danger" onClick={props.handleRemove.bind(this, index, 'aggregateSelects')}> - </button>
+                                <button type="button" className="btn-xs btn-danger" onClick={props.handleRemove.bind(this, index, 'aggregateSelects')}> - </button>
                             </div>
                     })
                 }
-                <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this, 'aggregateSelects')} disabled={(props.aggregateSelects === 4)}>+</button>
+                <button type="button" className="btn-xs btn-primary" onClick={props.handleAdd.bind(this, 'aggregateSelects')} disabled={(props.aggregateSelects === 4)}>+</button>
             </div>)
   }
 
@@ -78,11 +78,11 @@ const RenderWheres = (props) => {
                       <h4>is</h4>
                       <ChooseOne name="is" onChange={props.handleChange.bind(this, index, 'whereThese')} value={props.whereThese[index].literal} iterable={props.conditionals} indxVal={true} />
                       <input name="spec" onChange={props.handleChange.bind(this, index, 'whereThese')} value={props.whereThese[index].spec} />
-                      <button type="button" className="btn btn-danger" onClick={props.handleRemove.bind(this, index, 'whereThese')}> - </button>
+                      <button type="button" className="btn-xs btn-danger" onClick={props.handleRemove.bind(this, index, 'whereThese')}> - </button>
                     </div>
           })
         }
-      <button type="button" className="btn btn-primary" onClick={props.handleAdd.bind(this, 'whereThese')}
+      <button type="button" className="btn-xs btn-primary" onClick={props.handleAdd.bind(this, 'whereThese')}
               disabled={props.whereThese.length === 4}>+
       </button>
     </div>
@@ -138,7 +138,7 @@ const SelectQueryOptions = (props) => {
       <div>
           <form>
             <Well>
-              <div className="2">
+              <div className="col-md-12">
                <RenderTables {...props} />
               </div>
               <div className="col-md-12">
@@ -215,7 +215,7 @@ const MyFormContainer = (props) => {
             })
             .map((graphInfo, index) => {
               return (
-                <div key={index} className="col-md-6">
+                <div key={index} className="col-md-6 graphdiv">
                     <div onClick={props.handleChartDelete.bind(this, graphInfo)} className="glyphicon glyphicon-remove-sign"
                          style={{float: 'left', color:'#E84A5F', margin: 0, padding: 0}}>
                     </div>
