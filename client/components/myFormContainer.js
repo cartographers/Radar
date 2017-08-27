@@ -1,5 +1,5 @@
 import React from 'react'
-import {FormControl, ControlLabel, FormGroup, Button, Well} from 'react-bootstrap'
+import {FormControl, ControlLabel, FormGroup, Button, Well, Modal} from 'react-bootstrap'
 import {newGraphMaker} from '../../utils/graphUtility'
 import {saveFile} from '../../utils/saveFile'
 import CustomQuery from './CustomQuery'
@@ -79,7 +79,8 @@ const RenderAggregate = (props) => {
                 }
             </div>
             <div style={{float: 'left'}}>
-                <button type="button" className="btn-xs btn-primary" onClick={props.handleAdd.bind(this, 'aggregateSelects')}
+                <button type="button" className="btn-xs btn-primary"
+                        onClick={props.handleAdd.bind(this, 'aggregateSelects')}
                         disabled={(props.aggregateSelects.length) === 4}>+
                 </button>
             </div>
@@ -177,55 +178,27 @@ const ChartInput = (props) => {
 
 
 const SelectQueryOptions = (props) => {
-  return (
-      <div>
-          <form>
-            <Well>
-              <div className="col-md-12">
-               <RenderTables {...props} />
-              </div>
-              <div className="col-md-12">
-                { props.currentTable && <RenderSelects {...props} /> }
-              </div>
-              <div className="col-md-12">
-                { props.currentTable && <RenderWheres {...props} /> }
-              </div>
-              <div className="col-md-12">
-                { props.currentTable && <RenderOrderBy {...props} /> }
-              </div>
-              <div className="col-md-12">
-                { props.currentTable && <RenderAggregate {...props} /> }
-              </div>
-            </Well>
-          </form>
-      </div>
-    )
-}
-
-const CustomSQLQuery = (props) => {
     return (
         <div>
-            <CustomQuery {...props} />
-        </div>
-    )
-}
-
-const MyFormContainer = (props) => {
-    return (
-        <div>
-
-            <div className="col-md-12">
-
-                {/*query form on the left*/}
-                <div className="col-md-6 box-form">
-                    {props.selectQuery ? <SelectQueryOptions {...props} /> : <CustomSQLQuery {...props}  />}
-                </div>
-
-                {/*make graph form on the right */}
-                <div className="col-md-6 box-form">
+            <Modal show={props.displayForm}>
+                <Modal.Body>
                     <form>
-                      <Well>
-                        <div>
+                        <div className="col-md-12">
+                            <RenderTables {...props} />
+                        </div>
+                        <div className="col-md-12">
+                            {props.currentTable && <RenderSelects {...props} />}
+                        </div>
+                        <div className="col-md-12">
+                            {props.currentTable && <RenderWheres {...props} />}
+                        </div>
+                        <div className="col-md-12">
+                            {props.currentTable && <RenderOrderBy {...props} />}
+                        </div>
+                        <div className="col-md-12">
+                            {props.currentTable && <RenderAggregate {...props} />}
+                        </div>
+                        <div className="col-md-12">
                             <div className="col-md-12">
                                 <label>Chart Type</label>
                                 <ChooseOne name="choosenChart"
@@ -242,14 +215,51 @@ const MyFormContainer = (props) => {
                                 <Button
                                     bsSize="small"
                                     type="submit"
-                                    className="btn btn-success" onClick={props.makeGraph}>
+                                    className="btn btn-success"
+                                    onClick={props.makeGraph}>
                                     Make my graph
                                 </Button>
                             </div>
                         </div>
-                      </Well>
                     </form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={props.showForm}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </div>
+    )
+}
+
+const CustomSQLQuery = (props) => {
+    return (
+        <div>
+            <Modal show={props.showForm}>
+                <CustomQuery {...props} />
+            </Modal>
+        </div>
+    )
+}
+
+const MyFormContainer = (props) => {
+    return (
+        <div>
+
+            <div className="col-md-12">
+
+                {/*query form on the left*/}
+                <div>
+                    <Button onClick={props.showForm}>
+                        Query selection Form
+                    </Button>
+                    {props.displayForm ? <SelectQueryOptions {...props} /> : null}
                 </div>
+                <div>
+                    <renderChartSettings {...props} />
+                </div>
+
 
             </div>
 
