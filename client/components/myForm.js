@@ -45,7 +45,8 @@ class myForm extends React.Component {
             pieKey: '',
             selectQuery: true,
             aggregateChoices: ['MIN', 'MAX', 'SUM', 'AVG', 'COUNT'],
-            aggregateSelects: []
+            aggregateSelects: [],
+            displayForm: false
         }
         this.methods = {
             handleChange: this.handleChange.bind(this),
@@ -55,7 +56,8 @@ class myForm extends React.Component {
             handleTableChange: this.handleTableChange.bind(this),
             makeGraph: this.makeGraph.bind(this),
             changeQueryType: this.changeQueryType.bind(this),
-            handleChartDelete: this.handleChartDelete.bind(this)
+            handleChartDelete: this.handleChartDelete.bind(this),
+            showForm: this.showForm.bind(this)
         }
     }
 
@@ -134,11 +136,12 @@ class myForm extends React.Component {
             selectQuery: this.state.selectQuery,
             savedQuery: this.props.database,
             aggregateSelects: this.state.aggregateSelects,
-            created: Date.now()
+            created: Date.now(),
+            displayForm: this.state.displayForm
         }
-        this.state.selectQuery ?
+        this.state.displayForm ?
             this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, settings)
-            : this.props.savingCustomQueryGraph(this.state.currentDatabase, this.state.currentTable, settings)
+            : console.log('Wrong choice')
     }
 
     handleTableChange = (evt) => {
@@ -163,6 +166,10 @@ class myForm extends React.Component {
 
     handleChartDelete = (settings) => {
         this.props.deleteGraph(settings)
+    }
+
+    showForm = () => {
+        this.setState((prevState) => ({displayForm: !prevState.displayForm}))
     }
 
     render() {
