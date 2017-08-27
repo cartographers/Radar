@@ -39,11 +39,12 @@ class HomeDatabase extends Component {
                         </Modal.Title>
                     </Modal.Header>
 
-                    <Modal.Body style={{height: 35*(Math.floor(databases.length / 3) + 1) + 'px'}} >
+                    <Modal.Body style={{height: 35 * (Math.floor(databases.length / 3) + 1) + 'px'}}>
                         {databases.map((database, index) => {
                             return (
                                 <Link key={index} to={`/form/${database.datname}`}
-                                      className="links col-md-4" style={{padding: 0, margin: 0}}>{database.datname}</Link>
+                                      className="links col-md-4"
+                                      style={{padding: 0, margin: 0}}>{database.datname}</Link>
                             )
                         })}
                     </Modal.Body>
