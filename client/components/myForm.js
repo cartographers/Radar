@@ -139,9 +139,9 @@ class myForm extends React.Component {
             created: Date.now(),
             displayForm: this.state.displayForm
         }
-        !this.state.displayForm ?
+        this.state.displayForm ?
             this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, settings)
-            : this.props.savingCustomQueryGraph(this.state.currentDatabase, this.state.currentTable, settings)
+            : console.log('Wrong choice')
     }
 
     handleTableChange = (evt) => {
@@ -169,7 +169,7 @@ class myForm extends React.Component {
     }
 
     showForm = () => {
-        this.setState({displayForm: !this.state.displayForm})
+        this.setState((prevState) => ({displayForm: !prevState.displayForm}))
     }
 
     render() {

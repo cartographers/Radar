@@ -256,11 +256,6 @@ const MyFormContainer = (props) => {
                     </Button>
                     {props.displayForm ? <SelectQueryOptions {...props} /> : null}
                 </div>
-                <div>
-                    <renderChartSettings {...props} />
-                </div>
-
-
             </div>
 
             {/*saved graphs*/}
