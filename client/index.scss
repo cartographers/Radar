@@ -286,6 +286,7 @@ body {
   background-color: rgba(0,0,0,.20);
   color: white;
   font-weight: 400;
+  width: 20em;
 }
 
 .graphdiv {
@@ -302,4 +303,9 @@ textarea {
   font-weight: 400;
 }
 
-
+input {
+  background-color: rgba(0,0,0,.20);
+  font-weight: 400;
+  margin-left: 10px;
+  border-radius: 5px;
+}
