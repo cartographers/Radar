@@ -67,10 +67,10 @@ Click make my graph
 
 ## Authors
 
-* **Dennis Bui** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-* **Min Hwangbo** - *Initial work* - [Mindboogling](https://github.com/PurpleBooth)
-* **Jagnor Grewal** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-* **Sulamita Morales** - *Initial work* - [Tenkyu](https://github.com/PurpleBooth)
+* **Dennis Bui** - *Initial work* - [DBui0051](https://github.com/DBui0051)
+* **Min Hwangbo** - *Initial work* - [Mindboggling](https://github.com/Mindboggling)
+* **Jagnor Grewal** - *Initial work* - [Noorgrewal](https://github.com/Noorgrewal)
+* **Sulamita Morales** - *Initial work* - [KyuSulamita](https://github.com/KyuSulamita)
 
 
 ## Acknowledgments
