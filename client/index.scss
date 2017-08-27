@@ -283,12 +283,23 @@ body {
 
 .form-control {
   display: inline;
+  background-color: rgba(0,0,0,.20);
+  color: white;
+  font-weight: 400;
 }
 
 .graphdiv {
   background-color: rgba(0,0,0,0.7);
+  margin: 15px;
 }
 
 .custom-tooltip {
   background-color: rgba(0,0,0,0.7);
 }
+
+textarea {
+  background-color: rgba(0,0,0,.20);
+  font-weight: 400;
+}
+
+
