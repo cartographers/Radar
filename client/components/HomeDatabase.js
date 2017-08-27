@@ -30,7 +30,7 @@ class HomeDatabase extends Component {
         const {databases} = this.props
         const listDatabases = () => {
             return (
-                <Modal bsSize="large" show={this.state.renderDatabase} animation={true} autofocus={true}>
+                <Modal bsSize="large" show={this.state.renderDatabase}>
                     <Modal.Header>
                         <Modal.Title>
                             <div style={{float: 'left', color: 'white'}}>
@@ -39,17 +39,18 @@ class HomeDatabase extends Component {
                         </Modal.Title>
                     </Modal.Header>
 
-                    <Modal.Body style={{height: 35*(Math.floor(databases.length / 3) + 1) + 'px'}} >
+                    <Modal.Body style={{height: 35 * (Math.floor(databases.length / 3) + 1) + 'px'}}>
                         {databases.map((database, index) => {
                             return (
                                 <Link key={index} to={`/form/${database.datname}`}
-                                      className="links col-md-4" style={{padding: 0, margin: 0}}>{database.datname}</Link>
+                                      className="links col-md-4"
+                                      style={{padding: 0, margin: 0}}>{database.datname}</Link>
                             )
                         })}
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button bsSize="small" onClick={this.showDatabase}>Close</Button>
+                        <button className="btn btn-primary btn-xs" onClick={this.showDatabase}>Close</button>
                     </Modal.Footer>
                 </Modal>
             )
@@ -60,9 +61,9 @@ class HomeDatabase extends Component {
 
                 <div className="inner cover home">
                     <h1 className="cover-heading">Radar</h1>
-                    <p className="lead">Postgres thangs and chicken wangs</p>
+                    <p className="lead">A postgres.app utility application that helps you visualize your queries</p>
                     <div className="lead">
-                        <div onClick={this.showDatabase} className="btn btn-lg btn-default">Get Started</div>
+                        <button onClick={this.showDatabase} className="btn btn-lg btn-primary">Get Started</button>
 
                         {this.state.renderDatabase ? listDatabases() : null}
 

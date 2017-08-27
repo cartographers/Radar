@@ -240,12 +240,12 @@ const MyFormContainer = (props) => {
                                 {props.choosenChart !== 'Pie' && props.choosenChart !== 'Table' &&
                                 <ChartOptions {...props} />}
                                 <div className="col-md-12">
-                                    <Button
+                                    <button
                                         bsSize="small"
                                         type="submit"
-                                        className="btn btn-success" onClick={props.makeGraph}>
+                                        className="btn btn-primary btn-xs" onClick={props.makeGraph}>
                                         Make my graph
-                                    </Button>
+                                    </button>
                                 </div>
                             </div>
                         </Well>
