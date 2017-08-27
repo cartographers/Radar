@@ -40,9 +40,9 @@ class HomeDatabase extends Component {
                     </Modal.Header>
 
                     <Modal.Body style={{height: 35*(Math.floor(databases.length / 3) + 1) + 'px'}} >
-                        {databases.map((database) => {
+                        {databases.map((database, index) => {
                             return (
-                                <Link to={`/form/${database.datname}`}
+                                <Link key={index} to={`/form/${database.datname}`}
                                       className="links col-md-4" style={{padding: 0, margin: 0}}>{database.datname}</Link>
                             )
                         })}

@@ -6,9 +6,8 @@ const TableDB = (props)  => {
     if(!savedQuery) return <div>No matching Query</div>
     const fields = savedQuery && savedQuery[0] ? Object.keys(savedQuery[0]) : []
     return (
-      <div className="col-md-12">
+      <div>
         <h4>{title}</h4>
-        <div>
           <Table condensed hover>
             <thead>
             <tr>
@@ -37,8 +36,7 @@ const TableDB = (props)  => {
             </tbody>
           </Table>
           { aggregateInformation && <TableDB Title={title + ' aggregate Info'} savedQuery={aggregateInformation} />}
-        </div>
-      </div>
+          </div>
     )
 }
 
