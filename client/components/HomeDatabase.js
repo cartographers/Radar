@@ -30,7 +30,7 @@ class HomeDatabase extends Component {
         const {databases} = this.props
         const listDatabases = () => {
             return (
-                <Modal.Dialog bsSize="large" className=".scrolling.undetached.dimmable.dimmed modal-database">
+                <Modal bsSize="large" className=".scrolling.undetached.dimmable.dimmed modal-database" show={this.state.renderDatabase} style={{maxHeight: 200 + '%'}}>
                     <Modal.Header>
                         <Modal.Title>
                             <div style={{float: 'left', color: 'black'}}>
@@ -38,18 +38,17 @@ class HomeDatabase extends Component {
                             </div>
                         </Modal.Title>
                     </Modal.Header>
-
+                    <Modal.Body style={{height: 35*(Math.floor(databases.length / 3) + 1) + 'px'}} >
                     {databases.map((database, index) => {
                         return (
-                            <Modal.Body key={index} style={{maxHeight: 100 + '%'}} className="col-md-4">
-                                <Link to={`/form/${database.datname}`} className="links">{database.datname}</Link>
-                            </Modal.Body>
+                                <Link to={`/form/${database.datname}`} className="links col-md-4">{database.datname}</Link>
                         )
                     })}
+                    </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.showDatabase}>Close</Button>
                     </Modal.Footer>
-                </Modal.Dialog>
+                </Modal>
             )
         }
 
