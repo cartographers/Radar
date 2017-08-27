@@ -1,5 +1,5 @@
 import React from 'react'
-import {FormControl, ControlLabel, FormGroup, Button, Well} from 'react-bootstrap'
+import {FormControl, ControlLabel, FormGroup, Button, Well, Modal} from 'react-bootstrap'
 import {newGraphMaker} from '../../utils/graphUtility'
 import {saveFile} from '../../utils/saveFile'
 import CustomQuery from './CustomQuery'
@@ -180,25 +180,60 @@ const ChartInput = (props) => {
 const SelectQueryOptions = (props) => {
     return (
         <div>
-            <form>
-                <Well>
-                    <div className="col-md-12">
-                        <RenderTables {...props} />
-                    </div>
-                    <div className="col-md-12">
-                        {props.currentTable && <RenderSelects {...props} />}
-                    </div>
-                    <div className="col-md-12">
-                        {props.currentTable && <RenderWheres {...props} />}
-                    </div>
-                    <div className="col-md-12">
-                        {props.currentTable && <RenderOrderBy {...props} />}
-                    </div>
-                    <div className="col-md-12">
-                        {props.currentTable && <RenderAggregate {...props} />}
-                    </div>
-                </Well>
-            </form>
+            <Modal show={props.displayForm}>
+                <Modal.Header>
+                    <Modal.Title>
+                        Query Selection Form
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <form>
+                        <div className="col-md-12" style={{margin: 1 + 'px', padding: 3 + 'px'}}>
+                            <RenderTables {...props} />
+                        </div>
+                        <div className="col-md-12">
+                            {props.currentTable && <RenderSelects {...props} />}
+                        </div>
+                        <div className="col-md-12">
+                            {props.currentTable && <RenderWheres {...props} />}
+                        </div>
+                        <div className="col-md-12">
+                            {props.currentTable && <RenderOrderBy {...props} />}
+                        </div>
+                        <div className="col-md-12">
+                            {props.currentTable && <RenderAggregate {...props} />}
+                        </div>
+                        <div className="col-md-12">
+                            <div className="col-md-12">
+                                <label>Chart Type</label>
+                                <ChooseOne name="choosenChart"
+                                           onChange={props.handleChartChange.bind(this, 'choosenChart')}
+                                           iterable={props.chartTypes}/>
+                            </div>
+                            <div className="col-md-12">
+                                <ChartInput {...props} chartElement="Title"/>
+                            </div>
+                            {props.choosenChart === 'Pie' && <PieOptions {...props} />}
+                            {props.choosenChart !== 'Pie' && props.choosenChart !== 'Table' &&
+                            <ChartOptions {...props} />}
+                            <div className="col-md-12">
+                                <button
+                                    bsSize="small"
+                                    type="submit"
+                                    className="btn btn-primary btn-xs"
+                                    onClick={props.makeGraph}>
+                                    Make my graph
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button className="btn btn-xs btn-danger" onClick={props.showForm}>
+                        Close
+                    </button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }
@@ -206,7 +241,48 @@ const SelectQueryOptions = (props) => {
 const CustomSQLQuery = (props) => {
     return (
         <div>
-            <CustomQuery {...props} />
+            <Modal show={props.customDisplayForm}>
+                <Modal.Header>
+                    <Modal.Title>
+                        Advanced SQL Query Form
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <form>
+                        <div className="col-md-12">
+                            <CustomQuery {...props} />
+                        </div>
+                        <div className="col-md-12">
+                            <div className="col-md-12">
+                                <label>Chart Type</label>
+                                <ChooseOne name="choosenChart"
+                                           onChange={props.handleChartChange.bind(this, 'choosenChart')}
+                                           iterable={props.chartTypes}/>
+                            </div>
+                            <div className="col-md-12">
+                                <ChartInput {...props} chartElement="Title"/>
+                            </div>
+                            {props.choosenChart === 'Pie' && <PieOptions {...props} />}
+                            {props.choosenChart !== 'Pie' && props.choosenChart !== 'Table' &&
+                            <ChartOptions {...props} />}
+                            <div className="col-md-12">
+                                <button
+                                    bsSize="small"
+                                    type="submit"
+                                    className="btn btn-primary btn-xs"
+                                    onClick={props.makeGraph}>
+                                    Make my graph
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button className="btn btn-danger btn-xs" onClick={props.showCustomForm}>
+                        Close
+                    </button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }
@@ -214,45 +290,22 @@ const CustomSQLQuery = (props) => {
 const MyFormContainer = (props) => {
     return (
         <div>
-
             <div className="col-md-12">
 
                 {/*query form on the left*/}
-                <div className="col-md-6 box-form">
-                    {props.selectQuery ? <SelectQueryOptions {...props} /> : <CustomSQLQuery {...props}  />}
+                <div className="queryDiv">
+                    <button onClick={props.showForm} className="queryButton btn-primary btn-xs">
+                        Query Selection Form
+                    </button>
+                    {props.displayForm ? <SelectQueryOptions {...props} /> : null}
                 </div>
-
-                {/*make graph form on the right */}
-                <div className="col-md-6 box-form">
-                    <form>
-                        <Well>
-                            <div>
-                                <div className="col-md-12">
-                                    <label>Chart Type</label>
-                                    <ChooseOne name="choosenChart"
-                                               onChange={props.handleChartChange.bind(this, 'choosenChart')}
-                                               iterable={props.chartTypes}/>
-                                </div>
-                                <div className="col-md-12">
-                                    <ChartInput {...props} chartElement="Title"/>
-                                </div>
-                                {props.choosenChart === 'Pie' && <PieOptions {...props} />}
-                                {props.choosenChart !== 'Pie' && props.choosenChart !== 'Table' &&
-                                <ChartOptions {...props} />}
-                                <div className="col-md-12">
-                                    <button
-                                        bsSize="small"
-                                        type="submit"
-                                        className="btn btn-primary btn-xs" onClick={props.makeGraph}>
-                                        Make my graph
-                                    </button>
-                                </div>
-                            </div>
-                        </Well>
-                    </form>
+                <div className="queryDiv">
+                    <button onClick={props.showCustomForm} className="queryButton btn-primary btn-xs">
+                        Advanced Query Form
+                    </button>
+                    {props.customDisplayForm ? <CustomSQLQuery {...props} /> : null}
                 </div>
             </div>
-
             {/*saved graphs*/}
             <div className="col-md-12" style={{margin: 0, padding: 0}}>
                 {

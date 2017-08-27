@@ -45,7 +45,9 @@ class myForm extends React.Component {
             pieKey: '',
             selectQuery: true,
             aggregateChoices: ['MIN', 'MAX', 'SUM', 'AVG', 'COUNT'],
-            aggregateSelects: []
+            aggregateSelects: [],
+            displayForm: false,
+            customDisplayForm: false
         }
         this.methods = {
             handleChange: this.handleChange.bind(this),
@@ -55,7 +57,9 @@ class myForm extends React.Component {
             handleTableChange: this.handleTableChange.bind(this),
             makeGraph: this.makeGraph.bind(this),
             changeQueryType: this.changeQueryType.bind(this),
-            handleChartDelete: this.handleChartDelete.bind(this)
+            handleChartDelete: this.handleChartDelete.bind(this),
+            showForm: this.showForm.bind(this),
+            showCustomForm: this.showCustomForm.bind(this)
         }
     }
 
@@ -136,9 +140,8 @@ class myForm extends React.Component {
             aggregateSelects: this.state.aggregateSelects,
             created: Date.now()
         }
-        this.state.selectQuery ?
-            this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, settings)
-            : this.props.savingCustomQueryGraph(this.state.currentDatabase, this.state.currentTable, settings)
+        if (this.state.displayForm) this.props.savingGraph(this.state.currentDatabase, this.state.currentTable, settings)
+        if (this.state.customDisplayForm) this.props.savingCustomQueryGraph(this.state.currentDatabase, this.state.currentTable, settings)
     }
 
     handleTableChange = (evt) => {
@@ -165,16 +168,19 @@ class myForm extends React.Component {
         this.props.deleteGraph(settings)
     }
 
+    showForm = () => {
+        this.setState((prevState) => ({displayForm: !prevState.displayForm}))
+    }
+
+    showCustomForm = () => {
+      this.setState((prevState) => ({customDisplayForm: !prevState.customDisplayForm}))
+    }
+
     render() {
         return (
             <div>
                 <div className="col-md-12">
                     <h4><Link to="/home"> Home </Link> > Dashboard > {this.state.currentDatabase} </h4>
-                </div>
-                <div className="col-md-12">
-                    <button type="button" className="btn btn-primary" onClick={this.changeQueryType} style={{margin: 1 + 'px', padding: 1 + 'px'}}>
-                        {this.state.selectQuery ? 'SQL Form Query' : 'Select Query Options'}
-                    </button>
                 </div>
                 <div className="col-md-12">
                     <MyFormContainer {...this.state} {...this.props} {...this.methods} />

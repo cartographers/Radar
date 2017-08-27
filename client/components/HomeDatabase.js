@@ -50,7 +50,7 @@ class HomeDatabase extends Component {
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <button className="btn btn-primary btn-xs" onClick={this.showDatabase}>Close</button>
+                        <button className="btn btn-danger btn-xs" onClick={this.showDatabase}>Close</button>
                     </Modal.Footer>
                 </Modal>
             )
