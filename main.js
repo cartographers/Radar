@@ -19,7 +19,7 @@ function createWindow () {
 
   // Open the DevTools.
   // Remove this code on deployment
-  win.webContents.openDevTools()
+  // win.webContents.openDevTools()
 
   // Emitted when the window is closed.
   win.on('closed', () => {
