@@ -119,7 +119,7 @@ class myForm extends React.Component {
         evt.preventDefault()
         let settings = {
             whereThese: this.state.whereThese,
-            selectThese: this.state.selectThese.map(val => `"${val}"`),
+            selectThese: this.state.selectThese,
             Title: this.state.Title,
             xAxis: this.state.xAxis,
             yAxis: this.state.yAxis,
@@ -188,7 +188,7 @@ class myForm extends React.Component {
 const mapState = state => {
     return ({
         tables: state.tables,
-        columns: state.fields.map(val => val.name),
+        columns: state.fields.map(val => val.tableName + ' ' + val.name),
         createdGraphs: state.createdGraphs,
         database: state.queriedTable,
         fields: state.fields,

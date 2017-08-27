@@ -58,17 +58,29 @@ const loadFields = (settings) => {
 	const postgresUrl = 'postgres://localhost:5432/' + settings.database
 	const client = new pg.Client(postgresUrl)
 
-	const jointTables = joinTables(settings)
-	let querySearch = ['SELECT * FROM', `"${settings.table}"`, jointTables]
-	querySearch = querySearch.join(' ').trim()
+	let querySearch = ['SELECT * FROM']
 
 	client.connect()
-
-	return client.query(querySearch)
-	.then(result => {
-		return result.fields
+	let foreignTables = settings.foreignKeys ? settings.foreignKeys.map(keyObj => keyObj.foreign_table_name) : []
+	let uniqueTables = [settings.table]
+	foreignTables.forEach(val => {
+		if(!uniqueTables.includes(val))uniqueTables.push(val)
 	})
-	.catch(err => console.log(err))
+	console.log(uniqueTables)
+	//uniqueTables holds all the tables with columns that will populate our selections.
+  return BlueBird.map(uniqueTables, (tableName) => {
+    let tableQuery = 'SELECT * FROM ' + tableName
+    return client.query(tableQuery)
+	.then(result => {
+	 if (!result) return []
+	 return result.fields.map((col) => {
+		col.tableName = tableName
+		return col
+	 })
+	})
+  }).then((allCols) => {
+ 	return allCols.reduce((a, b) => a.concat(b))
+  }).catch(console.log)
 }
 
 const checkDataType = (whereSpec, fields) => {
@@ -104,14 +116,17 @@ const queryData = (settings) => {
 	const jointTables = joinTables(settings)
 
 	let whereThese = settings.whereThese && settings.whereThese.map(where => checkDataType(where, settings.fields))
-
-	let selectThese = settings.selectThese && settings.selectThese.join(', ') || '*'
+	let selectThese = settings.selectThese.length ? settings.selectThese : settings.fields.map(val => val.tableName + ' ' + val.name)
+	selectThese = selectThese.map(val => {
+		let [table, column] = val.split(' ')
+		return addQuotes(table) + '.' + addQuotes(column) + 'AS' + addQuotes(val)
+	}).join(', ') 
 	let whereConditional = ' ' + settings.AndOr + ' '
 	whereThese = whereThese && whereThese.map(where => {
-
-		where.col = addQuotes(where.col)
-
-    let joinedWhere = settings.currentTable + '.' + where.col + ' ' + where.is + ' ' + where.spec
+		[tab, col]  = where.col.split(' ')
+		tab = addQuotes(tab)
+		col = addQuotes(col)
+    let joinedWhere = tab + '.' + col + ' ' + where.is + ' ' + where.spec
 		return joinedWhere
 		}).join(whereConditional)
 	whereThese = whereThese && whereThese.length ? 'WHERE ' + whereThese : ''
