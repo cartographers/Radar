@@ -6,6 +6,8 @@ const addQuotes = (str) => {
   return /\"[A-Za-z1-9_]+\"/.test(str) ? str : '"' + str + '"'
 }
 
+const addSingleQuotes = (str) =>  "\"'" + str + "'\""
+
 const initDatabases = () => {
   const client = new pg.Client()
   client.connect()
@@ -47,7 +49,7 @@ const joinTables = (settings) => {
 	let foreignKeysArray = settings.foreignKeys
 	if (foreignKeysArray !== undefined) {
 		foreignKeysArray = foreignKeysArray.map(key => {
-			return 'JOIN ' + key.foreign_table_name + ' ON ' + key.table_name + '."' + key.column_name + '"' + ' = ' + key.foreign_table_name + '."' + key.foreign_column_name + '"'
+			return 'JOIN ' + addQuotes(key.foreign_table_name) + ' ON ' + addQuotes(key.table_name) + '.' + addQuotes(key.column_name) + ' = ' + addQuotes(key.foreign_table_name) + '.' + addQuotes(key.foreign_column_name)
 		})
 		foreignKeysArray = foreignKeysArray.join(' ').trim()
 	}
@@ -85,15 +87,19 @@ const loadFields = (settings) => {
 
 const checkDataType = (whereSpec, fields) => {
   let newWhereSpec = whereSpec
+  console.log('initial newWhere', newWhereSpec)
   fields.forEach(field => {
-    if (field.name === whereSpec.col) {
+    if ((field.tableName + ' ' + field.name) === whereSpec.col) {
+    	console.log('reached this')
       if (field.dataTypeID === 23 || field.dataTypeID === 21 || field.dataTypeID === 1700) newWhereSpec.spec = Number(whereSpec.spec)
-      if (field.dataTypeID === 1043 || field.dataTypeID === 983071) {
-        if (whereSpec.spec.charAt(0) === "'" && whereSpec.spec.charAt(whereSpec.spec.length - 1) === "'") newWhereSpec.spec = whereSpec.spec
+	  else{
+	  	console.log('never reaches')
+	  	if (whereSpec.spec.charAt(0) === "'" && whereSpec.spec.charAt(whereSpec.spec.length - 1) === "'") newWhereSpec.spec = whereSpec.spec
         else newWhereSpec.spec = "'" + whereSpec.spec + "'"
-      }
+	  }
     }
   })
+  console.log('exiting newWhere', newWhereSpec)
   return newWhereSpec
 }
 
@@ -119,11 +125,11 @@ const queryData = (settings) => {
 	let selectThese = settings.selectThese.length ? settings.selectThese : settings.fields.map(val => val.tableName + ' ' + val.name)
 	selectThese = selectThese.map(val => {
 		let [table, column] = val.split(' ')
-		return addQuotes(table) + '.' + addQuotes(column) + 'AS' + addQuotes(val)
-	}).join(', ') 
+		return addQuotes(table) + '.' + addQuotes(column) + ' AS ' + addQuotes(val)
+	}).join(', ')
 	let whereConditional = ' ' + settings.AndOr + ' '
 	whereThese = whereThese && whereThese.map(where => {
-		[tab, col]  = where.col.split(' ')
+		let [tab, col]  = where.col.split(' ')
 		tab = addQuotes(tab)
 		col = addQuotes(col)
     let joinedWhere = tab + '.' + col + ' ' + where.is + ' ' + where.spec
