@@ -10,7 +10,7 @@ export const newGraphMaker = (settings) => {
 
   const makeGraph = settings.choosenChart
   settings.title = settings.Title
-  settings.width = 400
+  settings.width = 350
   settings.height = 350
   settings.x = settings.xAxis
   settings.y = settings.yAxis

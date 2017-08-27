@@ -48,33 +48,17 @@ label {
 
 }
 
-.navbar {
-  text-align: center;
-  background-color: #EBECED;
-  border: 0 none;
-}
-
 .dbList {
   font-size: 60%;
   margin-top: 1%;
   padding-left: 10%;
+  text-align: left;
+}
+
+.home {
   text-align: center;
 }
 
-.pieChart {
-  padding: 100px;
-  height: 500px
-}
-
-.container {
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 auto;
-}
-.selectQuery {
-  margin: 0 auto;
-  padding: 0 auto;
-}
 /*
  * Globals
  */
@@ -109,7 +93,7 @@ body {
 }
 body {
   color: #fff;
-  text-align: center;
+  text-align: left;
   text-shadow: 0 1px 3px rgba(0,0,0,.5);
   @include main-background();
   font: Helvetica 16px;
@@ -269,6 +253,19 @@ body {
 .scrolling.undetached.dimmable.dimmed{
     overflow: hidden !important;
 }
+.box {
+  //border: 1px solid black;
+  padding: 1%;
+  margin: 0.3%;
+  box-shadow: 7px 7px 5px black;
+}
+
+.box-form {
+  padding: 1%;
+  margin: 0.3%;
+  box-shadow: 7px 7px 5px black;
+}
+
 
 .well {
   background-color: rgba(0,0,0,0.7);

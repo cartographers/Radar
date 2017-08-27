@@ -16,7 +16,7 @@ const AreaGraphs = (props) => {
         <Tooltip content={CustomTooltip} />
         <Area type="monotone" dataKey={y} stroke={stroke} fill={fill} name={title} />
       </AreaChart>
-      {aggregateInformation && <TableDB Title={title + ' aggregate Info'} savedQuery={aggregateInformation} />}
+        {aggregateInformation && <TableDB Title={title + ' aggregate Info'} savedQuery={aggregateInformation} />}
     </div>
   )
 }
