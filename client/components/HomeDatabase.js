@@ -49,7 +49,7 @@ class HomeDatabase extends Component {
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button bsSize="small" onClick={this.showDatabase}>Close</Button>
+                        <button className="btn btn-danger btn-xs" onClick={this.showDatabase}>Close</button>
                     </Modal.Footer>
                 </Modal>
             )
@@ -60,9 +60,9 @@ class HomeDatabase extends Component {
 
                 <div className="inner cover home">
                     <h1 className="cover-heading">Radar</h1>
-                    <p className="lead">Postgres thangs and chicken wangs</p>
+                    <p className="lead">A postgres.app utility application that helps you visualize your queries</p>
                     <div className="lead">
-                        <div onClick={this.showDatabase} className="btn btn-lg btn-default">Get Started</div>
+                        <button onClick={this.showDatabase} className="btn btn-lg btn-primary">Get Started</button>
 
                         {this.state.renderDatabase ? listDatabases() : null}
 
