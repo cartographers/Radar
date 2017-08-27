@@ -8,7 +8,8 @@ Click this link to download and start using Radar
 
 ### Prerequisites
 
-In order to install Radar you will need to have Postgres installed.  
+In order to make sure Radar works please make sure you have Postgress.app installed and running when using our application.
+
 #### Installing Postgres
 
 http://postgresapp.com/
