@@ -178,7 +178,7 @@ class myForm extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="start">
                 <div className="col-md-12">
                     <h4><Link to="/home"> Home </Link> > Dashboard > {this.state.currentDatabase} </h4>
                 </div>
