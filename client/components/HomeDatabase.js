@@ -30,7 +30,7 @@ class HomeDatabase extends Component {
         const {databases} = this.props
         const listDatabases = () => {
             return (
-                <Modal bsSize="large" show={this.state.renderDatabase} animation={true} autofocus={true}>
+                <Modal bsSize="large" show={this.state.renderDatabase}>
                     <Modal.Header>
                         <Modal.Title>
                             <div style={{float: 'left', color: 'white'}}>
