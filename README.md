@@ -75,6 +75,6 @@ Click make my graph
 
 ## Acknowledgments
 
-* Postgres for inspiring us with their not easy to manage DBs
+* PostgreSQL for inspiring us with their not easy to manage DBs
 * Inspiration
 * etc
