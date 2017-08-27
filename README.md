@@ -69,12 +69,12 @@ Click make my graph
 
 * **Dennis Bui** - *Initial work* - [DBui0051](https://github.com/DBui0051)
 * **Min Hwangbo** - *Initial work* - [Mindboggling](https://github.com/Mindboggling)
-* **Jagnor Grewal** - *Initial work* - [Noorgrewal](https://github.com/Noorgrewal)
+* **Jagnoor Grewal** - *Initial work* - [Noorgrewal](https://github.com/Noorgrewal)
 * **Sulamita Morales** - *Initial work* - [KyuSulamita](https://github.com/KyuSulamita)
 
 
 ## Acknowledgments
 
-* Postgress for inspiring us with their not easy to manage DBs
+* Postgres for inspiring us with their not easy to manage DBs
 * Inspiration
 * etc
