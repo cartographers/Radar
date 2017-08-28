@@ -270,7 +270,7 @@ const CustomSQLQuery = (props) => {
                             <CustomQuery {...props} />
                         </div>
                         <div className="col-md-12">
-                            {props.currentTable && <RenderChartSettings {...props}/>}
+                            <RenderChartSettings {...props}/>
                         </div>
                     </form>
                 </Modal.Body>
