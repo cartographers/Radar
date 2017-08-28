@@ -22,7 +22,7 @@ const options = (selectThese, columns, columnType, onChange, filtered) => {
 const RenderTables = (props) => {
     return (
         <div>
-            <label>From</label>
+            <h5 className="form-labels"><strong>From</strong></h5>
             <ChooseOne name="From" onChange={props.handleTableChange} iterable={props.tables}
                        value={props.currentTable}/>
         </div>
@@ -34,7 +34,7 @@ const RenderSelects = (props) => {
     return (
         <div>
             <div>
-                <label>Select</label>
+                <h5 className="form-labels"><strong>Select</strong></h5>
                 {props.selectThese.map((sel, index) => {
                     return <div key={index}>
                         <ChooseOne key={index} onChange={props.handleChange.bind(this, index, 'selectThese')}
@@ -60,7 +60,7 @@ const RenderAggregate = (props) => {
     return (
         <div>
             <div>
-                <label>Aggregates</label>
+                <h5 className="form-labels"><strong>Aggregates</strong></h5>
                 {props.aggregateSelects.map((sel, index) => {
                     return <div key={index}>
                         <ChooseOne key={index + "agg"} name="agg"
@@ -89,19 +89,27 @@ const RenderAggregate = (props) => {
 }
 
 const RenderOrAnd = (props) => {
-    return (<div>
-        <input type="radio" className="form-check-input" name="AndOr" value="AND"
-               onChange={props.handleChartChange.bind(this, 'AndOr')} checked/> And <br/>
-        <input type="radio" className="form-check-input" name="AndOr" value="OR"
-               onChange={props.handleChartChange.bind(this, 'AndOr')}/> Or <br/>
-    </div>)
+    return (
+        <div>
+            <label>
+                <input type="radio" className="form-check-input" name="AndOr" value="AND"
+                       onChange={props.handleChartChange.bind(this, 'AndOr')} checked/>
+                <h5 className="form-labels" style={{display: 'inline'}}><strong> And</strong></h5>
+            </label>
+            <label>
+                <input type="radio" className="form-check-input" name="AndOr" value="OR"
+                       onChange={props.handleChartChange.bind(this, 'AndOr')}/>
+                <h5 className="form-labels" style={{display: 'inline'}}><strong> Or</strong></h5>
+            </label>
+        </div>
+    )
 }
 
 const RenderWheres = (props) => {
     return (
         <div>
             <div>
-                <label>Where</label>
+                <h5 className="form-labels"><strong>Where</strong></h5>
                 <div>
                     {(props.whereThese.length > 1) && <RenderOrAnd {...props} />}
                 </div>
@@ -137,7 +145,7 @@ const RenderWheres = (props) => {
 const RenderOrderBy = (props) => {
     return (
         <div className="form-group col-md-12">
-            <label>Order by</label>
+            <h5 className="form-labels"><strong> Order By </strong></h5>
             <ChooseOne onChange={props.handleChange.bind(this, 0, 'orderedBy')} iterable={props.orderType}/>
             {options(props.selectThese, props.columns, props.columnType, props.handleChange.bind(this, 1, 'orderedBy'), false)}
         </div>
@@ -147,7 +155,7 @@ const RenderOrderBy = (props) => {
 const PieOptions = (props) => {
     return (
         <div>
-            <label>Pie Key (only for pie charts)</label>
+            <h5 className="form-labels"><strong> Pie Key </strong></h5>
             {options(props.selectThese, props.columns, props.columnType, props.handleChartChange.bind(this, 'pieKey'), true)}
         </div>
     )
@@ -157,12 +165,12 @@ const ChartOptions = (props) => {
     return (
         <div>
             <div>
-                <label>X axis</label>
+                <h5 className="form-labels"><strong> X axis </strong></h5>
                 {options(props.selectThese, props.columns, props.columnType, props.handleChartChange.bind(this, 'xAxis'), false)}
             </div>
 
             <div>
-                <label>Y axis</label>
+                <h5 className="form-labels"><strong> Y axis </strong></h5>
                 {options(props.selectThese, props.columns, props.columnType, props.handleChartChange.bind(this, 'yAxis'), true)}
             </div>
         </div>
@@ -171,16 +179,44 @@ const ChartOptions = (props) => {
 
 const ChartInput = (props) => {
     return (<div>
-        <label>{props.chartElement}</label>
         <input className="form-control" onChange={props.handleChartChange.bind(this, props.chartElement)} required/>
     </div>)
+}
+
+const RenderChartSettings = (props) => {
+    return (
+        <div>
+            <div className="col-md-12">
+                <h5 className="form-labels"><strong> Chart Type </strong></h5>
+                <ChooseOne name="choosenChart"
+                           onChange={props.handleChartChange.bind(this, 'choosenChart')}
+                           iterable={props.chartTypes}/>
+            </div>
+            <div className="col-md-12">
+                <h5 className="form-labels"><strong> Title </strong></h5>
+                <ChartInput {...props}/>
+            </div>
+            {props.choosenChart === 'Pie' && <PieOptions {...props} />}
+            {props.choosenChart !== 'Pie' && props.choosenChart !== 'Table' &&
+            <ChartOptions {...props} />}
+            <div className="col-md-12">
+                <button
+                    type="submit"
+                    className="btn btn-primary btn-xs"
+                    onClick={props.makeGraph}
+                    style={{float: 'right'}}>
+                    Make my graph
+                </button>
+            </div>
+        </div>
+    )
 }
 
 
 const SelectQueryOptions = (props) => {
     return (
         <div>
-            <Modal show={props.displayForm}>
+            <Modal show={props.displayForm} bsSize="large">
                 <Modal.Header>
                     <Modal.Title>
                         Query Selection Form
@@ -188,7 +224,7 @@ const SelectQueryOptions = (props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <form>
-                        <div className="col-md-12" style={{margin: 1 + 'px', padding: 3 + 'px'}}>
+                        <div className="col-md-12" style={{margin: 5 + 'px', padding: 3 + 'px'}}>
                             <RenderTables {...props} />
                         </div>
                         <div className="col-md-12">
@@ -204,27 +240,9 @@ const SelectQueryOptions = (props) => {
                             {props.currentTable && <RenderAggregate {...props} />}
                         </div>
                         <div className="col-md-12">
-                            <div className="col-md-12">
-                                <label>Chart Type</label>
-                                <ChooseOne name="choosenChart"
-                                           onChange={props.handleChartChange.bind(this, 'choosenChart')}
-                                           iterable={props.chartTypes}/>
-                            </div>
-                            <div className="col-md-12">
-                                <ChartInput {...props} chartElement="Title"/>
-                            </div>
-                            {props.choosenChart === 'Pie' && <PieOptions {...props} />}
-                            {props.choosenChart !== 'Pie' && props.choosenChart !== 'Table' &&
-                            <ChartOptions {...props} />}
-                            <div className="col-md-12">
-                                <button
-                                    type="submit"
-                                    className="btn btn-primary btn-xs"
-                                    onClick={props.makeGraph}>
-                                    Make my graph
-                                </button>
-                            </div>
+                            {props.currentTable && <RenderChartSettings {...props}/>}
                         </div>
+
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
@@ -240,7 +258,7 @@ const SelectQueryOptions = (props) => {
 const CustomSQLQuery = (props) => {
     return (
         <div>
-            <Modal show={props.customDisplayForm}>
+            <Modal show={props.customDisplayForm} bsSize="large">
                 <Modal.Header>
                     <Modal.Title>
                         Advanced SQL Query Form
@@ -252,26 +270,7 @@ const CustomSQLQuery = (props) => {
                             <CustomQuery {...props} />
                         </div>
                         <div className="col-md-12">
-                            <div className="col-md-12">
-                                <label>Chart Type</label>
-                                <ChooseOne name="choosenChart"
-                                           onChange={props.handleChartChange.bind(this, 'choosenChart')}
-                                           iterable={props.chartTypes}/>
-                            </div>
-                            <div className="col-md-12">
-                                <ChartInput {...props} chartElement="Title"/>
-                            </div>
-                            {props.choosenChart === 'Pie' && <PieOptions {...props} />}
-                            {props.choosenChart !== 'Pie' && props.choosenChart !== 'Table' &&
-                            <ChartOptions {...props} />}
-                            <div className="col-md-12">
-                                <button
-                                    type="submit"
-                                    className="btn btn-primary btn-xs"
-                                    onClick={props.makeGraph}>
-                                    Make my graph
-                                </button>
-                            </div>
+                            {props.currentTable && <RenderChartSettings {...props}/>}
                         </div>
                     </form>
                 </Modal.Body>

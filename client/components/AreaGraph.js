@@ -7,7 +7,8 @@ const AreaGraphs = (props) => {
   const {title, x, y, savedQuery, aggregateInformation, width, height, fill, stroke} = props
   return (
     <div className="col-md-6">
-      <AreaChart
+        <h5 className="form-labels"><strong> {title} </strong></h5>
+        <AreaChart
         width={width}
         height={height}
         data={savedQuery}>
