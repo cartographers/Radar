@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { fetchUsers } from '../store'
-import {PieGraph} from './PieGraph'
+import {PieGraph} from './graph-components/PieGraph'
 
 class Display extends React.Component {
 
