@@ -8,7 +8,7 @@ const TableDB = (props)  => {
     return (
       <div>
           <h5 className="form-labels"><strong> {title} </strong></h5>
-          <Table condensed hover>
+          <Table striped bordered condensed hover>
             <thead>
             <tr>
               {
