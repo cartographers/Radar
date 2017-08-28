@@ -16,7 +16,7 @@ const ScatterGraph = (props) => {
         <YAxis dataKey={y} name={y.toString()}/>
         <Tooltip content={CustomTooltip} cursor={{strokeDasharray: '3 3'}}/>
         <Legend/>
-        <Scatter data={savedQuery} fill={fill}/>
+        <Scatter data={savedQuery} stroke={'#00ccff'} fill={'#2A363B'}/>
       </ScatterChart>
       {aggregateInformation && <TableDB Title={title + ' aggregate Info'} savedQuery={aggregateInformation}/>}
     </div>
