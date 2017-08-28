@@ -194,7 +194,7 @@ const RenderChartSettings = (props) => {
             </div>
             <div className="col-md-12">
                 <h5 className="form-labels"><strong> Title </strong></h5>
-                <ChartInput {...props}/>
+                <ChartInput {...props} chartElement="Title"/>
             </div>
             {props.choosenChart === 'Pie' && <PieOptions {...props} />}
             {props.choosenChart !== 'Pie' && props.choosenChart !== 'Table' &&
