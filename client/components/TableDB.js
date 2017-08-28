@@ -7,7 +7,7 @@ const TableDB = (props)  => {
     const fields = savedQuery && savedQuery[0] ? Object.keys(savedQuery[0]) : []
     return (
       <div>
-        <h4>{title}</h4>
+          <h5 className="form-labels"><strong> {title} </strong></h5>
           <Table condensed hover>
             <thead>
             <tr>

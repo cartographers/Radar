@@ -67,7 +67,7 @@ label {
 a,
 a:focus,
 a:hover {
-  color: 'blue';
+  color: #006dcc;
 }
 
 /* Custom default button */
@@ -326,4 +326,8 @@ input {
   position: fixed;
   top: 20px;
   left: 20px;
+}
+
+.form-labels {
+  color: #006dcc;
 }
