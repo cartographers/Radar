@@ -12,13 +12,13 @@ const BarGraph = (props) => {
                 width={width}
                 height={height}
                 data={savedQuery}>
-                <XAxis dataKey={x} minTickGap={10}/>
-                <YAxis/>
-                <Tooltip content={CustomTooltip}/>
-                <Legend/>
-                <Bar dataKey={y} fill={fill}/>
+                <XAxis dataKey={x} minTickGap={10} />
+                <YAxis />
+                <Tooltip content={CustomTooltip} />
+                <Legend />
+                <Bar dataKey={y} fill={fill} />
             </BarChart>
-            {aggregateInformation && <TableDB Title={title + ' aggregate Info'} savedQuery={aggregateInformation}/>}
+            {aggregateInformation && <TableDB Title={title + ' aggregate Info'} savedQuery={aggregateInformation} />}
         </div>
     )
 }

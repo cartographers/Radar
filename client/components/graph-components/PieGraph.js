@@ -9,7 +9,7 @@ const PieGraph = (props) => {
         <div className="col-md-6">
             <h5 className="form-labels"><strong> {title} </strong></h5>
             <PieChart width={width} height={height}>
-                <Pie dataKey={pieKey} data={savedQuery} cx={200} cy={200} innerRadius={0} outerRadius={90} fill={'#006dcc'} label />
+                <Pie dataKey={pieKey} data={savedQuery} cx={200} cy={200} innerRadius={0} outerRadius={90} fill={fill} label />
                 <Tooltip content={CustomPieTooltip} />
             </PieChart>
             {aggregateInformation && <TableDB Title={title + ' aggregate Info'} savedQuery={aggregateInformation} />}
