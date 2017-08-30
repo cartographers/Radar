@@ -13,13 +13,13 @@ const LineGraph = (props) => {
                 width={width}
                 height={height}
                 data={savedQuery}>
-                <XAxis dataKey={x} name={x}/>
-                <YAxis dataKey={y} name={y}/>
-                <Tooltip content={CustomTooltip}/>
-                <Legend/>
-                <Line type="monotone" dataKey={y} stroke={stroke} fill={fill} activeDot={{r: 5}}/>
+                <XAxis dataKey={x} name={x} />
+                <YAxis dataKey={y} name={y} />
+                <Tooltip content={CustomTooltip} />
+                <Legend />
+                <Line type="monotone" dataKey={y} stroke={stroke} fill={fill} activeDot={{r: 5}} />
             </LineChart>
-            {aggregateInformation && <TableDB Title={title + ' aggregate Info'} savedQuery={aggregateInformation}/>}
+            {aggregateInformation && <TableDB Title={title + ' aggregate Info'} savedQuery={aggregateInformation} />}
         </div>
     )
 }
