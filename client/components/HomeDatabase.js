@@ -61,7 +61,7 @@ class HomeDatabase extends Component {
 
                 <div className="inner cover home">
                     <h1 className="cover-heading">Radar</h1>
-                    <p className="lead">A PostgreSQL utility application that visualize your data.</p>
+                    <p className="lead">A PostgreSQL utility application that helps visualize your data.</p>
                     <div className="lead">
                         <button onClick={this.showDatabase} className="btn btn-lg btn-primary">Get Started</button>
 
