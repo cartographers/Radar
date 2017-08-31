@@ -29,14 +29,14 @@ class myForm extends React.Component {
         super()
         this.state = {
             selectThese: [],
-            whereThese: [], //objects of Nested Wheres???
+            whereThese: [], 
             orderedBy: ['Descending', 0],
             conditionals: ['greater than', 'greater than or equal to', 'less than', 'less than or equal to', 'equal to', 'not', 'between', 'not between'],
             conditionalOperator: ['>', '>=', '<', '<=', '=', '!=', '[]', '![]'],
             orderType: ['Ascending', 'Descending'],
             chartTypes: ['Scatter', 'Area', 'Bar', 'Line', 'Pie', 'Table'],
             currentTable: '',
-            currentDatabase: '', //JK YOU CAN STAY
+            currentDatabase: '', 
             AndOr: '',
             choosenChart: 'Scatter',
             Title: '',
@@ -58,6 +58,7 @@ class myForm extends React.Component {
             makeGraph: this.makeGraph.bind(this),
             changeQueryType: this.changeQueryType.bind(this),
             handleChartDelete: this.handleChartDelete.bind(this),
+            flipBoolean: this.flipBoolean.bind(this),
             showForm: this.showForm.bind(this),
             showCustomForm: this.showCustomForm.bind(this)
         }
@@ -160,9 +161,6 @@ class myForm extends React.Component {
         this.props.grabTableData(this.state.currentDatabase, currentTable, this.props.foreignKeys)
     }
 
-    changeQueryType = (event) => {
-        this.setState({selectQuery: !this.state.selectQuery})
-    }
 
     handleChartDelete = (settings) => {
         this.props.deleteGraph(settings)
@@ -175,7 +173,13 @@ class myForm extends React.Component {
     showCustomForm = () => {
       this.setState((prevState) => ({customDisplayForm: !prevState.customDisplayForm}))
     }
+    changeQueryType = (event) => {
+        this.setState({selectQuery: !this.state.selectQuery})
+    }
 
+    flipBoolean = (toFlip) => {
+        this.setState({[toFlip]: !this.state[toFlip]})
+    }
     render() {
         return (
             <div className="start">

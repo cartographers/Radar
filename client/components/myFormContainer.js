@@ -21,7 +21,7 @@ const options = (selectThese, columns, columnType, onChange, filtered) => {
 
 const RenderTables = (props) => {
     return (
-        <div>
+        <div className="col-md-12" style={{margin: 5 + 'px', padding: 3 + 'px'}}>
             <h5 className="form-labels"><strong>From</strong></h5>
             <ChooseOne name="From" onChange={props.handleTableChange} iterable={props.tables}
                        value={props.currentTable}/>
@@ -32,7 +32,7 @@ const RenderTables = (props) => {
 
 const RenderSelects = (props) => {
     return (
-        <div>
+        <div className="col-md-12">
             <div>
                 <h5 className="form-labels"><strong>Select</strong></h5>
                 {props.selectThese.map((sel, index) => {
@@ -58,7 +58,7 @@ const RenderSelects = (props) => {
 
 const RenderAggregate = (props) => {
     return (
-        <div>
+        <div className="col-md-12">
             <div>
                 <h5 className="form-labels"><strong>Aggregates</strong></h5>
                 {props.aggregateSelects.map((sel, index) => {
@@ -90,7 +90,7 @@ const RenderAggregate = (props) => {
 
 const RenderOrAnd = (props) => {
     return (
-        <div>
+        <div className="col-md-12">
             <label>
                 <input type="radio" className="form-check-input" name="AndOr" value="AND"
                        onChange={props.handleChartChange.bind(this, 'AndOr')} checked/>
@@ -107,7 +107,7 @@ const RenderOrAnd = (props) => {
 
 const RenderWheres = (props) => {
     return (
-        <div>
+        <div className="col-md-12">
             <div>
                 <h5 className="form-labels"><strong>Where</strong></h5>
                 <div>
@@ -176,26 +176,34 @@ const ChartOptions = (props) => {
         </div>
     )
 }
+const FormComponent = (props) => {
 
+    return (
+        <div className="form-group col-md-12">
+            <h5 className="form-labels"><strong>{props.elem}</strong></h5>
+            { options(props.selectThese, props.columns, props.columnType, props.handleChartChange.bind(this, elem), props.filtered)}
+        </div>
+        )
+}
 const ChartInput = (props) => {
-    return (<div>
+    return (
+    <div className="col-md-12">
+        <h5 className="form-labels"><strong>{props.chartElement}</strong></h5>
         <input className="form-control" onChange={props.handleChartChange.bind(this, props.chartElement)} required/>
-    </div>)
+    </div>
+    )
 }
 
 const RenderChartSettings = (props) => {
     return (
-        <div>
+        <div className="col-md-12">
             <div className="col-md-12">
                 <h5 className="form-labels"><strong> Chart Type </strong></h5>
                 <ChooseOne name="choosenChart"
                            onChange={props.handleChartChange.bind(this, 'choosenChart')}
                            iterable={props.chartTypes}/>
             </div>
-            <div className="col-md-12">
-                <h5 className="form-labels"><strong> Title </strong></h5>
-                <ChartInput {...props} chartElement="Title"/>
-            </div>
+            <ChartInput {...props} chartElement="Title"/>
             {props.choosenChart === 'Pie' && <PieOptions {...props} />}
             {props.choosenChart !== 'Pie' && props.choosenChart !== 'Table' &&
             <ChartOptions {...props} />}
@@ -215,73 +223,76 @@ const RenderChartSettings = (props) => {
 
 const SelectQueryOptions = (props) => {
     return (
-        <div>
-            <Modal show={props.displayForm} bsSize="large">
-                <Modal.Header>
-                    <Modal.Title>
-                        Query Selection Form
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <form>
-                        <div className="col-md-12" style={{margin: 5 + 'px', padding: 3 + 'px'}}>
-                            <RenderTables {...props} />
-                        </div>
-                        <div className="col-md-12">
-                            {props.currentTable && <RenderSelects {...props} />}
-                        </div>
-                        <div className="col-md-12">
-                            {props.currentTable && <RenderWheres {...props} />}
-                        </div>
-                        <div className="col-md-12">
-                            {props.currentTable && <RenderOrderBy {...props} />}
-                        </div>
-                        <div className="col-md-12">
-                            {props.currentTable && <RenderAggregate {...props} />}
-                        </div>
-                        <div className="col-md-12">
-                            {props.currentTable && <RenderChartSettings {...props}/>}
-                        </div>
-
-                    </form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <button className="btn btn-xs btn-danger" onClick={props.showForm}>
-                        Close
-                    </button>
-                </Modal.Footer>
-            </Modal>
-        </div>
+        <form>
+            <RenderTables {...props} />
+            { props.currentTable && <RenderSelects {...props} />
+              && <RenderWheres {...props} /> && <RenderOrderBy {...props} /> 
+              && <RenderAggregate {...props} /> && <RenderChartSettings {...props}/>}
+        </form>
     )
 }
 
 const CustomSQLQuery = (props) => {
     return (
+        <form>
+            <CustomQuery {...props} />
+            <RenderChartSettings {...props}/>
+        </form>
+    )
+}
+
+
+const ModalHeader = (props) => {
+    return (
         <div>
-            <Modal show={props.customDisplayForm} bsSize="large">
+            <Modal show={props[props.displayType]} bsSize="large">
                 <Modal.Header>
                     <Modal.Title>
-                        Advanced SQL Query Form
+                      {props.displayType === "customDisplayForm" ? "Advanced SQL Query Form" : "Query Selection Form"}
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <form>
-                        <div className="col-md-12">
-                            <CustomQuery {...props} />
-                        </div>
-                        <div className="col-md-12">
-                            <RenderChartSettings {...props}/>
-                        </div>
-                    </form>
+                    {props.displayType === "customDisplayForm" ? <CustomSQLQuery {...props} /> : <SelectQueryOptions {...props} />}
                 </Modal.Body>
                 <Modal.Footer>
-                    <button className="btn btn-danger btn-xs" onClick={props.showCustomForm}>
+                    <button className="btn btn-danger btn-xs" onClick={props.flipBoolean.bind(this, props.displayType)}>
                         Close
                     </button>
                 </Modal.Footer>
             </Modal>
         </div>
-    )
+        )
+}
+
+const QueryButton = (props) => {
+    return (
+        <div className="queryDiv">
+            <button onClick={props.flipBoolean.bind(this, props.displayType)} className="queryButton btn-primary btn-xs">
+                { props.displayType === 'displayForm' ?  'Query Selection Form' : 'Advanced QueryForm'}
+            </button>
+        </div>
+        )
+}
+
+
+const ChartRender = (props) => {
+    return (
+            <div key={props.index} className="col-md-4 box graphdiv" style={{width: 32 + '%'}}>
+                <div onClick={props.handleChartDelete.bind(this, props.graphInfo)}
+                     className="glyphicon glyphicon-remove-sign"
+                     style={{float: 'left', color: '#E84A5F', margin: 0, padding: 0}}>
+                </div>
+                <div>
+                    {newGraphMaker(props.graphInfo.settings)}
+                </div>
+            </div>
+            )
+}
+
+const filterGraphs = (graphInfo, props) => {
+    return !(props.currentTable)
+    ? graphInfo.database == props.currentDatabase
+    : (graphInfo.database == props.currentDatabase && graphInfo.table == props.currentTable)
 }
 
 const MyFormContainer = (props) => {
@@ -290,41 +301,18 @@ const MyFormContainer = (props) => {
             <div className="col-md-12">
 
                 {/*query form on the left*/}
-                <div className="queryDiv">
-                    <button onClick={props.showForm} className="queryButton btn-primary btn-xs">
-                        Query Selection Form
-                    </button>
-                    {props.displayForm ? <SelectQueryOptions {...props} /> : null}
-                </div>
-                <div className="queryDiv">
-                    <button onClick={props.showCustomForm} className="queryButton btn-primary btn-xs">
-                        Advanced Query Form
-                    </button>
-                    {props.customDisplayForm ? <CustomSQLQuery {...props} /> : null}
-                </div>
+                <QueryButton flipBoolean={props.flipBoolean} displayType="displayForm" />
+                <QueryButton flipBoolean={props.flipBoolean} displayType="customDisplayForm" />
+                <ModalHeader {...props} displayType={props.displayForm ? "displayForm" : "customDisplayForm" } />
             </div>
             {/*saved graphs*/}
             <div className="col-md-12" style={{margin: 0, padding: 0}}>
                 {
                     props.createdGraphs &&
                     props.createdGraphs
-                        .filter(graphInfo => {
-                            return !(props.currentTable)
-                                ? graphInfo.database == props.currentDatabase
-                                : (graphInfo.database == props.currentDatabase && graphInfo.table == props.currentTable)
-                        })
+                        .filter(graphInfo => filterGraphs(graphInfo, props))
                         .map((graphInfo, index) => {
-                            return (
-                                <div key={index} className="col-md-4 box graphdiv" style={{width: 32 + '%'}}>
-                                    <div onClick={props.handleChartDelete.bind(this, graphInfo)}
-                                         className="glyphicon glyphicon-remove-sign"
-                                         style={{float: 'left', color: '#E84A5F', margin: 0, padding: 0}}>
-                                    </div>
-                                    <div>
-                                        {newGraphMaker(graphInfo.settings)}
-                                    </div>
-                                </div>
-                            )
+                            return <ChartRender {...props} graphInfo={graphInfo} index={index} />
                         })
                 }
             </div>
