@@ -15,7 +15,8 @@
     "test-client-watch": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/boilermaker-test' mocha -w ./client/**/*.spec.js --compilers js:babel-register",
     "electron": "npm run build-client && electron . & webpack -w",
     "just-electron": "electron .",
-    "pack-electron": "electron-packager . --overwrite --platform=darwin --arch=x64 --prune=true --out=release-builds"
+    "pack-electron": "electron-packager . --overwrite --platform=darwin --arch=x64 --prune=true --out=release-builds",
+    "testChart": "mocha ./client/components/auth-form.spec.js"
   },
   "author": "",
   "license": "ISC",

@@ -1,7 +1,7 @@
-import {expect} from 'chai'
-import React from 'react'
-import {shallow} from 'enzyme'
-import {spy} from 'sinon'
+const {expect} = require('chai')
+const React = require('react')
+const {shallow} = require('enzyme')
+const {spy} = require('sinon')
 
 describe('show how to simulate an event', () => {
 
