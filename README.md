@@ -25,7 +25,7 @@ echo /Applications/Postgres.app/Contents/Versions/latest/bin | sudo tee /etc/pat
 
 ### Installing
 
-After you have Postgres installed you use install our app by simply double clicking on it.
+After you have Postgres you can use our app by simply double clicking on it.
 
 
 ## Using the App
@@ -46,7 +46,7 @@ User sets condition "Order by ascending sales"
 
 ### Making a table
 
-Query has been set up, now the user has 5 different visualizations to choose from, Pie, Line, Area, Bar, and Table. For Table only a name for the requested table is needed. For pie the user must choose a pie key from the selections he made. For all others he needs to specifify both an x and y axis
+Query has been set up, now the user has 5 different visualizations to choose from, Pie, Line, Area, Bar, and Table. For Table charts only a name for the requested table is needed. For Pie charts the user must choose a pie key from the selective fields that were chosen. For all the remaining charts, an x and y axis label must be selected.
 
 ```
 User chooses Bar Chart
