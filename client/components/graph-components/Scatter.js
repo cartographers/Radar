@@ -7,17 +7,18 @@ const ScatterGraph = (props) => {
   const {title, x, y, savedQuery, aggregateInformation, fill, width, height} = props
   return (
     <div className="col-md-6">
+      <h5 className="form-labels"><strong> {title} </strong></h5>
       <ScatterChart
         width={width}
         height={height}
         margin={{top: 20, right: 20, bottom: 10, left: 10}}>
-        <XAxis dataKey={x} name={x.toString()}/>
-        <YAxis dataKey={y} name={y.toString()}/>
-        <Tooltip content={CustomTooltip} cursor={{strokeDasharray: '3 3'}}/>
-        <Legend/>
-        <Scatter name={title} data={savedQuery} fill={fill}/>
+        <XAxis dataKey={x} name={x.toString()} />
+        <YAxis dataKey={y} name={y.toString()} />
+        <Tooltip content={CustomTooltip} cursor={{strokeDasharray: '3 3'}} />
+        <Legend />
+        <Scatter data={savedQuery} stroke={'#00ccff'} fill={fill} />
       </ScatterChart>
-      {aggregateInformation && <TableDB Title={title + ' aggregate Info'} savedQuery={aggregateInformation}/>}
+      {aggregateInformation && <TableDB Title={title + ' aggregate Info'} savedQuery={aggregateInformation} />}
     </div>
   )
 }

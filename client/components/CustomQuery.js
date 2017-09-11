@@ -17,13 +17,13 @@ class CustomQuery extends React.Component {
                 name="customQuery"
               />
             </div>
-            <div className="col-md-12" style={{}}>
-              <Button
-                style={{display: 'block', float: 'right'}}
+            <div className="col-md-12" style={{marginTop: 1 + 'em'}}>
+              <button
+                style={{display: 'block', float: 'right', marginTop: 1 + 'em'}}
                 type="submit"
-                className="btn btn-success" >
+                className="btn btn-primary btn-xs" >
                 Query Database
-              </Button>
+              </button>
             </div>
           </form>
         </div>

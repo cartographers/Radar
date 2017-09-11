@@ -5,3 +5,4 @@ public/bundle.js.map
 npm-debug.log
 .eslintrc.json
 release-builds
+.DS_Store
