@@ -10,6 +10,8 @@ class Settings extends React.Component {
   }
 
   render (){
+    const port = this.props.port
+
     return (
         <div className="container">
           <form onSubmit={this.props.changePort}>
@@ -18,7 +20,7 @@ class Settings extends React.Component {
               <input
                 type="text"
                 placeholder="Postgres Port #"
-                defaultValue="5432"
+                defaultValue={port}
                 name="port"
               />
             </div>

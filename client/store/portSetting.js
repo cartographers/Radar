@@ -1,3 +1,5 @@
+import history from '../history'
+import {changePort} from '../../utils/connectDB'
 /**
  * ACTION TYPES
  */
@@ -23,6 +25,8 @@ export const fetchPort = () =>
 export const editPort = (port) =>
   dispatch => {
     dispatch(updatePort(port))
+    changePort(port)
+    history.push('/')
 }
 /**
  * REDUCER
