@@ -1,13 +1,7 @@
 import {AreaGraph, BarGraph, LineGraph, PieGraph, Scatter, TableDB} from '../client/components'
 import React from 'react'
 
-export const saveQueryData = (data) => {
-  return data
-}
-
 export const newGraphMaker = (settings) => {
-  console.log(settings)
-
   const makeGraph = settings.choosenChart
   settings.title = settings.Title
   settings.width = 350

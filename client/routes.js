@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {Router} from 'react-router'
 import {Route, Switch} from 'react-router-dom'
 import history from './history'
-import {Main, Login, Signup, UserHome, Display, PieGraph, myForm, Scatter, Home, LineGraph, BarGraph, TableDB, AreaGraph, CustomQuery, HomeDatabase} from './components'
+import {Login, Signup, Display, PieGraph, myForm, Scatter, LineGraph, BarGraph, TableDB, AreaGraph, CustomQuery, HomeDatabase, Settings} from './components'
 
 /**
  * COMPONENT
@@ -31,6 +31,7 @@ class Routes extends Component {
               <Route exact path="/line" component={LineGraph} />
               <Route exact path="/area" component={AreaGraph} />
               <Route path="/customquery/:dbName" component={CustomQuery} />
+              <Route exact path="/settings" component={Settings} />
               <Route component={HomeDatabase} />
             </Switch>
           </div>

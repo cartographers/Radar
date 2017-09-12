@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {fetchDatabases, fetchGraphs} from '../store'
+import {fetchDatabases, fetchGraphs, resetDatabase, resetField, resetTable, resetQueriedTable} from '../store'
 import {Modal, Button} from 'react-bootstrap'
 
 class HomeDatabase extends Component {
@@ -15,6 +15,7 @@ class HomeDatabase extends Component {
     }
 
     componentDidMount() {
+        this.props.resetState()
         this.props.loadDatabases()
         this.props.loadGraphs()
     }
@@ -50,6 +51,9 @@ class HomeDatabase extends Component {
                     </Modal.Body>
 
                     <Modal.Footer>
+                        <div className="settings">
+                            <Link to="/settings">Settings</Link>
+                        </div>
                         <button className="btn btn-danger btn-xs" onClick={this.showDatabase}>Close</button>
                     </Modal.Footer>
                 </Modal>
@@ -69,7 +73,6 @@ class HomeDatabase extends Component {
 
                     </div>
                 </div>
-
             </div>
         )
     }
@@ -89,6 +92,12 @@ const mapDispatch = dispatch => {
         },
         loadGraphs() {
             dispatch(fetchGraphs())
+        },
+        resetState() {
+            dispatch(resetDatabase())
+            dispatch(resetField())
+            dispatch(resetTable())
+            dispatch(resetQueriedTable())
         }
     }
 }

@@ -1,6 +1,12 @@
 const pg = require('pg')
 import BlueBird from 'bluebird'
 
+let portSetting = 'postgres://localhost:5432/'
+
+const changePort = (portNumber) => {
+  portSetting = 'postgres://localhost:' + portNumber + '/'
+}
+
 const addQuotes = (str) => {
   str = str.replace(/\'/g, '"')
   return /\"[A-Za-z1-9_]+\"/.test(str) ? str : '"' + str + '"'
@@ -15,7 +21,7 @@ const initDatabases = () => {
 }
 
 const loadTables = (settings) => {
-  const postgresUrl = 'postgres://localhost:5432/' + settings.database
+  const postgresUrl = portSetting + settings.database
   const client = new pg.Client(postgresUrl)
   let querySearch = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema = 'public'"
   client.connect()
@@ -28,7 +34,7 @@ const loadTables = (settings) => {
 }
 
 const loadTableForeignKeys = (settings) => {
-  const postgresUrl = 'postgres://localhost:5432/' + settings.database
+  const postgresUrl = portSetting + settings.database
   const client = new pg.Client(postgresUrl)
 
   let querySearch = ['SELECT tc.constraint_name, tc.table_name, kcu.column_name, ccu.table_name AS foreign_table_name, ccu.column_name AS foreign_column_name',
@@ -55,7 +61,7 @@ const joinTables = (settings) => {
 }
 
 const loadFields = (settings) => {
-  const postgresUrl = 'postgres://localhost:5432/' + settings.database
+  const postgresUrl = portSetting + settings.database
   const client = new pg.Client(postgresUrl)
 
   let querySearch = ['SELECT * FROM']
@@ -109,7 +115,7 @@ const formatOrderBy = (orderOptions) => {
 
 const queryData = (settings) => {
   // const postgresUrl = 'postgres://localhost:' + settings.port + '/' + settings.database
-  const postgresUrl = 'postgres://localhost:5432/' + settings.currentDatabase
+  const postgresUrl = portSetting + settings.currentDatabase
   const client = new pg.Client(postgresUrl)
 
   console.log('Query settings....', settings)
@@ -152,7 +158,7 @@ const queryData = (settings) => {
 }
 
 const customQueryData = (settings) => {
-  const postgresUrl = 'postgres://localhost:5432/' + settings.currentDatabase
+  const postgresUrl = portSetting + settings.currentDatabase
   const client = new pg.Client(postgresUrl)
 
   let querySearch = settings.SQLquery.toUpperCase().trimLeft()
@@ -179,6 +185,7 @@ module.exports = {
   loadFields,
   loadTableForeignKeys,
   joinTables,
-  customQueryData
+  customQueryData,
+  changePort
 
 }
