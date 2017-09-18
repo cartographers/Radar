@@ -1,7 +1,6 @@
 import React from 'react'
-import {FormControl, ControlLabel, FormGroup, Button, Well, Modal} from 'react-bootstrap'
+import {Modal} from 'react-bootstrap'
 import {newGraphMaker} from '../../utils/graphUtility'
-import {saveFile} from '../../utils/saveFile'
 import CustomQuery from './CustomQuery'
 
 const ChooseOne = (props) => {

@@ -2,11 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {
-    fetchUsers,
-    fetchDatabase,
-    searchDatabase,
     fetchFields,
-    fetchDatabases,
     fetchTables,
     currentDatabase,
     fetchGraphs,
@@ -16,12 +12,8 @@ import {
     removeGraph,
     saveQueryGraph
 } from '../store'
-import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
-import {FormControl, ControlLabel, FormGroup, Button, Well} from 'react-bootstrap'
-import {saveSettings} from '../../utils/saveFile'
-import {newGraphMaker} from '../../utils/graphUtility'
+import {Scatter} from 'recharts'
 import MyFormContainer from './MyFormContainer'
-import CustomQuery from './CustomQuery'
 
 class myForm extends React.Component {
 
@@ -173,7 +165,7 @@ class myForm extends React.Component {
     }
 
     showCustomForm = () => {
-      this.setState((prevState) => ({customDisplayForm: !prevState.customDisplayForm}))
+        this.setState((prevState) => ({customDisplayForm: !prevState.customDisplayForm}))
     }
 
     render() {

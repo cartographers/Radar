@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {Button} from 'react-bootstrap'
 import { currentDatabase, fetchQueryTableCustom } from '../store'
 
 class CustomQuery extends React.Component {

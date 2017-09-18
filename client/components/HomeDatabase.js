@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {fetchDatabases, fetchGraphs, resetDatabase, resetField, resetTable, resetQueriedTable} from '../store'
-import {Modal, Button} from 'react-bootstrap'
+import {Modal} from 'react-bootstrap'
 
 class HomeDatabase extends Component {
 
