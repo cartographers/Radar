@@ -6,7 +6,7 @@
 export {default as Display} from './Display'
 export {default as LineGraph} from './graph-components/LineGraph'
 export {default as PieGraph} from './graph-components/PieGraph'
-export {default as myForm} from './myForm'
+export {default as myForm} from './Dashboard'
 export {default as Scatter} from './graph-components/Scatter'
 export {default as BarGraph} from './graph-components/BarGraph'
 export {default as TableDB} from './graph-components/TableDB'
