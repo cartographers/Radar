@@ -15,7 +15,7 @@ import {
 import {Scatter} from 'recharts'
 import MyFormContainer from './MyFormContainer'
 
-class myForm extends React.Component {
+class Dashboard extends React.Component {
 
     constructor() {
         super()
@@ -239,4 +239,4 @@ const mapDispatch = dispatch => {
     })
 }
 
-export default connect(mapState, mapDispatch)(myForm)
+export default connect(mapState, mapDispatch)(Dashboard)
