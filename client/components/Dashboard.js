@@ -13,7 +13,7 @@ import {
     saveQueryGraph
 } from '../store'
 import {Scatter} from 'recharts'
-import MyFormContainer from './MyFormContainer'
+import FormContainer from './FormContainer'
 
 class Dashboard extends React.Component {
 
@@ -175,7 +175,7 @@ class Dashboard extends React.Component {
                     <h4><Link to="/home"> Home </Link> > Dashboard > {this.state.currentDatabase} </h4>
                 </div>
                 <div className="col-md-12">
-                    <MyFormContainer {...this.state} {...this.props} {...this.methods} />
+                    <FormContainer {...this.state} {...this.props} {...this.methods} />
                 </div>
             </div>
         )

@@ -283,7 +283,7 @@ const CustomSQLQuery = (props) => {
     )
 }
 
-const MyFormContainer = (props) => {
+const FormContainer = (props) => {
     return (
         <div>
             <div className="col-md-12">
@@ -332,4 +332,4 @@ const MyFormContainer = (props) => {
 }
 
 
-export default MyFormContainer
+export default FormContainer
