@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {fetchDatabases, fetchGraphs, resetDatabase, resetField, resetTable, resetQueriedTable} from '../store'
+import {fetchDatabases, fetchGraphs, resetDatabase, resetField, resetTable, resetQueriedTable} from '../../store/index'
 import {Modal} from 'react-bootstrap'
 
 class HomeDatabase extends Component {

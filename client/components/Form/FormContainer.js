@@ -1,5 +1,5 @@
 import React from 'react'
-import {newGraphMaker} from '../../utils/graphUtility'
+import {newGraphMaker} from '../../../utils/graphUtility'
 import {SelectQueryOptions, CustomSQLQuery} from "./FormComponents";
 
 const FormContainer = (props) => {

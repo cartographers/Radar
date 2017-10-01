@@ -11,7 +11,7 @@ import {
     fetchKeys,
     removeGraph,
     saveQueryGraph
-} from '../store'
+} from '../../store/index'
 import {Scatter} from 'recharts'
 import FormContainer from './FormContainer'
 

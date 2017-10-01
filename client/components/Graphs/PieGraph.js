@@ -1,5 +1,5 @@
 import {PieChart, Pie, Tooltip, Legend} from 'recharts'
-import {CustomPieTooltip} from './customToolTips.js'
+import {CustomPieTooltip} from './CustomToolTips.js'
 import TableDB from './TableDB'
 import React from 'react'
 

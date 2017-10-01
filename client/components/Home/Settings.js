@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {Button} from 'react-bootstrap'
-import { editPort, fetchPort } from '../store'
+import { editPort, fetchPort } from '../../store/index'
 
 class Settings extends React.Component {
 

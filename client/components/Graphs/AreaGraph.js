@@ -1,5 +1,5 @@
 import React from 'react'
-import {CustomTooltip} from './customToolTips.js'
+import {CustomTooltip} from './CustomToolTips.js'
 import {AreaChart, Area, XAxis, YAxis, Tooltip} from 'recharts'
 import TableDB from './TableDB'
 
