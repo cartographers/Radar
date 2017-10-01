@@ -1,21 +1,8 @@
 import React from 'react'
 import {Modal} from 'react-bootstrap'
 import CustomQuery from './CustomQuery'
-
-const ChooseOne = (props) => {
-    return (<select name={props.name} onChange={props.onChange} value={props.value}>
-        <option>Make a choice</option>
-        {props.iterable && props.iterable.map((val, i) => <option value={props.indxVal ? i : val}
-                                                                  key={i}>{val.charAt(0).toUpperCase() + val.slice(1)}</option>)}
-    </select>)
-}
-
-const options = (selectThese, columns, columnType, onChange, filtered) => {
-    let mapThis = selectThese.length ? selectThese : columns
-    if (filtered) mapThis = mapThis.filter((val) => (columnType[columns.indexOf(val)] === 23 || columnType[columns.indexOf(val)] === 21 || columnType[columns.indexOf(val)] === 1700))
-    return <ChooseOne onChange={onChange} iterable={mapThis}/>
-}
-
+import ChooseOne from './ChooseOne'
+import options from './options'
 
 const RenderTables = (props) => {
     return (
