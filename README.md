@@ -1,6 +1,8 @@
+[Code is actively being refactored] 
+
 # Radar
 
-The difficulty involved with coming up with the right query to make to get the information you want and putting it all in a nice graph is a thing of the past. Radar allows you to make queries in easy to understand format and then gives you a nice graph to showcase that information.
+The difficulty involved coming up with the right query to get the information you want and putting it all in a nice graph is a thing of the past. Radar allows you to make queries in easy to understand format and then gives you a nice graph to showcase that information.
 
 ## Getting Started
 
