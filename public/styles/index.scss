@@ -1,4 +1,4 @@
-@import './mixins';
+@import 'mixins';
 
 body {
 
@@ -269,7 +269,7 @@ body {
 
 .well {
   background-color: rgba(0,0,0,0.7);
-  background: url('../public/img/blur-bg-blurred.jpg');
+  background: url('../img/blur-bg-blurred.jpg');
 }
 
 .recharts-surface {

@@ -1,5 +1,5 @@
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
-import {CustomTooltip} from './customToolTips'
+import {CustomTooltip} from './CustomToolTips'
 import TableDB from './TableDB'
 import React from 'react'
 

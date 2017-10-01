@@ -1,5 +1,5 @@
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
-import {CustomTooltip} from './customToolTips.js'
+import {CustomTooltip} from './CustomToolTips.js'
 import TableDB from './TableDB'
 import React from 'react'
 

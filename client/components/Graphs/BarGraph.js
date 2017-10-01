@@ -1,6 +1,6 @@
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import React from 'react'
-import {CustomTooltip} from './customToolTips.js'
+import {CustomTooltip} from './CustomToolTips.js'
 import TableDB from './TableDB'
 
 const BarGraph = (props) => {

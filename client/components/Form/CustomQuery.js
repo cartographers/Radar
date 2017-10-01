@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { currentDatabase, fetchQueryTableCustom } from '../store'
+import { currentDatabase, fetchQueryTableCustom } from '../../store/index'
 
 class CustomQuery extends React.Component {
 
