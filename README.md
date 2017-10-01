@@ -6,7 +6,7 @@ The difficulty involved coming up with the right query to get the information yo
 
 ## Getting Started
 
-Click this link to download and start using Radar
+Click this link to download and start using Radar [link coming soon..]
 
 ### Prerequisites
 
