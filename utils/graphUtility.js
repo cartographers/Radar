@@ -16,9 +16,6 @@ export const newGraphMaker = (settings) => {
 
   const color1 =  '#E84A5F'
   const color2 = '#FECEA8'
-  const color3 = '#99B898'
-  const color4 = '#FF847C'
-  const color5 = '#2A363B'
 
   const stroke = color1
   const strokeGrid = color2
