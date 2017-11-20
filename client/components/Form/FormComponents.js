@@ -6,6 +6,7 @@ import options from './options'
 import RenderTables from './RenderTables'
 import RenderAggregate from './RenderAggregate'
 import RenderWheres from './RenderWheres'
+import RenderSelects from './RenderSelects'
 
 
 const RenderOrderBy = (props) => {
