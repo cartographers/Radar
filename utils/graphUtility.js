@@ -25,6 +25,6 @@ export const newGraphMaker = (settings) => {
   if (makeGraph === 'Line') return <LineGraph {...settings} strokeGrid={strokeGrid} stroke={stroke} fill={fill} />
   if (makeGraph === 'Bar') return <BarGraph {...settings}  strokeGrid={strokeGrid} fill={fill} />
   if (makeGraph === 'Scatter') return <Scatter {...settings} strokeGrid={strokeGrid} stroke={stroke} />
-  if (makeGraph === 'Pie') return <PieGraph {...settings} fill={fill}/>
+  if (makeGraph === 'Pie') return <PieGraph {...settings} fill={fill} />
   if (makeGraph === 'Table') return <TableDB {...settings} />
 }
