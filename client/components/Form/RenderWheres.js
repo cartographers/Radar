@@ -1,5 +1,6 @@
 import React from 'react'
 import RenderOrAnd from './RenderOrAnd'
+import ChooseOne from './ChooseOne'
 
 const RenderWheres = (props) => {
     return (
